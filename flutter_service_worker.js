@@ -27,11 +27,11 @@ const RESOURCES = {"assets/AssetManifest.json": "1e71dfc088da43016f6bab7d190e51f
 "assets/assets/images/activity_image_1.webp": "f679677e544b2719d2dfa314f42971f5",
 "assets/assets/images/activity_card_a3.jpg": "72147c936e9d0e14e878f84f556d596c",
 "assets/assets/images/guests_10.webp": "ff21a63f5edd7455e65db9c07f9e698e",
-"assets/assets/images/home_stands.webp": "fe88f6dd7f0b1abc73a56541013ff845",
+"assets/assets/images/home_stands.webp": "04dcd1cf441488fa33a8234d5ed099ff",
 "assets/assets/images/home_tourism.jpg": "e1436cd3ee75820e41b84656c22d862e",
 "assets/assets/images/logo_mrnt.webp": "79946278bd52d299f6b1acc8d452ded2",
 "assets/assets/images/guests_11.webp": "e77781cb7284f485bf17a1a7b1a92a25",
-"assets/assets/images/home_qr.webp": "33475b85a8f4f2af8a1fff3ef74295af",
+"assets/assets/images/home_qr.webp": "66ab016bb3d3a628c16c37cee7af4f14",
 "assets/assets/images/activity_card_a1.jpg": "411325cbb2779dc3905951d3447be012",
 "assets/assets/images/guests_1.webp": "5ec0a99c78d5e4d29dc46edefb47f01a",
 "assets/assets/images/activity_card_a2.png": "a80cc4a65cc1a99dc585e4a15e65060e",
@@ -76,13 +76,13 @@ const RESOURCES = {"assets/AssetManifest.json": "1e71dfc088da43016f6bab7d190e51f
 "canvaskit/skwasm_st.js.symbols": "c7e7aac7cd8b612defd62b43e3050bdd",
 "index.html": "db6af5fa992f2e629ef943e853ae966e",
 "/": "db6af5fa992f2e629ef943e853ae966e",
-"flutter_bootstrap.js": "07fe016818b7e0e8ceada096e1f6701d",
+"flutter_bootstrap.js": "316b4a0488265d01b65022ca7358c7d4",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "icons/Icon-maskable-192.png": "c457ef57daa1d16f64b27b786ec2ea3c",
 "icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
-"main.dart.js": "70b42b2b530a79391730db0962b580aa"};
+"main.dart.js": "16f4e701198b9317f32a0e7cdbbe5443"};
 // The application shell files that are downloaded before a service worker can
 // start.
 const CORE = ["main.dart.js",
