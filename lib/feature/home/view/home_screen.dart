@@ -94,40 +94,22 @@ class HomeScreen extends StatelessWidget {
                 },
               ),
               _buildGridCard(
-                'Semiplenarias',
-                AppImages.homeSessions,
+                'Objetivos Principales',
+                AppImages.homeMainObjectives,
                 null,
                 onTap: () {
                   context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.sessions));
                 },
               ),
               _buildGridCard(
-                'Turismo',
-                AppImages.homeTourism,
+                'Escanear',
+                AppImages.homeQR,
                 null,
                 onTap: () {
                   context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.tourism));
                 },
               ),
               true,
-            ),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.only(
-                left: 16,
-                right: 16,
-                top: 4,
-                bottom: 12,
-              ),
-              height: 200,
-              child: _buildGridCard(
-                'Objetivos Principales',
-                AppImages.homeMainObjectives,
-                null,
-                onTap: () {
-                  context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.mainObjectives));
-                },
-              ),
             ),
             Padding(padding: EdgeInsets.all(70)),
           ],

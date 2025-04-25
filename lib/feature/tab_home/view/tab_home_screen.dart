@@ -222,7 +222,7 @@ class _HomeIndexStack extends StatelessWidget {
       case TabDestination.activities:
         return ActivitiesTab();
       case TabDestination.guests:
-        return GuestsScreen();
+        return GuestsTab();
       default:
         return const MapScreen();
     }

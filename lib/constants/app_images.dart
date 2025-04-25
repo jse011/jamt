@@ -6,14 +6,15 @@ class AppImages {
   static const String mainLogoWhite = '${_base}main_logo_white.png';
   static const String mainLogoBlue = '${_base}main-logo-azul.png';
   static const String mainDrawerBackground = '${_base}main_drawer_background.png';
-  static const String homeActivity = '${_base}home_activity.jpg';
-  static const String homeGuests = '${_base}home_guests.jpg';
-  static const String homeBulletin = '${_base}home_bulletin.png';
-  static const String homeWorkshops = '${_base}home_workshops.png';
+  static const String homeActivity = '${_base}home_activity.webp';
+  static const String homeGuests = '${_base}home_guests.webp';
+  static const String homeBulletin = '${_base}home_bulletin.webp';
+  static const String homeWorkshops = '${_base}home_workshops.webp';
   static const String homeSessions = '${_base}home_sessions.jpg';
   static const String homeTourism = '${_base}home_tourism.jpg';
-  static const String homeStands = '${_base}home_stands.jpg';
-  static const String homeMainObjectives = '${_base}home_main_objectives.png';
+  static const String homeStands = '${_base}home_stands.webp';
+  static const String homeQR = '${_base}home_qr.webp';
+  static const String homeMainObjectives = '${_base}home_main_objectives.webp';
 
   static const String activityCard1 = '${_base}activity_card_a1.jpg';
   static const String activityCard2 = '${_base}activity_card_a2.png';
@@ -23,6 +24,20 @@ class AppImages {
   static const String activityImage1 = '${_base}activity_image_1.webp';
 
   static const String guestCard1 = '${_base}guest_card_1.jpg';
+  static const String guests1 = '${_base}guests_1.webp';
+  static const String guests2 = '${_base}guests_2.webp';
+  static const String guests3 = '${_base}guests_3.webp';
+  static const String guests4 = '${_base}guests_4.webp';
+  static const String guests5 = '${_base}guests_5.webp';
+  static const String guests6 = '${_base}guests_6.webp';
+  static const String guests7 = '${_base}guests_7.webp';
+  static const String guests8 = '${_base}guests_8.webp';
+  static const String guests9 = '${_base}guests_9.webp';
+  static const String guests10 = '${_base}guests_10.webp';
+  static const String guests11 = '${_base}guests_11.webp';
+  static const String guests12 = '${_base}guests_12.webp';
+  static const String guests13 = '${_base}guests_13.webp';
+  static const String guests14 = '${_base}guests_14.webp';
 
-  static const String guideCard1 = '${_base}guide_card_1.jpg';
+  static const String guideCard1 = '${_base}guide_card_1.webp';
 }

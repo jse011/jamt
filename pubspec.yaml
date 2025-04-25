@@ -75,14 +75,15 @@ flutter:
     - assets/images/main_logo_white.png
     - assets/images/main-logo-azul.png
     - assets/images/main_drawer_background.png
-    - assets/images/home_activity.jpg
-    - assets/images/home_guests.jpg
-    - assets/images/home_bulletin.png
-    - assets/images/home_workshops.png
+    - assets/images/home_activity.webp
+    - assets/images/home_guests.webp
+    - assets/images/home_bulletin.webp
+    - assets/images/home_workshops.webp
     - assets/images/home_sessions.jpg
     - assets/images/home_tourism.jpg
-    - assets/images/home_stands.jpg
-    - assets/images/home_main_objectives.png
+    - assets/images/home_stands.webp
+    - assets/images/home_qr.webp
+    - assets/images/home_main_objectives.webp
     - assets/images/activity_card_a1.jpg
     - assets/images/activity_card_a2.png
     - assets/images/activity_card_a3.jpg
@@ -92,7 +93,21 @@ flutter:
     - assets/images/logo_worship.png
     - assets/images/logo_mrnt.webp
     - assets/images/activity_image_1.webp
-    - assets/images/guide_card_1.jpg
+    - assets/images/guide_card_1.webp
+    - assets/images/guests_1.webp
+    - assets/images/guests_2.webp
+    - assets/images/guests_3.webp
+    - assets/images/guests_4.webp
+    - assets/images/guests_5.webp
+    - assets/images/guests_6.webp
+    - assets/images/guests_7.webp
+    - assets/images/guests_8.webp
+    - assets/images/guests_9.webp
+    - assets/images/guests_10.webp
+    - assets/images/guests_11.webp
+    - assets/images/guests_12.webp
+    - assets/images/guests_13.webp
+    - assets/images/guests_14.webp
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

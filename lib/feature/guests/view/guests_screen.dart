@@ -1,5 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jamt/constants/constants.dart';
+import 'package:jamt/feature/guests/guests.dart';
 import 'package:jamt/constants/constants.dart';
 
 class GuestsScreen extends StatelessWidget {
@@ -7,120 +10,148 @@ class GuestsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Stack(
-          children: [
-            Positioned(
-              top: 0,
-              bottom: 45,
-              left: 0,
-              right: 0,
-              child: Container(
-                width: double.infinity,
-                color: AppColor.blueLight,
-              ),
-            ),
-            Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(12))
-                ),
-                margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 280,
+    return BlocConsumer<GuestsBloc, GuestsState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          return Column(
+            children: [
+              Stack(
+                children: [
+                  Positioned(
+                    top: 0,
+                    bottom: 45,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      width: double.infinity,
+                      color: AppColor.blueLight,
+                    ),
+                  ),
+                  Container(
+                      width: double.infinity,
                       decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image:AssetImage(AppImages.guestCard1),
-                          fit: BoxFit.cover,
-                        ),
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(12),
-                          topRight: Radius.circular(12),
-                        )
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(12))
                       ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(
-                        vertical: 16,
-                        horizontal: 16
-                      ),
-                      child:  const Text(
-                        "Información de los invitados",
-                        style: TextStyle(
-                            fontSize: 24,
-                            fontFamily: AppFont.fontTwo),
-                      ),
+                      margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 280,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image:AssetImage(AppImages.guestCard1),
+                                  fit: BoxFit.cover,
+                                ),
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(12),
+                                  topRight: Radius.circular(12),
+                                )
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                vertical: 16,
+                                horizontal: 16
+                            ),
+                            child:  const Text(
+                              "Información de los invitados",
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontFamily: AppFont.fontTwo),
+                            ),
 
-                    ),
-                    //MyTabbedPage()
-                    //Padding(padding: EdgeInsets.only(bottom: 500)),
-                  ],
-                )
-            )
-          ],
-        ),
-        Padding(padding: EdgeInsets.only(bottom: 50))
-      ],
-    );
-  }
-}
-
-class MyTabbedPage extends StatelessWidget {
-  const MyTabbedPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3, // número de pestañas
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          toolbarHeight: 0, // ocultar AppBar si solo usas TabBar
-          bottom: const TabBar(
-            labelColor: Colors.black,
-            unselectedLabelColor: Colors.grey,
-            labelStyle: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              fontFamily: 'YourFontBold', // tu fuente personalizada si aplica
-            ),
-            unselectedLabelStyle: TextStyle(
-              fontWeight: FontWeight.normal,
-              fontSize: 16,
-              fontFamily: 'YourFontRegular',
-            ),
-            indicator: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(12)),
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 6,
-                  offset: Offset(0, 2),
-                ),
-              ],
-            ),
-            tabs: [
-              Tab(text: 'Workshops'),
-              Tab(text: 'Predicadores'),
-              Tab(text: 'Alabanza'),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 16),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: Colors.grey.shade300),
+                            ),
+                            child: Row(
+                              children: List.generate(state.tabs.length, (index) {
+                                final isSelected = state.selectedIndex == index;
+                                return Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      context.read<GuestsBloc>().add(TabSelected(index));
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(vertical: 12),
+                                      decoration: BoxDecoration(
+                                        color: isSelected ? Colors.grey.shade100 : Colors.transparent,
+                                        borderRadius: index == 0
+                                            ? const BorderRadius.only(
+                                          topLeft: Radius.circular(12),
+                                          bottomLeft: Radius.circular(12),
+                                        )
+                                            : index == state.tabs.length - 1
+                                            ? const BorderRadius.only(
+                                          topRight: Radius.circular(12),
+                                          bottomRight: Radius.circular(12),
+                                        )
+                                            : null,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          state.tabs[index].title,
+                                          style: TextStyle(
+                                            fontFamily: AppFont.fontTwo,
+                                            fontSize: 12,
+                                            color: isSelected ? Colors.black : Colors.black.withOpacity(0.6),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 24),
+                            child: Column(
+                              children: [
+                                Center(
+                                  child: Text(
+                                    state.tabs[state.selectedIndex].title,
+                                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: AppFont.fontTwo),
+                                  ),
+                                ),
+                                ...List.generate(state.tabs[state.selectedIndex].guests.length, (index) {
+                                  var guest = state.tabs[state.selectedIndex].guests[index];
+                                  return ListTile(
+                                    leading: Container(
+                                      width: 60,
+                                      height: 60,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white60,
+                                        borderRadius: BorderRadius.all(Radius.circular(8))
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: Image.asset(guest.image, fit: BoxFit.cover),
+                                      ),
+                                    ),
+                                    title: Text(guest.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                                    subtitle: guest.schedule.isNotEmpty? Text(guest.schedule):null,
+                                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                  );
+                                })
+                              ],
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(bottom: 250)),
+                        ],
+                      )
+                  )
+                ],
+              ),
+              Padding(padding: EdgeInsets.only(bottom: 50))
             ],
-          ),
-        ),
-        body: TabBarView(
-          children: [
-            Container(),     // debes crear este widget
-            Container(),  // debes crear este widget
-            Container(),      // debes crear este widget
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 }
