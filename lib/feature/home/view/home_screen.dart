@@ -86,9 +86,9 @@ class HomeScreen extends StatelessWidget {
             _buildHorizontalGrid(
               context,
               _buildGridCard(
-                'Stands, Shopping y Restaurantes',
-                AppImages.homeStands,
-                null,
+                '¡No olvides escanear! ',
+                AppImages.homeQR,
+                'Usa tu cámara para registrar tu asistencia al terminar cada exposición.',
                 onTap: () {
                   context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.stands));
                 },
@@ -102,8 +102,8 @@ class HomeScreen extends StatelessWidget {
                 },
               ),
               _buildGridCard(
-                'Escanear',
-                AppImages.homeQR,
+                'Stands y Restaurantes',
+                AppImages.homeStands,
                 null,
                 onTap: () {
                   context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.tourism));
