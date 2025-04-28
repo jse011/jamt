@@ -9,7 +9,7 @@ class RichTextFromHtmlLite extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final RegExp tagExp = RegExp(r"<(\/?)(a|b|p)([^>]*)>");
+    final RegExp tagExp = RegExp(r"<(\/?)(a|b|p|li|ul)([^>]*)>");
     final List<InlineSpan> spans = [];
     final buffer = StringBuffer();
     TextStyle? currentStyle = this.currentStyle;
@@ -23,30 +23,60 @@ class RichTextFromHtmlLite extends StatelessWidget {
 
     String? currentHref;
     bool bold = false;
+    bool isInListItem = false;
 
     void flushBuffer() {
       if (buffer.isEmpty) return;
 
-      InlineSpan span;
-
-      final style = currentStyle?.copyWith(
+      final text = buffer.toString();
+      TextStyle effectiveStyle = currentStyle!.copyWith(
         fontWeight: bold ? FontWeight.bold : null,
-        color: currentHref != null ? AppColor.blueLight : currentStyle.color,
+        color: currentHref != null ? AppColor.blueLight : currentStyle!.color,
       );
 
-      if (currentHref != null) {
-        span = TextSpan(
-          text: buffer.toString(),
-          style: style,
-          recognizer: TapGestureRecognizer()..onTap=(){
-            Navigator.pushNamed(context, '/${currentHref!}');
-          },
+
+      if (isInListItem) {
+        // Aplicamos sangría al li
+        effectiveStyle = effectiveStyle.copyWith(
+          height: 1.6,
+        );
+        spans.add(
+          WidgetSpan(
+            alignment: PlaceholderAlignment.baseline,
+            baseline: TextBaseline.alphabetic,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "• ",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey,
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    text,
+                    style: effectiveStyle,
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
       } else {
-        span = TextSpan(text: buffer.toString(), style: style);
+        spans.add(TextSpan(
+          text: text,
+          style: effectiveStyle,
+          recognizer: currentHref != null
+              ? (TapGestureRecognizer()
+            ..onTap = () {
+              Navigator.pushNamed(context, '/${currentHref!}');
+            })
+              : null,
+        ));
       }
 
-      spans.add(span);
       buffer.clear();
     }
 
@@ -66,31 +96,43 @@ class RichTextFromHtmlLite extends StatelessWidget {
         if (isClosing) {
           currentHref = null;
         } else {
-          final RegExpMatch? hrefMatch = RegExp(r"href='([^']+)'").firstMatch(attributes??"");
+          final hrefMatch = RegExp(r"href='([^']+)'").firstMatch(attributes ?? "");
           if (hrefMatch != null) {
             currentHref = hrefMatch.group(1);
           }
         }
       } else if (tag == "b") {
         bold = !isClosing;
-      }else if (tag == "p") {
+      } else if (tag == "p") {
         if (!isClosing) {
-          buffer.write(""); // Nada al abrir <p>
+          buffer.write("");
         } else {
-          buffer.write("\n"); // Salto de párrafo al cerrar </p>
+          buffer.write("\n");
+        }
+      } else if (tag == "li") {
+        if (!isClosing) {
+          isInListItem = true;
+        } else {
+          isInListItem = false;
+          buffer.write("\n");
+        }
+      }else if (tag == "ul") {
+        if (!isClosing) {
+          buffer.write("");
+        } else {
+          buffer.write("");
         }
       }
 
       lastIndex = match.end;
     }
 
-    // Agregar texto restante
     buffer.write(html.substring(lastIndex));
     flushBuffer();
 
-    return Text.rich(
-      TextSpan(children: spans),
+    return RichText(
       textAlign: TextAlign.start,
+      text: TextSpan(children: spans),
     );
   }
 

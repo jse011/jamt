@@ -10,7 +10,7 @@ class MapScreen extends StatelessWidget {
       child: const Center(
         child: Text(
           'MapScreen Content',
-          style: TextStyle(fontSize: 24),
+          style: TextStyle(fontSize: 24, color: Colors.white),
         ),
       ),
     );

@@ -27,4 +27,6 @@ class AppColor {
   static const Color textGrey = Color(0xFF727272);
   static const Color textGrey2 = Color(0xFFa2a2a2);
 
+  static const Color lineGrey = Color(0x7ea2a2a2);
+
 }

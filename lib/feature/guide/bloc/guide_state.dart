@@ -85,6 +85,7 @@ class GuideState extends Equatable{
       ),
       CardGuide(
         title: "Programación general",
+        colorText: Colors.black,
         body: "<p><b>HORARIOS:</b></p>"
             "<p></p>"
             "<p><b>VIERNES - 30/05</b></p>"

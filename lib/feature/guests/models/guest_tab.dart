@@ -9,6 +9,6 @@ final class GuestTab extends Equatable {
   const GuestTab({this.title = "", this.guests = const []});
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [title, guests];
 
 }

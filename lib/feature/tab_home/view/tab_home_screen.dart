@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jamt/constants/app_color.dart';
-import 'package:jamt/constants/app_images.dart';
 import 'package:jamt/feature/activities/view/activities_tab.dart';
 import 'package:jamt/feature/tab_home/tab_home.dart';
 import 'package:jamt/feature/home/home.dart';
@@ -12,8 +11,9 @@ import 'package:jamt/feature/guide/guide.dart';
 import 'package:jamt/feature/schedule/schedule.dart';
 import 'package:jamt/feature/map/map.dart';
 import 'package:jamt/widget/widget.dart';
-import 'package:jamt/feature/activities/activities.dart';
+import 'package:jamt/feature/event/event.dart';
 import 'package:jamt/feature/guests/guests.dart';
+import 'package:jamt/feature/session/session.dart';
 
 class TabHomeScreen extends StatefulWidget {
   const TabHomeScreen({super.key});
@@ -218,11 +218,15 @@ class _HomeIndexStack extends StatelessWidget {
       case TabDestination.map:
         return const MapScreen();
       case TabDestination.menu:
-        return Container();
+        return EventScreen();
       case TabDestination.activities:
         return ActivitiesTab();
       case TabDestination.guests:
         return GuestsTab();
+      case TabDestination.sessions:
+        return SessionTabs();
+      case TabDestination.event:
+        return EventScreen();
       default:
         return const MapScreen();
     }

@@ -9,6 +9,6 @@ final class GuestCard extends Equatable{
   const GuestCard({this.name = "", this.schedule = "", this.image = ""});
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [name, schedule, image];
 
 }

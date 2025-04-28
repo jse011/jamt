@@ -18,7 +18,8 @@ final class TabHomeState extends Equatable {
       TabDestination.sessions,
       TabDestination.tourism,
       TabDestination.stands,
-      TabDestination.mainObjectives
+      TabDestination.mainObjectives,
+      TabDestination.event
     ]
   });
 

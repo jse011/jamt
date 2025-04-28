@@ -13,11 +13,11 @@ enum TabDestination {
   guests(Icons.home, '', AppColor.blueLight, AppColor.yellow,parent: TabDestination.home),
   bulletin(Icons.home, '', AppColor.colorPrimary,AppColor.yellow, parent: TabDestination.home),
   workshops(Icons.home, '', AppColor.colorPrimary, AppColor.yellow, parent: TabDestination.home),
-  sessions(Icons.home, '', AppColor.blueLight, AppColor.yellow, parent: TabDestination.home),
+  sessions(Icons.home, '', AppColor.blueLight, AppColor.purpleDark2, parent: TabDestination.home),
   tourism(Icons.home, '', AppColor.yellow, AppColor.colorPrimary, parent: TabDestination.home),
   stands(Icons.home, '', AppColor.blueLight, AppColor.yellow, parent: TabDestination.home),
-  mainObjectives(Icons.home, '', AppColor.colorPrimary, AppColor.yellow, parent: TabDestination.home);
-
+  mainObjectives(Icons.home, '', AppColor.colorPrimary, AppColor.yellow, parent: TabDestination.home),
+  event(Icons.home, '',AppColor.blueDark, AppColor.purpleLight, parent: TabDestination.home);
   const TabDestination(this.icon, this.label, this.color1, this.color2, {this.parent});
 
   final IconData icon;

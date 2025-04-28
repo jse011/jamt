@@ -58,8 +58,16 @@ class HomeScreen extends StatelessWidget {
             _buildHorizontalGrid(
               context,
               _buildGridCard(
-                'Invitados',
+                'Semiplanetarias',
                 AppImages.homeGuests,
+                "Elige los tuyos",
+                onTap: () {
+                  context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.sessions));
+                },
+              ),
+              _buildGridCard(
+                'Invitados',
+                AppImages.homeWorkshops,
                 null,
                 onTap: () {
                   context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.guests));
@@ -71,14 +79,6 @@ class HomeScreen extends StatelessWidget {
                 null,
                 onTap: () {
                   context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.bulletin));
-                },
-              ),
-              _buildGridCard(
-                'Semiplanetarias',
-                AppImages.homeWorkshops,
-                "Elige los tuyos",
-                onTap: () {
-                  context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.workshops));
                 },
               ),
               false,
@@ -98,7 +98,7 @@ class HomeScreen extends StatelessWidget {
                 AppImages.homeMainObjectives,
                 null,
                 onTap: () {
-                  context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.sessions));
+                  context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.event));
                 },
               ),
               _buildGridCard(

@@ -140,7 +140,7 @@ class GuideScreen extends StatelessWidget {
                                             padding: const EdgeInsets.only(top: 6, left: 4, bottom: 16),
                                             child: RichTextFromHtmlLite(card.body,
                                               currentStyle: TextStyle(
-                                                  color: Colors.black,
+                                                  color: card.colorText,
                                                   fontSize: 13,
                                                   height: 1.9,
                                                   fontFamily: AppFont.font,
