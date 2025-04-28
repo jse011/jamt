@@ -42,4 +42,8 @@ class AppImages {
   static const String guideCard1 = '${_base}guide_card_1.webp';
   static const String bulletin1 = '${_base}bulletin_1.webp';
 
+  static const String map1Thumbnail = '${_base}maps/map_1_thumbnail.webp';
+  static const String map1= '${_base}maps/map_1.webp';
+  static const String map2Thumbnail = '${_base}maps/map_2_thumbnail.webp';
+  static const String map2 = '${_base}maps/map_2.webp';
 }

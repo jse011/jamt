@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jamt/constants/app_color.dart';
 import 'package:jamt/feature/activities/view/activities_tab.dart';
 import 'package:jamt/feature/bulletin/bulletin.dart';
+import 'package:jamt/feature/qr/qr.dart';
 import 'package:jamt/feature/tab_home/tab_home.dart';
 import 'package:jamt/feature/home/home.dart';
 import 'package:jamt/feature/guide/guide.dart';
@@ -217,7 +218,7 @@ class _HomeIndexStack extends StatelessWidget {
       case TabDestination.home:
         return const HomeScreen();
       case TabDestination.map:
-        return const MapScreen();
+        return const MapTab();
       case TabDestination.menu:
         return EventScreen();
       case TabDestination.activities:
@@ -230,8 +231,10 @@ class _HomeIndexStack extends StatelessWidget {
         return EventScreen();
       case TabDestination.bulletin:
         return BulletinTab();
+      case TabDestination.qr:
+        return QRTab();
       default:
-        return const MapScreen();
+        return const MapTab();
     }
   }
 }
@@ -326,8 +329,8 @@ class _HomeNavigationBar extends StatelessWidget {
       icon: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon),
-          const SizedBox(height: 2),
+          Icon(icon, size: 18,),
+          const SizedBox(height: 4),
           Text(label, style: const TextStyle(fontSize: 12)),
           const SizedBox(height: 4),
           Container(

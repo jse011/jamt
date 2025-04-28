@@ -19,7 +19,9 @@ final class TabHomeState extends Equatable {
       TabDestination.tourism,
       TabDestination.stands,
       TabDestination.mainObjectives,
-      TabDestination.event
+      TabDestination.event,
+      TabDestination.qr,
+
     ]
   });
 

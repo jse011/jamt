@@ -61,7 +61,10 @@ class BulletinScreen extends StatelessWidget {
                           ),
                           Positioned.fill(
                               child: Container(
-                                color: Colors.black.withOpacity(0.2),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                                  color: Colors.black.withOpacity(0.2),
+                                )
                               )
                           )
                         ],

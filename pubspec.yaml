@@ -38,6 +38,7 @@ dependencies:
   equatable: ^2.0.0
   flutter_bloc: ^9.1.0
   formz: ^0.8.0
+  qr_code_scanner_plus: ^2.0.10+1
   flutter:
     sdk: flutter
 
@@ -109,6 +110,10 @@ flutter:
     - assets/images/guests_13.webp
     - assets/images/guests_14.webp
     - assets/images/bulletin_1.webp
+    - assets/images/maps/map_1_thumbnail.webp
+    - assets/images/maps/map_1.webp
+    - assets/images/maps/map_2_thumbnail.webp
+    - assets/images/maps/map_2.webp
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -123,6 +128,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
+    - family: Home
+      fonts:
+        - asset: assets/fonts/icon_home/Home.ttf
     - family: FjallaOne
       fonts:
         - asset: assets/fonts/FjallaOne-Regular.ttf

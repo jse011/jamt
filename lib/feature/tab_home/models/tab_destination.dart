@@ -3,11 +3,12 @@ import 'package:jamt/constants/constants.dart';
 
 enum TabDestination {
 
-  guide(Icons.book, 'Guía', AppColor.blue2, AppColor.purpleDark),
-  schedule(Icons.event, 'Agenda', AppColor.blueLight, AppColor.yellow),
-  home(Icons.home, 'Inicio', AppColor.blue2, AppColor.purpleDark),
-  map(Icons.map, 'Mapa', AppColor.yellow, AppColor.colorPrimary),
-  menu(Icons.menu, 'Menú', AppColor.yellow, AppColor.colorPrimary),
+  guide(AppIcon.book, 'Guía', AppColor.blue2, AppColor.purpleDark),
+  schedule(AppIcon.calendar, 'Agenda', AppColor.blueLight, AppColor.yellow),
+  home(AppIcon.home, 'Inicio', AppColor.blue2, AppColor.purpleDark),
+  map(AppIcon.map, 'Mapa', AppColor.yellow, AppColor.colorPrimary),
+  menu(AppIcon.menu, 'Menú', AppColor.yellow, AppColor.colorPrimary),
+  qr(AppIcon.qrcode, 'QR', Colors.black,Colors.black, parent: TabDestination.home),
 
   activities(Icons.home, '',AppColor.purpleDark, AppColor.blue2, parent: TabDestination.home),
   guests(Icons.home, '', AppColor.blueLight, AppColor.yellow,parent: TabDestination.home),

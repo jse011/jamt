@@ -90,7 +90,7 @@ class HomeScreen extends StatelessWidget {
                 AppImages.homeQR,
                 'Usa tu cámara para registrar tu asistencia al terminar cada exposición.',
                 onTap: () {
-                  context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.stands));
+                  context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.qr));
                 },
               ),
               _buildGridCard(
@@ -106,7 +106,7 @@ class HomeScreen extends StatelessWidget {
                 AppImages.homeStands,
                 null,
                 onTap: () {
-                  context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.tourism));
+                  context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.map));
                 },
               ),
               true,
