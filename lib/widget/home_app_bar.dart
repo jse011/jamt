@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jamt/constants/constants.dart';
+import 'package:jamt/navigation/navigation.dart';
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar({super.key, this.color});
   final Color? color;
   @override
   Widget build(BuildContext context) {
+    final destination = context.select(
+          (NavigationBloc bloc) => bloc.state.destination,
+    );
     return SliverAppBar(
       pinned: false,     // No queda fijo
       floating: true,    // Aparece al hacer scroll hacia arriba
@@ -17,7 +22,10 @@ class HomeAppBar extends StatelessWidget {
         children: [
           Image.asset(AppImages.mainLogoBlue, height: 32),
           const Spacer(),
-          _buildAppBarIcon(Icons.person),
+          if(destination != Destination.profile)
+          _buildAppBarIcon(Icons.person, onTap: (){
+            context.read<NavigationBloc>().add(NavigationPressed(Destination.profile));
+          }),
           const SizedBox(width: 12),
           _buildAppBarIcon(Icons.menu, onTap: () {
             Scaffold.of(context).openDrawer();
