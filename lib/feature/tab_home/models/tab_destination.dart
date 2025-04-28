@@ -8,7 +8,6 @@ enum TabDestination {
   home(AppIcon.home, 'Inicio', AppColor.blue2, AppColor.purpleDark),
   map(AppIcon.map, 'Mapa', AppColor.yellow, AppColor.colorPrimary),
   menu(AppIcon.menu, 'Menú', AppColor.yellow, AppColor.colorPrimary),
-  qr(AppIcon.qrcode, 'QR', Colors.black,Colors.black, parent: TabDestination.home),
 
   activities(Icons.home, '',AppColor.purpleDark, AppColor.blue2, parent: TabDestination.home),
   guests(Icons.home, '', AppColor.blueLight, AppColor.yellow,parent: TabDestination.home),

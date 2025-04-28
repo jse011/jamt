@@ -11,6 +11,7 @@ class NavigationState extends Equatable {
       Destination.tabHome,
       Destination.profile,
       Destination.sessions,
+      Destination.qr,
       Destination.guests,
       Destination.organization,
       Destination.bulletins,

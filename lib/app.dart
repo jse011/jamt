@@ -2,6 +2,7 @@ import 'package:app_localization/app_localizations.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jamt/feature/qr/qr.dart';
 import 'package:jamt/navigation/navigation.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:jamt/constants/constants.dart';
@@ -70,6 +71,12 @@ class _AppViewState extends State<AppView> {
                   case Destination.profile:
                     _navigator.pushAndRemoveUntil<void>(
                       UserPage.route(),
+                          (route) => removeStack,
+                    );
+                    break;
+                  case Destination.qr:
+                    _navigator.pushAndRemoveUntil<void>(
+                      QRPage.route(),
                           (route) => removeStack,
                     );
                     break;

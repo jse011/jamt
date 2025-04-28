@@ -40,55 +40,64 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height - 280;// 🔥 Aquí capturamos la altura de la pantalla
 
-    return  Container(
-      height: screenHeight,
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.4),
-        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        elevation: 0,
+        title: Text(
+          "Scan QR Code",
+          style: const TextStyle(
+              fontSize: 24,
+              color: Colors.white,
+              fontFamily: AppFont.fontTwo
+          ),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
-      child: Stack(
-        children: [
-         Positioned.fill(
-             child:  Column(
-               children: [
-                 const SizedBox(height: 24),
-                 const Text(
-                   "Scan QR Code",
-                   style: TextStyle(
-                       fontSize: 24,
-                       fontFamily: AppFont.fontTwo,
-                       fontWeight: FontWeight.bold,
-                       color: Colors.white
-                   ),
-                 ),
-                 const SizedBox(height: 8),
-                 const Text(
-                   "Place QR inside the frame to scan",
-                   style: TextStyle(color: Colors.grey),
-                 ),
-                 const SizedBox(height: 24),
-               ],
-             ),
-         ),
-          SizedBox(
-            width: double.infinity,
-            height: screenHeight,
-            child: QRView(
-              key: qrKey,
-              onQRViewCreated: _onQRViewCreated,
-              overlay: QrScannerOverlayShape(
-                borderColor: AppColor.blueLight,
-                borderRadius: 10,
-                borderLength: 30,
-                borderWidth: 10,
-                cutOutSize: 250,
+      body: Container(
+        decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.4),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+        ),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child:  Column(
+                children: [
+                  const SizedBox(height: 48),
+                  const Text(
+                    "Place QR inside the frame to scan",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  const SizedBox(height: 24),
+                ],
               ),
             ),
-          ),
-        ],
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 56,
+              top: 0,
+              child: SizedBox(
+                child: QRView(
+                  key: qrKey,
+                  onQRViewCreated: _onQRViewCreated,
+                  overlay: QrScannerOverlayShape(
+                    borderColor: AppColor.blueLight,
+                    borderRadius: 10,
+                    borderLength: 30,
+                    borderWidth: 10,
+                    cutOutSize: 250,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
+
   }
 }

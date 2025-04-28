@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jamt/constants/constants.dart';
 import 'package:jamt/feature/tab_home/bloc/tab_home_bloc.dart';
 import 'package:jamt/feature/tab_home/models/models.dart';
+import 'package:jamt/navigation/navigation.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -90,7 +91,7 @@ class HomeScreen extends StatelessWidget {
                 AppImages.homeQR,
                 'Usa tu cámara para registrar tu asistencia al terminar cada exposición.',
                 onTap: () {
-                  context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.qr));
+                  context.read<NavigationBloc>().add(NavigationPressed(Destination.qr));
                 },
               ),
               _buildGridCard(

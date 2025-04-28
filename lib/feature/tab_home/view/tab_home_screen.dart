@@ -231,8 +231,6 @@ class _HomeIndexStack extends StatelessWidget {
         return EventScreen();
       case TabDestination.bulletin:
         return BulletinTab();
-      case TabDestination.qr:
-        return QRTab();
       default:
         return const MapTab();
     }

@@ -20,7 +20,6 @@ final class TabHomeState extends Equatable {
       TabDestination.stands,
       TabDestination.mainObjectives,
       TabDestination.event,
-      TabDestination.qr,
 
     ]
   });

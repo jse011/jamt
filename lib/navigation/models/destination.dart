@@ -5,6 +5,7 @@ enum Destination {
   tabHome(Icons.home, 'Inicio'),
   sessions(Icons.bookmark, 'Semiplenarias'),
   profile(Icons.person, 'Mis datos'),
+  qr(Icons.home, 'Escanear'),
   guests(Icons.groups, 'Invitados'),
   organization(Icons.badge, 'Organización'),
   bulletins(Icons.article, 'Boletines'),
