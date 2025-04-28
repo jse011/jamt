@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jamt/constants/app_color.dart';
 import 'package:jamt/feature/activities/view/activities_tab.dart';
+import 'package:jamt/feature/bulletin/bulletin.dart';
 import 'package:jamt/feature/tab_home/tab_home.dart';
 import 'package:jamt/feature/home/home.dart';
 import 'package:jamt/feature/guide/guide.dart';
@@ -227,6 +228,8 @@ class _HomeIndexStack extends StatelessWidget {
         return SessionTabs();
       case TabDestination.event:
         return EventScreen();
+      case TabDestination.bulletin:
+        return BulletinTab();
       default:
         return const MapScreen();
     }

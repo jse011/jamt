@@ -59,7 +59,7 @@ class HomeScreen extends StatelessWidget {
               context,
               _buildGridCard(
                 'Semiplanetarias',
-                AppImages.homeGuests,
+                AppImages.homeWorkshops,
                 "Elige los tuyos",
                 onTap: () {
                   context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.sessions));
@@ -67,7 +67,7 @@ class HomeScreen extends StatelessWidget {
               ),
               _buildGridCard(
                 'Invitados',
-                AppImages.homeWorkshops,
+                AppImages.homeGuests,
                 null,
                 onTap: () {
                   context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.guests));
@@ -102,7 +102,7 @@ class HomeScreen extends StatelessWidget {
                 },
               ),
               _buildGridCard(
-                'Stands y Restaurantes',
+                'Mapa',
                 AppImages.homeStands,
                 null,
                 onTap: () {

@@ -108,6 +108,7 @@ flutter:
     - assets/images/guests_12.webp
     - assets/images/guests_13.webp
     - assets/images/guests_14.webp
+    - assets/images/bulletin_1.webp
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
