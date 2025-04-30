@@ -9,18 +9,9 @@ class NavigationState extends Equatable {
     this.forceUpdate = 0,
     this.destinations = const [
       Destination.tabHome,
-      Destination.profile,
-      Destination.sessions,
       Destination.qr,
-      Destination.guests,
-      Destination.organization,
-      Destination.bulletins,
-      Destination.health,
-      Destination.news,
-      Destination.videos,
-      Destination.trivia,
-      Destination.map,
-      Destination.menu,
+      Destination.profile,
+      Destination.logout,
     ]
   });
 

@@ -59,7 +59,7 @@ class HomeScreen extends StatelessWidget {
             _buildHorizontalGrid(
               context,
               _buildGridCard(
-                'Semiplanetarias',
+                'Semiplenarias',
                 AppImages.homeWorkshops,
                 "Elige los tuyos",
                 onTap: () {

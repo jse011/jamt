@@ -23,9 +23,9 @@ class HomeAppBar extends StatelessWidget {
           Image.asset(AppImages.mainLogoBlue, height: 32),
           const Spacer(),
           if(destination != Destination.profile)
-          _buildAppBarIcon(Icons.person, onTap: (){
+          /*_buildAppBarIcon(Icons.person, onTap: (){
             context.read<NavigationBloc>().add(NavigationPressed(Destination.profile));
-          }),
+          }),*/
           const SizedBox(width: 12),
           _buildAppBarIcon(Icons.menu, onTap: () {
             Scaffold.of(context).openDrawer();

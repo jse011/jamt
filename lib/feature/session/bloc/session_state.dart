@@ -41,7 +41,7 @@ class SessionState extends Equatable {
     ],
     this.tabs = const [
       SessionTab(
-        title: "Semiplanetaria 1",
+        title: "Semiplenaria 1",
         session: [
           SessionCard(
             title: 'ALVA Y ALVA',
@@ -71,7 +71,7 @@ class SessionState extends Equatable {
         ]
       ),
       SessionTab(
-          title: "Semiplanetaria 2",
+          title: "Semiplenaria 2",
           session: [
             SessionCard(
                 title: 'ALVA Y ALVA',

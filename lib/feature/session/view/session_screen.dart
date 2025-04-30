@@ -51,14 +51,14 @@ class SessionScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  "SEMIPLANETARIAS",
+                                  "SEMIPLENARIAS",
                                   style: TextStyle(
                                       fontSize: 24,
                                       fontFamily: AppFont.fontTwo),
                                 ),
                                 const SizedBox(height: 8),
                                 const Text(
-                                  'Elija dos Semiplanetarias para asistir:',
+                                  'Elija dos Semiplenarias para asistir:',
                                   style: TextStyle(
                                       fontSize: 14,
                                       color: AppColor.textGrey
@@ -67,7 +67,7 @@ class SessionScreen extends StatelessWidget {
                                 const SizedBox(height: 32),
                                 if(state.saveOneSession.id != 0)
                                 WorkshopSelectCard(
-                                  title: "Semiplanetaria 1",
+                                  title: "Semiplenaria 1",
                                   value: state.saveOneSession.title,
                                   register: state.register,
                                   onClosePressed: (){
@@ -75,7 +75,7 @@ class SessionScreen extends StatelessWidget {
                                   },
                                 ),
                                 if(state.saveOneSession.id == 0)
-                                WorkshopSelector(title: 'ELIGE TU SEMIPLANETARIA 1',
+                                WorkshopSelector(title: 'ELIGE TU SEMIPLENARIA 1',
                                     selects: state.sessions.map((session){ return session.title;}).toList(),
                                     onChanged: (index){
                                       context.read<SessionBloc>().add(OneSessionSelected(index));
@@ -88,7 +88,7 @@ class SessionScreen extends StatelessWidget {
                                 const SizedBox(height: 32),
                                 if(state.saveTwoSession.id != 0)
                                   WorkshopSelectCard(
-                                    title: "Semiplanetaria 2",
+                                    title: "Semiplenaria 2",
                                     value: state.saveTwoSession.title,
                                     register: state.register,
                                     onClosePressed: (){
@@ -96,7 +96,7 @@ class SessionScreen extends StatelessWidget {
                                     },
                                   ),
                                 if(state.saveTwoSession.id == 0)
-                                WorkshopSelector(title: 'ELIGE TU SEMIPLANETARIA 2',
+                                WorkshopSelector(title: 'ELIGE TU SEMIPLENARIA 2',
                                   selects: state.sessions.map((session){ return session.title;}).toList(),
                                   onChanged: (index){
                                     context.read<SessionBloc>().add(TwoSessionSelected(index));

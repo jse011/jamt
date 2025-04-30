@@ -86,20 +86,8 @@ class _AppViewState extends State<AppView> {
                   case Destination.guests:
                   // Acción o retorno para invitados
                     break;
-                  case Destination.organization:
-                  // Acción o retorno para organización
-                    break;
                   case Destination.bulletins:
                   // Acción o retorno para boletines
-                    break;
-                  case Destination.health:
-                  // Acción o retorno para puestos de salud
-                    break;
-                  case Destination.news:
-                  // Acción o retorno para noticias
-                    break;
-                  case Destination.videos:
-                  // Acción o retorno para videos
                     break;
                   case Destination.trivia:
                   // Acción o retorno para trivia
@@ -108,6 +96,9 @@ class _AppViewState extends State<AppView> {
                   // Acción o retorno para mapa
                     break;
                   case Destination.menu:
+                  // Acción para mostrar el drawer o modal
+                    break;
+                  case Destination.logout:
                   // Acción para mostrar el drawer o modal
                     break;
                 }

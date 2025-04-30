@@ -15,7 +15,7 @@ final class ActivitiesState extends Equatable{
       ),
       CardActivity(
         title: "Semiplenarias",
-        body: "Espacios de capacitación diseñados para desarrollar habilidades en liderazgo, evangelismo y discipulado. Cada participante podrá <a href='workshop'>asistir a dos semiplanerias</a> durante el periodo asignado a esta actividad. <a href='workshop'>Haz clic aquí para elegir tus dos semiplanerias de capacitación.</a>"
+        body: "Espacios de capacitación diseñados para desarrollar habilidades en liderazgo, evangelismo y discipulado. Cada participante podrá <a href='workshop'>asistir a dos semiplenarias</a> durante el periodo asignado a esta actividad. <a href='workshop'>Haz clic aquí para elegir tus dos semiplenarias de capacitación.</a>"
       ),
       CardActivity(
         title: "Misión en Acción",

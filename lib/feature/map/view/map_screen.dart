@@ -84,15 +84,9 @@ class MapScreen extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           _MapItem(
-            imagePath: AppImages.map1, // Mapa general
-            thumbnailPath:  AppImages.map1Thumbnail,
+            imagePath: AppImages.map3, // Mapa general
+            thumbnailPath:  AppImages.map3Thumbnail,
             title: 'Mapa General',
-          ),
-          const SizedBox(height: 24),
-          _MapItem(
-            imagePath: AppImages.map2, // Mapa general
-            thumbnailPath: AppImages.map2Thumbnail,
-            title: 'Otro Mapa',
           ),
           const SizedBox(height: 24),
           Padding(padding: EdgeInsets.only(bottom: 200))

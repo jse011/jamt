@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:jamt/constants/app_icon.dart';
 
 enum Destination {
 
-  tabHome(Icons.home, 'Inicio'),
+  tabHome(AppIcon.home, 'Inicio'),
   sessions(Icons.bookmark, 'Semiplenarias'),
   profile(Icons.person, 'Mis datos'),
-  qr(Icons.home, 'Escanear'),
+  qr(AppIcon.qrcode, 'Escanear'),
   guests(Icons.groups, 'Invitados'),
-  organization(Icons.badge, 'Organización'),
   bulletins(Icons.article, 'Boletines'),
-  health(Icons.healing, 'Puestos de Salud'),
-  news(Icons.newspaper, 'Noticias'),
-  videos(Icons.video_collection, 'Videos'),
   trivia(Icons.tour, 'Trivia'),
-  map(Icons.map, 'Mapa'),
-  menu(Icons.menu, 'Menú');
+  map(AppIcon.map, 'Mapa'),
+  menu(Icons.menu, 'Menú'),
+  logout(Icons.logout, 'Cerrar Sesion');
 
   const Destination(this.icon, this.label);
 
