@@ -6,6 +6,7 @@ import 'package:jamt/constants/constants.dart';
 import 'package:jamt/feature/tab_home/bloc/tab_home_bloc.dart';
 import 'package:jamt/feature/tab_home/models/models.dart';
 import 'package:jamt/navigation/navigation.dart';
+import 'package:jamt/widget/widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -50,11 +51,25 @@ class HomeScreen extends StatelessWidget {
           children: [
             _buildOneGrid(
               "Actividades",
-              AppImages.homeActivity,
+              [
+                AppImages.homeActivityOne,
+                AppImages.homeActivityTwo,
+                AppImages.homeActivityThree,
+                AppImages.homeActivityFour,
+                AppImages.homeActivityFive,
+                AppImages.homeActivitySix,
+                AppImages.homeActivitySeven,
+                AppImages.homeActivityEight,
+                AppImages.homeActivityNine,
+                AppImages.homeActivityTen,
+                AppImages.homeActivityEleven,
+                AppImages.homeActivityTwelve
+              ],
               "Misión en Acción, Semiplenarias, Adoración, Maranata Class",
               onTap: () {
                 context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.activities));
               },
+              sepia: true
             ),
             _buildHorizontalGrid(
               context,
@@ -65,6 +80,7 @@ class HomeScreen extends StatelessWidget {
                 onTap: () {
                   context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.sessions));
                 },
+                  sepia: true
               ),
               _buildGridCard(
                 'Invitados',
@@ -81,6 +97,7 @@ class HomeScreen extends StatelessWidget {
                 onTap: () {
                   context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.bulletin));
                 },
+                sepia: true
               ),
               false,
             ),
@@ -121,10 +138,12 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildOneGrid(
     String title,
-    String imagePath,
-    String subtitle, {
-    VoidCallback? onTap,
-  }) {
+    List<String> images,
+    String subtitle,
+      {
+        VoidCallback? onTap,
+        bool sepia = false,
+      }) {
     return GestureDetector(
       onTap: onTap,
       child: Stack(
@@ -132,22 +151,20 @@ class HomeScreen extends StatelessWidget {
           Container(
             width: double.infinity,
             height: 300,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(12)),
-              image: DecorationImage(
-                image: AssetImage(imagePath),
-                // <-- Cambia por tu imagen
-                fit: BoxFit.cover,
+            margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: ZoomImageCarousel(
+                images: images,
               ),
             ),
-            margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           ),
+          if(sepia)
           Container(
             width: double.infinity,
             height: 300,
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withOpacity(0.2),
               borderRadius: BorderRadius.all(Radius.circular(12)),
             ),
             margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
@@ -156,6 +173,8 @@ class HomeScreen extends StatelessWidget {
             left: 0,
             right: 0,
             child: Center(
+              child: Opacity(
+                opacity: 0.8,
               child: Container(
                 width: 200,
                 height: 200,
@@ -167,7 +186,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              ),
+              ),),
             ),
           ),
           Positioned(
@@ -263,6 +282,7 @@ class HomeScreen extends StatelessWidget {
     String imagePath,
     String? subtitle, {
     VoidCallback? onTap,
+    bool sepia = false
   }) {
     return GestureDetector(
       onTap: onTap,
@@ -278,6 +298,15 @@ class HomeScreen extends StatelessWidget {
           child: Stack(
             children: [
               Positioned.fill(child: _buildLinearGradient()),
+              if(sepia)
+                Container(
+                  width: double.infinity,
+                  height: 300,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.2),
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
+                ),
               Padding(
                 padding: const EdgeInsets.all(12),
                 child: Align(

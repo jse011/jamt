@@ -39,6 +39,9 @@ dependencies:
   flutter_bloc: ^9.1.0
   formz: ^0.8.0
   qr_code_scanner_plus: ^2.0.10+1
+  flutter_animate: ^4.5.2
+  carousel_slider: ^5.0.0
+
   flutter:
     sdk: flutter
 
@@ -76,7 +79,20 @@ flutter:
     - assets/images/main_logo_white.png
     - assets/images/main-logo-azul.png
     - assets/images/main_drawer_background.png
-    - assets/images/home_activity.webp
+    - assets/images/home_activity_1.webp
+    - assets/images/home_activity_2.webp
+    - assets/images/home_activity_3.webp
+    - assets/images/home_activity_4.webp
+    - assets/images/home_activity_5.webp
+    - assets/images/home_activity_6.webp
+    - assets/images/home_activity_7.webp
+    - assets/images/home_activity_8.webp
+    - assets/images/home_activity_9.webp
+    - assets/images/home_activity_10.webp
+    - assets/images/home_activity_11.webp
+    - assets/images/home_activity_12.webp
+    - assets/images/home_activity_13.webp
+    - assets/images/home_activity_14.webp
     - assets/images/home_guests.webp
     - assets/images/home_bulletin.webp
     - assets/images/home_workshops.webp
@@ -90,7 +106,7 @@ flutter:
     - assets/images/activity_card_a3.jpg
     - assets/images/activity_card_a4.jpg
     - assets/images/activity_card_a5.jpg
-    - assets/images/guest_card_1.jpg
+    - assets/images/guest_card_1.webp
     - assets/images/logo_worship.png
     - assets/images/logo_mrnt.webp
     - assets/images/activity_image_1.webp

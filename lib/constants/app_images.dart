@@ -6,7 +6,18 @@ class AppImages {
   static const String mainLogoWhite = '${_base}main_logo_white.png';
   static const String mainLogoBlue = '${_base}main-logo-azul.png';
   static const String mainDrawerBackground = '${_base}main_drawer_background.png';
-  static const String homeActivity = '${_base}home_activity.webp';
+  static const String homeActivityOne   = '${_base}home_activity_1.webp';
+  static const String homeActivityTwo   = '${_base}home_activity_2.webp';
+  static const String homeActivityThree = '${_base}home_activity_3.webp';
+  static const String homeActivityFour  = '${_base}home_activity_4.webp';
+  static const String homeActivityFive  = '${_base}home_activity_5.webp';
+  static const String homeActivitySix   = '${_base}home_activity_6.webp';
+  static const String homeActivitySeven = '${_base}home_activity_7.webp';
+  static const String homeActivityEight = '${_base}home_activity_8.webp';
+  static const String homeActivityNine  = '${_base}home_activity_9.webp';
+  static const String homeActivityTen   = '${_base}home_activity_10.webp';
+  static const String homeActivityEleven = '${_base}home_activity_11.webp';
+  static const String homeActivityTwelve = '${_base}home_activity_12.webp';
   static const String homeGuests = '${_base}home_guests.webp';
   static const String homeBulletin = '${_base}home_bulletin.webp';
   static const String homeWorkshops = '${_base}home_workshops.webp';
@@ -23,7 +34,7 @@ class AppImages {
   static const String activityCard5 = '${_base}activity_card_a5.jpg';
   static const String activityImage1 = '${_base}activity_image_1.webp';
 
-  static const String guestCard1 = '${_base}guest_card_1.jpg';
+  static const String guestCard1 = '${_base}guest_card_1.webp';
   static const String guests1 = '${_base}guests_1.webp';
   static const String guests2 = '${_base}guests_2.webp';
   static const String guests3 = '${_base}guests_3.webp';

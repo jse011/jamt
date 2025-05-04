@@ -4,3 +4,4 @@ export 'rich_text_from_html_lite.dart';
 export 'workshop_selector.dart';
 export 'workshop_select_card.dart';
 export 'workshop_card.dart';
+export 'zoom_image_carousel.dart';
