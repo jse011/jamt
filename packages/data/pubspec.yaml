@@ -13,11 +13,12 @@ dependencies:
   firebase_database: ^11.3.5
   firebase_crashlytics: ^4.3.5
   firebase_analytics: ^11.4.5
-  drift: ^2.26.1
-  drift_flutter: ^0.2.4
-  path_provider: ^2.1.5
+  #drift: ^2.26.1
+  #drift_web: ^2.26.1
+  #drift_flutter: ^0.2.4
+  #path_provider: ^2.1.5
   uuid: ^3.0.0
 
 dev_dependencies:
-  drift_dev: ^2.26.1
-  build_runner: ^2.4.15
+  #drift_dev: ^2.26.1
+  #build_runner: ^2.4.15

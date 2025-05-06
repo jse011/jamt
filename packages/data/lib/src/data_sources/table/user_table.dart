@@ -1,4 +1,4 @@
-import 'package:drift/drift.dart';
+/*import 'package:drift/drift.dart';
 
 @DataClassName('UserTable')
 class Users extends Table {
@@ -9,4 +9,4 @@ class Users extends Table {
   DateTimeColumn get createdAt => dateTime().nullable()();
   @override
   Set<Column<Object>> get primaryKey => {document};
-}
+}*/

@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-
+/*
 part of 'local_database.dart';
 
 // ignore_for_file: type=lint
@@ -586,3 +586,4 @@ class $AppDatabaseManager {
   $$UsersTableTableManager get users =>
       $$UsersTableTableManager(_db, _db.users);
 }
+*/

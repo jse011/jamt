@@ -51,6 +51,7 @@ class DefaultFirebaseOptions {
     authDomain: 'jamt-efcb2.firebaseapp.com',
     storageBucket: 'jamt-efcb2.firebasestorage.app',
     measurementId: 'G-6NLMQX335M',
+    databaseURL: "https://jamt-efcb2-default-rtdb.firebaseio.com",
   );
 
   static const FirebaseOptions android = FirebaseOptions(

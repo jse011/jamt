@@ -1,5 +1,5 @@
 
-import 'package:data/src/data_sources/table/table.dart';
+/*import 'package:data/src/data_sources/table/table.dart';
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -35,4 +35,4 @@ class AppDatabase extends _$AppDatabase {
   factory AppDatabase.getInstance() {
     return _instance ??= AppDatabase._internal();
   }
-}
+}*/
