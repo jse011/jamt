@@ -9,7 +9,7 @@ class BulletinScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Container(
-      color: AppColor.yellow,
+      color: AppColor.yellowAccent,
       child: Column(
         children: [
           Stack(

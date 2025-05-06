@@ -11,7 +11,7 @@ class MapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Container(
-      color: AppColor.blue2,
+      color: AppColor.orangeMain,
       child: Column(
         children: [
           Stack(
@@ -23,7 +23,7 @@ class MapScreen extends StatelessWidget {
                 right: 0,
                 child: Container(
                   width: double.infinity,
-                  color: AppColor.yellow,
+                  color: AppColor.blue,
                 ),
               ),
               Positioned.fill(
@@ -66,6 +66,7 @@ class MapScreen extends StatelessWidget {
                                 )
                               )
                           ),
+
                           Positioned(
                             left: 16,
                             bottom: 16,
@@ -125,6 +126,7 @@ class _MapItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           child: Stack(
             children: [
+
               Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
@@ -153,6 +155,7 @@ class _MapItem extends StatelessWidget {
                   ),
                 ),
               ),
+              Positioned.fill(child: _buildLinearGradient()),
               Positioned(
                 left: 16,
                 bottom: 16,
@@ -177,6 +180,43 @@ class _MapItem extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildLinearGradient() {
+    return Stack(
+      children: [
+        Positioned(
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Opacity(
+            opacity: 0.3,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(12),
+                  bottomRight: Radius.circular(12),
+                ),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: const [
+                    Color.fromRGBO(0, 0, 0, 0.0), // 0%
+                    Color.fromRGBO(0, 0, 0, 0.0), // 20%
+                    Color.fromRGBO(0, 0, 0, 0.1), // 30%
+                    Color.fromRGBO(0, 0, 0, 0.8), // 70%
+                    Colors.black, // 100%
+                  ],
+                  stops: const [0.0, 0.2, 0.3, 0.7, 1.0],
+                ),
+              ),
+            ),
+          ),
+        ),
+
+      ],
     );
   }
 }

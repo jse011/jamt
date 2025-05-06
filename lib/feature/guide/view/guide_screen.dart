@@ -16,7 +16,7 @@ class GuideScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         return Container(
-          color: AppColor.purpleDark,
+          color: AppColor.orangeMain,
           child: Column(
             children: [
               Stack(

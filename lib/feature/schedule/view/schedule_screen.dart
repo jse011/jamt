@@ -20,7 +20,7 @@ class ScheduleScreen extends StatelessWidget {
               right: 0,
               child: Container(
                 width: double.infinity,
-                color: AppColor.blueLight,
+                color: AppColor.blue2,
               ),
             ),
             Positioned.fill(

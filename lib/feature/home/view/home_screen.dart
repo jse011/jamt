@@ -36,19 +36,19 @@ class HomeScreen extends StatelessWidget {
               children: [
                 Container(
                   height: 220,
-                  color: AppColor.blue2,
+                  color: AppColor.orangeMain,
                 ),
                 Container(
                   height: 40,
-                  color: AppColor.blue,
+                  color: AppColor.orangeMain,
                 ),
                 Container(
-                  height: 50,
-                  color: AppColor.purpleDark,
+                  height: 40,
+                  color: AppColor.purpleDark.withOpacity(0.8),
                 ),
                 Expanded(
                     child: Container(
-                      color: AppColor.purpleDark2.withOpacity(0.8),
+                      color: AppColor.blue2.withOpacity(0.8),
                     )
                 )
               ],

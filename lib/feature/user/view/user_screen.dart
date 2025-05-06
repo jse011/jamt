@@ -23,7 +23,7 @@ class _UserScreenState extends State<UserScreen> {
 
       },
       child: Container(
-        color: AppColor.yellow,
+        color: AppColor.yellowAccent,
         child: Column(
           children: [
             Stack(

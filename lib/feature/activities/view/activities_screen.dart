@@ -28,7 +28,7 @@ class ActivitiesScreen extends StatelessWidget {
                       right: 0,
                       child: Container(
                         width: double.infinity,
-                        color: AppColor.purpleDark,
+                        color: AppColor.orangeDeep,
                       ),
                     ),
                     Positioned.fill(
