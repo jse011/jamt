@@ -2,12 +2,14 @@ class User {
   const User({
     required this.document,
     this.year,
-    this.name
+    this.name,
+    this.session
   });
 
   final String document;
   final String? year;
   final String? name;
+  final String? session;
 
   static const empty = User(
     document: ""

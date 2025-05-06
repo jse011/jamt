@@ -1,25 +1,28 @@
 import 'dart:async';
 
-import 'package:data/src/data_sources/local_database.dart';
 import 'package:domain/domain.dart';
-//import 'package:drift/drift.dart';
 import 'package:entities/entities.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
+import '../data_sources/data_sources.dart';
+
 
 class AuthenticationRepositoryImpl extends AuthenticationRepository {
   final _controller = StreamController<AuthStatus>();
   final DatabaseReference _dbRef = FirebaseDatabase.instance.ref();
   final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
-  final FirebaseCrashlytics _crashlytics = FirebaseCrashlytics.instance;
-  //final AppDatabase _db = AppDatabase.getInstance();
+
+  AuthenticationRepositoryImpl();
 
   @override
   Future<bool> logIn(String document, String year) async {
     try {
       print('users/$document');
+      await trySetCrashlyticsUser(document);
+
       final userSnapshot = await _dbRef.child('users/$document').get();
       if (!userSnapshot.exists) {
         return false;
@@ -28,19 +31,23 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
       print("user: $user");
       if (user['year'].toString() == year) {
 
-        await _crashlytics.setUserIdentifier(document);
         await _analytics.setUserId(id: document);
         await _analytics.setUserProperty(name: 'nombre', value: user['name'] ?? '');
-        /*await _db.into(_db.users).insertOnConflictUpdate(UsersCompanion.insert(
+
+        await HiveService.userBox.put(
+          document,
+          UserTable.fromEntity(User(
             document: document,
-            year: Value(year),
-            name: Value(user['name'].toString()),
-            session: Value(Uuid().v4())
-        ));*/
+            year: year,
+            name: user['name'].toString(),
+            session: Uuid().v4(),
+          )),
+        );
+
         _controller.add(AuthStatus.authenticated);
         return true;
       } else {
-        await _crashlytics.setUserIdentifier(document);
+
         await FirebaseCrashlytics.instance.log('Intento fallido de login: contraseña incorrecta');
         await FirebaseCrashlytics.instance.recordError(
           Exception('Contraseña incorrecta para usuario $document ${year} ${user['name']}'),
@@ -49,37 +56,42 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
         return false;
       }
     }catch (e, stack) {
-      //await FirebaseCrashlytics.instance.recordError(e, stack);
-      //throw Exception('Error inesperado');
-      _controller.add(AuthStatus.authenticated);
-      return true;
+      await FirebaseCrashlytics.instance.recordError(e, stack);
+      throw Exception('Error inesperado');
     }
   }
 
   @override
   Future<void> logOut() async {
     await _analytics.logEvent(name: 'logout');
-    await _crashlytics.setUserIdentifier('');
+    await trySetCrashlyticsUser('');
     await _analytics.setUserId(id: null);
-    //await _db.delete(_db.users).go();
+    await HiveService.userBox.clear();
     _controller.add(AuthStatus.unauthenticated);
   }
 
   @override
   Stream<AuthStatus> get status async* {
-    //final user = await (_db.select(_db.users)..limit(1)).getSingleOrNull();
-
+    final user = HiveService.userBox.values.cast<UserTable?>().firstOrNull;
+    print("status user: $user");
     await Future<void>.delayed(const Duration(seconds: 1));
-    //if (user != null) {
-      //yield AuthStatus.authenticated;
-    //} else {
+    if (user != null) {
+      yield AuthStatus.authenticated;
+    } else {
       yield AuthStatus.unauthenticated;
-    //}
+    }
     yield* _controller.stream;
   }
 
   @override
   void dispose() => _controller.close();
 
+  Future<void> trySetCrashlyticsUser(String document) async {
+    try {
+      await FirebaseCrashlytics.instance.setUserIdentifier(document);
+    } catch (e) {
+      print('Otro error al configurar Crashlytics: $e');
+    }
+  }
 
 }
