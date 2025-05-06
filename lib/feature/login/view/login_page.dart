@@ -1,4 +1,4 @@
-import 'package:authentication_repository/authentication_repository.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jamt/constants/constants.dart';
@@ -59,7 +59,9 @@ class LoginPage extends StatelessWidget {
           SafeArea(
             child: BlocProvider(
               create: (context) => LoginBloc(
-                authenticationRepository: context.read<AuthenticationRepository>(),
+                logIn: LogInUseCase(
+                    context.read<AuthenticationRepository>()
+                ),
               ),
               child: const LoginForm(),
             ),

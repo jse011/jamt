@@ -20,7 +20,7 @@ class HomeAppBar extends StatelessWidget {
       automaticallyImplyLeading: false,
       title: Row(
         children: [
-          Image.asset(AppImages.mainLogoBlue, height: 32),
+          Image.asset(AppImages.mainLogoBlue, height: 40),
           const Spacer(),
           if(destination != Destination.profile)
           /*_buildAppBarIcon(Icons.person, onTap: (){

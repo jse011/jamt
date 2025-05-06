@@ -35,15 +35,3 @@ class _LogoutButton extends StatelessWidget {
   }
 }
 
-class _UserId extends StatelessWidget {
-  const _UserId();
-
-  @override
-  Widget build(BuildContext context) {
-    final userId = context.select(
-          (NavigationBloc bloc) => bloc.state.user.id,
-    );
-
-    return Text('UserID: $userId');
-  }
-}

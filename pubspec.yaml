@@ -28,10 +28,12 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  authentication_repository:
-    path: packages/authentication_repository
-  user_repository:
-    path: packages/user_repository
+  entities:
+    path: packages/entities
+  domain:
+    path: packages/domain
+  data:
+    path: packages/data
   app_localization:
       path: packages/app_localization
   bloc: ^9.0.0
@@ -48,6 +50,9 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  firebase_core: ^3.13.0
+  firebase_analytics: ^11.4.5
+  firebase_crashlytics: ^4.3.5
 
 dev_dependencies:
   bloc_test: ^10.0.0
@@ -77,6 +82,7 @@ flutter:
   assets:
     - assets/images/login_background2.webp
     - assets/images/main_logo_white.png
+    - assets/images/main_logo_apce_5.webp
     - assets/images/main-logo-azul.png
     - assets/images/main_drawer_background.png
     - assets/images/home_activity_1.webp

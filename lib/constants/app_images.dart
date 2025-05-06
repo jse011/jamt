@@ -3,8 +3,8 @@ class AppImages {
   static const String loginBackground = '${_base}login_background2.webp';
   static const String logoWorship = '${_base}logo_worship.png';
   static const String logoMRNT = '${_base}logo_mrnt.webp';
-  static const String mainLogoWhite = '${_base}main_logo_white.png';
-  static const String mainLogoBlue = '${_base}main-logo-azul.png';
+  static const String mainLogoWhite = '${_base}main_logo_apce_5.webp';
+  static const String mainLogoBlue = '${_base}main_logo_apce_5.webp';
   static const String mainDrawerBackground = '${_base}main_drawer_background.png';
   static const String homeActivityOne   = '${_base}home_activity_1.webp';
   static const String homeActivityTwo   = '${_base}home_activity_2.webp';

@@ -1,10 +1,11 @@
 import 'package:app_localization/app_localizations.dart';
-import 'package:authentication_repository/authentication_repository.dart';
+import 'package:domain/domain.dart';
+import 'package:data/data.dart';
+import 'package:entities/entities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jamt/feature/qr/qr.dart';
 import 'package:jamt/navigation/navigation.dart';
-import 'package:user_repository/user_repository.dart';
 import 'package:jamt/constants/constants.dart';
 import 'package:jamt/feature/splash/splash.dart';
 import 'package:jamt/feature/tab_home/tab_home.dart';
@@ -18,17 +19,24 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(
-          create: (_) => AuthenticationRepository(),
+        RepositoryProvider<AuthenticationRepository>(
+          create: (_) => AuthenticationRepositoryImpl(),
           dispose: (repository) => repository.dispose(),
         ),
-        RepositoryProvider(create: (_) => UserRepository()),
+        RepositoryProvider<UserRepository>(create: (_) => UserRepositoryImpl()),
       ],
       child: BlocProvider(
         lazy: false,
         create: (context) => NavigationBloc(
-          authenticationRepository: context.read<AuthenticationRepository>(),
-          userRepository: context.read<UserRepository>(),
+          logOutUseCase: LogOutUseCase(
+              context.read<AuthenticationRepository>()
+          ),
+          getAuthStatus: GetAuthStatusUseCase(
+              context.read<AuthenticationRepository>()
+          ),
+          getUserUseCase: GetUserUseCase(
+            context.read<UserRepository>(),
+          ),
         )..add(AuthenticationSubscriptionRequested()),
         child: const AppView(),
       ),
@@ -60,7 +68,7 @@ class _AppViewState extends State<AppView> {
           listener: (context, state) {
             var removeStack = !state.initial;
             switch (state.status) {
-              case AuthenticationStatus.authenticated:
+              case AuthStatus.authenticated:
                 switch(state.destination){
                   case Destination.tabHome:
                     _navigator.pushAndRemoveUntil<void>(
@@ -69,15 +77,13 @@ class _AppViewState extends State<AppView> {
                     );
                     break;
                   case Destination.profile:
-                    _navigator.pushAndRemoveUntil<void>(
-                      UserPage.route(),
-                          (route) => removeStack,
+                    _navigator.push<void>(
+                      UserPage.route()
                     );
                     break;
                   case Destination.qr:
-                    _navigator.pushAndRemoveUntil<void>(
-                      QRPage.route(),
-                          (route) => removeStack,
+                    _navigator.push<void>(
+                      QRPage.route()
                     );
                     break;
                   case Destination.sessions:
@@ -99,15 +105,15 @@ class _AppViewState extends State<AppView> {
                   // Acción para mostrar el drawer o modal
                     break;
                   case Destination.logout:
-                  // Acción para mostrar el drawer o modal
+                    context.read<NavigationBloc>().add(AuthenticationLogoutPressed());
                     break;
                 }
-              case AuthenticationStatus.unauthenticated:
+              case AuthStatus.unauthenticated:
                 _navigator.pushAndRemoveUntil<void>(
                   LoginPage.route(),
                       (route) => false,
                 );
-              case AuthenticationStatus.unknown:
+              case AuthStatus.unknown:
                 break;
             }
           },

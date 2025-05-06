@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
+import 'package:domain/domain.dart';
+import 'package:entities/entities.dart';
 import 'package:equatable/equatable.dart';
-import 'package:user_repository/user_repository.dart';
 import 'package:jamt/navigation/navigation.dart';
 
 part 'navigation_event.dart';
@@ -12,37 +12,40 @@ part 'navigation_state.dart';
 class NavigationBloc
     extends Bloc<NavigationEvent, NavigationState> {
   NavigationBloc({
-    required AuthenticationRepository authenticationRepository,
-    required UserRepository userRepository,
-  })  : _authenticationRepository = authenticationRepository,
-        _userRepository = userRepository,
+    required GetAuthStatusUseCase getAuthStatus,
+    required LogOutUseCase logOutUseCase,
+    required GetUserUseCase getUserUseCase
+  })  : _getAuthStatus = getAuthStatus,
+        _logOutUseCase = logOutUseCase,
+        _getUserUseCase = getUserUseCase,
         super(const NavigationState.unknown()) {
     on<AuthenticationSubscriptionRequested>(_onSubscriptionRequested);
     on<AuthenticationLogoutPressed>(_onLogoutPressed);
     on<NavigationPressed>(_onNavigationPressed);
   }
 
-  final AuthenticationRepository _authenticationRepository;
-  final UserRepository _userRepository;
+  final GetAuthStatusUseCase _getAuthStatus;
+  final LogOutUseCase _logOutUseCase;
+  final GetUserUseCase _getUserUseCase;
 
   Future<void> _onSubscriptionRequested(
       AuthenticationSubscriptionRequested event,
       Emitter<NavigationState> emit,
       ) {
     return emit.onEach(
-      _authenticationRepository.status,
+      _getAuthStatus.call(),
       onData: (status) async {
         switch (status) {
-          case AuthenticationStatus.unauthenticated:
+          case AuthStatus.unauthenticated:
             return emit(const NavigationState.unauthenticated());
-          case AuthenticationStatus.authenticated:
+          case AuthStatus.authenticated:
             final user = await _tryGetUser();
             return emit(
               user != null
                   ? NavigationState.authenticated(user)
                   : const NavigationState.unauthenticated(),
             );
-          case AuthenticationStatus.unknown:
+          case AuthStatus.unknown:
             return emit(const NavigationState.unknown());
         }
       },
@@ -67,12 +70,12 @@ class NavigationBloc
       AuthenticationLogoutPressed event,
       Emitter<NavigationState> emit,
       ) {
-    _authenticationRepository.logOut();
+    _logOutUseCase.call();
   }
 
   Future<User?> _tryGetUser() async {
     try {
-      final user = await _userRepository.getUser();
+      final user = await _getUserUseCase.call();
       return user;
     } catch (_) {
       return null;

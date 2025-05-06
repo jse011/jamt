@@ -17,7 +17,13 @@ class LoginForm extends StatelessWidget {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              const SnackBar(content: Text('Authentication Failure')),
+              const SnackBar(content: Text('Documento incorrecto o no registrado para este evento')),
+            );
+        }else if (state.status.isCanceled) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              const SnackBar(content: Text('Error inesperado')),
             );
         }
       },

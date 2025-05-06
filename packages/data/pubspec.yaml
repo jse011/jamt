@@ -1,0 +1,23 @@
+name: data
+description: Dart package which manages the data.
+publish_to: none
+
+environment:
+  sdk: ^3.7.2
+
+dependencies:
+  entities:
+    path: ../entities
+  domain:
+    path: ../domain
+  firebase_database: ^11.3.5
+  firebase_crashlytics: ^4.3.5
+  firebase_analytics: ^11.4.5
+  drift: ^2.26.1
+  drift_flutter: ^0.2.4
+  path_provider: ^2.1.5
+  uuid: ^3.0.0
+
+dev_dependencies:
+  drift_dev: ^2.26.1
+  build_runner: ^2.4.15

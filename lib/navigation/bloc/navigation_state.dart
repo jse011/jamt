@@ -3,7 +3,7 @@ part of 'navigation_bloc.dart';
 class NavigationState extends Equatable {
    const NavigationState._({
     this.initial = false,
-    this.status = AuthenticationStatus.unknown,
+    this.status = AuthStatus.unknown,
     this.user = User.empty,
     this.destination = Destination.tabHome,
     this.forceUpdate = 0,
@@ -18,12 +18,12 @@ class NavigationState extends Equatable {
   const NavigationState.unknown() : this._();
 
   const NavigationState.authenticated(User user)
-      : this._(status: AuthenticationStatus.authenticated, user: user, destination: Destination.tabHome, initial: true);
+      : this._(status: AuthStatus.authenticated, user: user, destination: Destination.tabHome, initial: true);
 
   const NavigationState.unauthenticated()
-      : this._(status: AuthenticationStatus.unauthenticated);
+      : this._(status: AuthStatus.unauthenticated);
 
-  final AuthenticationStatus status;
+  final AuthStatus status;
   final User user;
   final List<Destination> destinations;
   final Destination destination;
@@ -31,7 +31,7 @@ class NavigationState extends Equatable {
   final int forceUpdate;
 
   NavigationState copyWith({
-    AuthenticationStatus? status,
+    AuthStatus? status,
     User? user,
     List<Destination>? destinations,
     Destination? destination,

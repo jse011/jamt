@@ -11,8 +11,24 @@ import 'package:jamt/widget/widget.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
+
   @override
   Widget build(BuildContext context) {
+    var arrayList = [
+      AppImages.homeActivityOne,
+      AppImages.homeActivityTwo,
+      AppImages.homeActivityThree,
+      AppImages.homeActivityFour,
+      AppImages.homeActivityFive,
+      AppImages.homeActivitySix,
+      AppImages.homeActivitySeven,
+      AppImages.homeActivityEight,
+      AppImages.homeActivityNine,
+      AppImages.homeActivityTen,
+      AppImages.homeActivityEleven,
+      AppImages.homeActivityTwelve
+    ];
+    arrayList.shuffle();
     return Stack(
       children: [
         Positioned.fill(
@@ -51,20 +67,7 @@ class HomeScreen extends StatelessWidget {
           children: [
             _buildOneGrid(
               "Actividades",
-              [
-                AppImages.homeActivityOne,
-                AppImages.homeActivityTwo,
-                AppImages.homeActivityThree,
-                AppImages.homeActivityFour,
-                AppImages.homeActivityFive,
-                AppImages.homeActivitySix,
-                AppImages.homeActivitySeven,
-                AppImages.homeActivityEight,
-                AppImages.homeActivityNine,
-                AppImages.homeActivityTen,
-                AppImages.homeActivityEleven,
-                AppImages.homeActivityTwelve
-              ],
+              arrayList,
               "Misión en Acción, Semiplenarias, Adoración, Maranata Class",
               onTap: () {
                 context.read<TabHomeBloc>().add(DestinationSelected(TabDestination.activities));
