@@ -9,25 +9,67 @@ final class ActivitiesState extends Equatable{
     this.selectCardActivities = const CardActivity(),
     this.cardActivities = const [
       CardActivity(
+        title: "Información general",
+        details: [
+          CardDetailActivity(
+            body: "Conoce al presidente de la APCE y su labor en la misión.",
+            image: AppImages.activityImage1,
+          ),
+          CardDetailActivity(
+            body: "Descubre quién es el departamental de jóvenes de la APCE y su rol en el liderazgo juvenil.",
+            image: AppImages.activityImage1,
+          ),
+          CardDetailActivity(
+            body: "Conoce a la coordinadora general y su responsabilidad en la organización del evento.",
+            image: AppImages.activityImage1,
+          ),
+        ],
+      ),
+      CardActivity(
         title: "Mensajes Inspiracionales",
-        body: "Temas sobre adoración auténtica, liderazgo joven y misión.",
-        image: AppImages.activityImage1
+          details: [
+            CardDetailActivity(
+                body: "Temas sobre adoración auténtica, liderazgo joven y misión.",
+                image: AppImages.activityImage1
+            )
+          ]
+
       ),
       CardActivity(
         title: "Semiplenarias",
-        body: "Espacios de capacitación diseñados para desarrollar habilidades en liderazgo, evangelismo y discipulado. Cada participante podrá <a href='workshop'>asistir a dos semiplenarias</a> durante el periodo asignado a esta actividad. <a href='workshop'>Haz clic aquí para elegir tus dos semiplenarias de capacitación.</a>"
+          details: [
+            CardDetailActivity(
+                body: "Espacios de capacitación diseñados para desarrollar habilidades en liderazgo, evangelismo y discipulado. Cada participante podrá <a href='workshop'>asistir a dos semiplenarias</a> durante el periodo asignado a esta actividad. <a href='workshop'>Haz clic aquí para elegir tus dos semiplenarias de capacitación.</a>"
+            )
+          ]
+
       ),
       CardActivity(
         title: "Misión en Acción",
-        body: "Lanzamiento de Misión Caleb con proyectos específicos de impacto social."
+          details: [
+            CardDetailActivity(
+                body: "Lanzamiento de Misión Caleb con proyectos específicos de impacto social."
+            )
+          ]
+
       ),
       CardActivity(
         title: "Adoración y Testimonio",
-        body: "Experiencias de jóvenes comprometidos con la misión y la adoración. <a href='workshop'>Haz clic aquí para ver la información de los invitados.</a>"
+          details: [
+            CardDetailActivity(
+                body: "Experiencias de jóvenes comprometidos con la misión y la adoración. <a href='workshop'>Haz clic aquí para ver la información de los invitados.</a>"
+            )
+          ]
+
       ),
       CardActivity(
         title: "Maranata Class",
-        body: "Capacitación en el estudio bíblico y dinamismo de la Escuela Sabática Joven."
+          details: [
+            CardDetailActivity(
+                body: "Capacitación en el estudio bíblico y dinamismo de la Escuela Sabática Joven."
+            )
+          ]
+
       ),
     ]
   });

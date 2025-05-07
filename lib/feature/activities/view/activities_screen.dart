@@ -112,19 +112,25 @@ class ActivitiesScreen extends StatelessWidget {
                                         padding: const EdgeInsets.only(top: 6, left: 4, bottom: 24),
                                         child: Column(
                                           children: [
-                                            RichTextFromHtmlLite(card.body),
-                                            if(card.image.isNotEmpty)
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                  top: 8,
-                                                  bottom: 8
-                                                ),
-                                                height: 250,
-                                                child: Image.asset(
-                                                  card.image,
-                                                  fit: BoxFit.contain,
-                                                ),
-                                              )
+                                            ...card.details.map((detail){
+                                                return Column(
+                                                  children: [
+                                                    RichTextFromHtmlLite(detail.body),
+                                                    if(detail.image.isNotEmpty)
+                                                      Container(
+                                                        margin: EdgeInsets.only(
+                                                            top: 8,
+                                                            bottom: 8
+                                                        ),
+                                                        height: card.details.length == 1? 250: 150,
+                                                        child: Image.asset(
+                                                          detail.image,
+                                                          fit: BoxFit.contain,
+                                                        ),
+                                                      )
+                                                  ],
+                                                );
+                                            }),
                                           ],
                                         ),
                                       )
