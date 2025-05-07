@@ -3,9 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jamt/constants/constants.dart';
+import 'package:jamt/feature/check_error/check_error.dart';
 import 'package:jamt/feature/tab_home/bloc/tab_home_bloc.dart';
 import 'package:jamt/feature/tab_home/models/models.dart';
-import 'package:jamt/navigation/navigation.dart';
 import 'package:jamt/widget/widget.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -111,7 +111,8 @@ class HomeScreen extends StatelessWidget {
                 AppImages.homeQR,
                 'Usa tu cámara para registrar tu ingreso y salida en cada semiplenaria.',
                 onTap: () {
-                  context.read<NavigationBloc>().add(NavigationPressed(Destination.qr));
+                  //context.read<NavigationBloc>().add(NavigationPressed(Destination.qr));
+                  CheckErrorDialog.show(context);
                 },
               ),
               _buildGridCard(

@@ -137,6 +137,8 @@ flutter:
     - assets/images/maps/map_3.webp
     - assets/lottie/check.json
     - assets/lottie/check_2.json
+    - assets/lottie/info.json
+    - assets/lottie/lock.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
