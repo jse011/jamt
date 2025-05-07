@@ -12,7 +12,7 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
   String scanResult = '';
-  bool qrViewInitialized = false;
+
 
   @override
   void reassemble() {
@@ -29,9 +29,7 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
 
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
-    setState(() {
-      qrViewInitialized = true;
-    });
+
     controller.scannedDataStream.listen((scanData) {
       if (scanResult.isEmpty) {
         setState(() {
@@ -74,33 +72,23 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
                 ),
               ),
             ),
-            AnimatedOpacity(
-              opacity: qrViewInitialized ? 1 : 0,
-              duration: Duration(milliseconds: 1500),
-              child: Positioned(
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(12),
-                      bottomRight: Radius.circular(12),
-                    ),
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: const [
-                        Color.fromRGBO(224, 86, 31, 1), // 70%
-                        Color.fromRGBO(0, 0, 0, 0.3), // 70%
-                        Color.fromRGBO(0, 0, 0, 0), // 30%
-                        Color.fromRGBO(0, 0, 0, 0.5), // 70%
-                        Color.fromRGBO(224, 86, 31, 0.8), // 70%
-                      ],
-                      stops: const [0.0, 0.2, 0.3, 0.7, 1.0],
-                    ),
-                  ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(12),
+                  bottomRight: Radius.circular(12),
+                ),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: const [
+                    Color.fromRGBO(224, 86, 31, 1), // 70%
+                    Color.fromRGBO(0, 0, 0, 0.3), // 70%
+                    Color.fromRGBO(0, 0, 0, 0), // 30%
+                    Color.fromRGBO(0, 0, 0, 0.5), // 70%
+                    Color.fromRGBO(224, 86, 31, 0.8), // 70%
+                  ],
+                  stops: const [0.0, 0.2, 0.3, 0.7, 1.0],
                 ),
               ),
             ),
