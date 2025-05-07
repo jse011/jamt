@@ -65,7 +65,7 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
                   onQRViewCreated: _onQRViewCreated,
                   overlay: QrScannerOverlayShape(
                     overlayColor: AppColor.colorPrimary.withOpacity(0.3),
-                    borderColor: AppColor.colorMenuPrimary,
+                    borderColor: AppColor.yellow,
                     borderRadius: 10,
                     borderLength: 30,
                     borderWidth: 10,
@@ -76,7 +76,7 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
             ),
             AnimatedOpacity(
               opacity: qrViewInitialized ? 1 : 0,
-              duration: Duration(milliseconds: 2000),
+              duration: Duration(milliseconds: 1500),
               child: Positioned(
                 top: 0,
                 bottom: 0,
@@ -125,7 +125,7 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
                     Text(
                       "Escanea tu asistencia",
                       style: const TextStyle(
-                        fontSize: 24,
+                        fontSize: 28,
                         color: Colors.white,
                         fontFamily: AppFont.fontTwo,
                       ),
@@ -137,14 +137,14 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
             Center(
               child: Padding(
                   padding: EdgeInsets.only(
-                      top: 300,
+                      top: 350,
                     left: 32,
                     right: 32
                   ),
                 child: const Text(
                 "Escanea el código QR al ingresar o salir de la semiplenaria para registrar tu asistencia.",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey),
+                style: TextStyle(color: Colors.white70),
               ),
               )
             )
