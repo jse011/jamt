@@ -43,19 +43,6 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
 
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        elevation: 0,
-        title: Text(
-          "Scan QR Code",
-          style: const TextStyle(
-              fontSize: 24,
-              color: Colors.white,
-              fontFamily: AppFont.fontTwo
-          ),
-        ),
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
       body: Container(
         decoration: BoxDecoration(
           color: Colors.black.withOpacity(0.4),
@@ -63,22 +50,10 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
         ),
         child: Stack(
           children: [
-            Positioned.fill(
-              child:  Column(
-                children: [
-                  const SizedBox(height: 48),
-                  const Text(
-                    "Place QR inside the frame to scan",
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                  const SizedBox(height: 24),
-                ],
-              ),
-            ),
             Positioned(
               left: 0,
               right: 0,
-              bottom: 56,
+              bottom: 0,
               top: 0,
               child: SizedBox(
                 child: QRView(
@@ -94,6 +69,78 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
                 ),
               ),
             ),
+            Positioned(
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(12),
+                    bottomRight: Radius.circular(12),
+                  ),
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: const [
+                      Color.fromRGBO(0, 0, 0, 0.0), // 0%
+                      Color.fromRGBO(0, 0, 0, 0.0), // 20%
+                      Color.fromRGBO(0, 0, 0, 0.1), // 30%
+                      Color.fromRGBO(0, 0, 0, 0.5), // 70%
+                      Color.fromRGBO(0, 0, 0, 0.7), // 70%
+                    ],
+                    stops: const [0.0, 0.2, 0.3, 0.7, 1.0],
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                  top: 48,
+                  bottom: 20
+                ),
+                color: Colors.black.withOpacity(0.3),
+                child: Row(
+                  children: [
+                    InkWell(
+                      onTap: () => Navigator.pop(context),
+                      child: const Icon(Icons.arrow_back, color: Colors.white),
+                    ),
+                    const SizedBox(width: 24),
+                    Text(
+                      "Escanea tu asistencia",
+                      style: const TextStyle(
+                        fontSize: 24,
+                        color: Colors.white,
+                        fontFamily: AppFont.fontTwo,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Center(
+              child: Padding(
+                  padding: EdgeInsets.only(
+                      top: 300,
+                    left: 32,
+                    right: 32
+                  ),
+                child: const Text(
+                "Escanea el código QR al ingresar o salir de la semiplenaria para registrar tu asistencia.",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.grey),
+              ),
+              )
+            )
+
           ],
         ),
       ),

@@ -107,9 +107,9 @@ class HomeScreen extends StatelessWidget {
             _buildHorizontalGrid(
               context,
               _buildGridCard(
-                '¡No olvides escanear! ',
+                '¡Escanea tu asistencia!',
                 AppImages.homeQR,
-                'Usa tu cámara para registrar tu asistencia al terminar cada exposición.',
+                'Usa tu cámara para registrar tu ingreso y salida en cada semiplenaria.',
                 onTap: () {
                   context.read<NavigationBloc>().add(NavigationPressed(Destination.qr));
                 },
