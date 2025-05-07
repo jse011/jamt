@@ -45,7 +45,6 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
       backgroundColor: Colors.black,
       body: Container(
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.4),
           borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
         ),
         child: Stack(
@@ -60,7 +59,8 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
                   key: qrKey,
                   onQRViewCreated: _onQRViewCreated,
                   overlay: QrScannerOverlayShape(
-                    borderColor: AppColor.blueLight,
+                    overlayColor: AppColor.colorPrimary.withOpacity(0.3),
+                    borderColor: AppColor.colorMenuPrimary,
                     borderRadius: 10,
                     borderLength: 30,
                     borderWidth: 10,
@@ -84,11 +84,11 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: const [
-                      Color.fromRGBO(0, 0, 0, 0.0), // 0%
-                      Color.fromRGBO(0, 0, 0, 0.0), // 20%
-                      Color.fromRGBO(0, 0, 0, 0.1), // 30%
+                      Color.fromRGBO(224, 86, 31, 1), // 70%
+                      Color.fromRGBO(0, 0, 0, 0.3), // 70%
+                      Color.fromRGBO(0, 0, 0, 0), // 30%
                       Color.fromRGBO(0, 0, 0, 0.5), // 70%
-                      Color.fromRGBO(0, 0, 0, 0.7), // 70%
+                      Color.fromRGBO(224, 86, 31, 0.8), // 70%
                     ],
                     stops: const [0.0, 0.2, 0.3, 0.7, 1.0],
                   ),
@@ -106,7 +106,6 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
                   top: 48,
                   bottom: 20
                 ),
-                color: Colors.black.withOpacity(0.3),
                 child: Row(
                   children: [
                     InkWell(
