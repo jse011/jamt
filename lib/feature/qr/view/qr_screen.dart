@@ -79,9 +79,11 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
               bottom: 0,
               left: 0,
               right: 0,
-              child: AnimatedOpacity(
-                  opacity: qrViewInitialized ? 1 : 0,
-                  duration: Duration(milliseconds: 1500),
+              child: AnimatedSwitcher(
+                duration: Duration(milliseconds: 1500),
+                child: qrViewInitialized
+                    ? Container(
+                  key: ValueKey('shown'),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
@@ -102,6 +104,8 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
                       ),
                     ),
                   ),
+                )
+                    : SizedBox.shrink(key: ValueKey('hidden')),
               ),
             ),
             Positioned(
