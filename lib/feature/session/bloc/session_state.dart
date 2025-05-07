@@ -37,6 +37,10 @@ class SessionState extends Equatable {
       SessionSelected(
           id: 4,
           title: "CARPA MOVÍL"
+      ),
+      SessionSelected(
+          id: 5,
+          title: "PABELLON D"
       )
     ],
     this.tabs = const [
@@ -67,6 +71,11 @@ class SessionState extends Equatable {
               title: 'CARPA MOVÍL',
               topic2: 'Sábado 8:40 HS',
               color: Colors.orange
+          ),
+          SessionCard(
+              title: 'PABELLON D',
+              topic2: 'Sábado 8:40 HS',
+              color: Colors.brown
           )
         ]
       ),
@@ -97,6 +106,11 @@ class SessionState extends Equatable {
                 title: 'CARPA MOVÍL',
                 topic2: 'Sábado 15:30 HS',
                 color: Colors.blue
+            ),
+            SessionCard(
+                title: 'PABELLON D',
+                topic2: 'Sábado 15:30 HS',
+                color: Colors.brown
             )
           ]
       )

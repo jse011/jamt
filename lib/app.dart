@@ -4,6 +4,7 @@ import 'package:data/data.dart';
 import 'package:entities/entities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jamt/feature/check_in/check_in.dart';
 import 'package:jamt/feature/qr/qr.dart';
 import 'package:jamt/navigation/navigation.dart';
 import 'package:jamt/constants/constants.dart';
@@ -83,7 +84,8 @@ class _AppViewState extends State<AppView> {
                     break;
                   case Destination.qr:
                     _navigator.push<void>(
-                      QRPage.route()
+                      //QRPage.route()
+                        CheckInPage.route()
                     );
                     break;
                   case Destination.sessions:

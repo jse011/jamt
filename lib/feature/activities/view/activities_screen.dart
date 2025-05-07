@@ -122,7 +122,7 @@ class ActivitiesScreen extends StatelessWidget {
                                                             top: 8,
                                                             bottom: 8
                                                         ),
-                                                        height: card.details.length == 1? 250: 150,
+                                                        height: card.details.length == 1? 250: 200,
                                                         child: Image.asset(
                                                           detail.image,
                                                           fit: BoxFit.contain,

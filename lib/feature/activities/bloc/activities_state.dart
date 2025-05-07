@@ -17,7 +17,7 @@ final class ActivitiesState extends Equatable{
           ),
           CardDetailActivity(
             body: "Descubre quién es el departamental de jóvenes de la APCE y su rol en el liderazgo juvenil.",
-            image: AppImages.activityImage1,
+            image: AppImages.activityImage2,
           ),
           CardDetailActivity(
             body: "Conoce a la coordinadora general y su responsabilidad en la organización del evento.",
