@@ -7,6 +7,7 @@ import 'package:jamt/constants/app_color.dart';
 import 'package:jamt/feature/activities/view/activities_tab.dart';
 import 'package:jamt/feature/bulletin/bulletin.dart';
 import 'package:jamt/feature/qr/qr.dart';
+import 'package:jamt/feature/semi_plenary/semi_plenary.dart';
 import 'package:jamt/feature/tab_home/tab_home.dart';
 import 'package:jamt/feature/home/home.dart';
 import 'package:jamt/feature/guide/guide.dart';
@@ -15,7 +16,6 @@ import 'package:jamt/feature/map/map.dart';
 import 'package:jamt/widget/widget.dart';
 import 'package:jamt/feature/event/event.dart';
 import 'package:jamt/feature/guests/guests.dart';
-import 'package:jamt/feature/session/session.dart';
 
 class TabHomeScreen extends StatefulWidget {
   const TabHomeScreen({super.key});
@@ -49,7 +49,16 @@ class _HomeState extends State<TabHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<TabHomeBloc, TabHomeState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+
+        if(state is DestinationSelected){
+          if(state.destination == TabDestination.sessions){
+            print("state");
+            context.read<SemiPlenaryBloc>().add(LoadSemiPlenary());
+          }
+
+        }
+      },
       child: PopScope(
         canPop: false,
         onPopInvokedWithResult: (didPop, result) async {
@@ -209,7 +218,6 @@ class _HomeIndexStack extends StatelessWidget {
   }
 
   Widget _getScreenForDestination(TabDestination destination) {
-
     switch (destination) {
       case TabDestination.guide:
         return const GuideTab();
@@ -226,7 +234,7 @@ class _HomeIndexStack extends StatelessWidget {
       case TabDestination.guests:
         return GuestsTab();
       case TabDestination.sessions:
-        return SessionTabs();
+        return SemiPlenaryTabs();
       case TabDestination.event:
         return EventScreen();
       case TabDestination.bulletin:

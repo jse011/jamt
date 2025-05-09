@@ -69,8 +69,8 @@ class NavigationBloc
   void _onLogoutPressed(
       AuthenticationLogoutPressed event,
       Emitter<NavigationState> emit,
-      ) {
-    _logOutUseCase.call();
+      ) async {
+    await _logOutUseCase.call();
   }
 
   Future<User?> _tryGetUser() async {

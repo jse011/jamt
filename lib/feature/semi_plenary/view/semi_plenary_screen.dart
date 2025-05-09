@@ -4,15 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jamt/constants/constants.dart';
 import 'package:jamt/widget/widget.dart';
-import 'package:jamt/feature/session/session.dart';
+import 'package:jamt/feature/semi_plenary/semi_plenary.dart';
 
 class SessionScreen extends StatelessWidget {
   const SessionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SessionBloc, SessionState>(
-        listener: (context, state) {},
+    return BlocConsumer<SemiPlenaryBloc, SemiPlenaryState>(
+        listener: (context, state) {
+
+        },
         builder: (context, state) {
               return Container(
                 color: AppColor.purpleDark,
@@ -58,78 +60,120 @@ class SessionScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 8),
                                 const Text(
-                                  'Elija dos Semiplenarias para asistir:',
+                                  'Seleccione las semiplenarias a las que desea asistir:',
                                   style: TextStyle(
                                       fontSize: 14,
                                       color: AppColor.textGrey
                                   )
                                 ),
-                                const SizedBox(height: 32),
-                                if(state.saveOneSession.id != 0)
-                                WorkshopSelectCard(
-                                  title: "Semiplenaria 1",
-                                  value: state.saveOneSession.title,
-                                  register: state.register,
-                                  onClosePressed: (){
-                                    context.read<SessionBloc>().add(OneSessionClose(DateTime.now().millisecondsSinceEpoch));
-                                  },
-                                ),
-                                if(state.saveOneSession.id == 0)
-                                WorkshopSelector(title: 'ELIGE TU SEMIPLENARIA 1',
-                                    selects: state.sessions.map((session){ return session.title;}).toList(),
-                                    onChanged: (index){
-                                      context.read<SessionBloc>().add(OneSessionSelected(index));
-                                    },
-                                  select: state.oneSelected,
-                                  onPressed: (){
-                                    context.read<SessionBloc>().add(OneSessionSave(DateTime.now().millisecondsSinceEpoch));
-                                  },
-                                ),
-                                const SizedBox(height: 32),
-                                if(state.saveTwoSession.id != 0)
-                                  WorkshopSelectCard(
-                                    title: "Semiplenaria 2",
-                                    value: state.saveTwoSession.title,
-                                    register: state.register,
-                                    onClosePressed: (){
-                                      context.read<SessionBloc>().add(TwoSessionClose(DateTime.now().millisecondsSinceEpoch));
-                                    },
+                                if(state.progress)
+                                  Center(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Padding(padding: EdgeInsets.all(16)),
+                                      const CircularProgressIndicator(
+                                        color: AppColor.yellowDark,
+                                      ),
+                                      const Padding(padding: EdgeInsets.all(8)),
+                                      Text(
+                                        "Cargando tus datos...",
+                                        style: TextStyle(
+                                            color: AppColor.textGrey
+                                        ),
+                                      ),
+                                      const SizedBox(height: 32),
+                                    ],
                                   ),
-                                if(state.saveTwoSession.id == 0)
-                                WorkshopSelector(title: 'ELIGE TU SEMIPLENARIA 2',
-                                  selects: state.sessions.map((session){ return session.title;}).toList(),
-                                  onChanged: (index){
-                                    context.read<SessionBloc>().add(TwoSessionSelected(index));
-                                  },
-                                  select: state.twoSelected,
-                                  onPressed: (){
-                                    context.read<SessionBloc>().add(TwoSessionSave(DateTime.now().millisecondsSinceEpoch));
-                                  },
                                 ),
-                                const SizedBox(height: 24),
-                                if(!state.register)
-                                ElevatedButton.icon(
-                                  onPressed: () {
-                                    context.read<SessionBloc>().add(SessionRegister(DateTime.now().millisecondsSinceEpoch));
-                                  },
-                                  icon: const Icon(Icons.send, color: Colors.white,),
-                                  label: const Text('REGISTRAR',
+                                if( state.offline && !state.progress && state.groupedSessions.isEmpty)
+                                Center(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const SizedBox(height: 24),
+                                      const Text('No se encontraron datos',
                                       style: TextStyle(
-                                          fontSize: 18,
-                                          fontFamily: AppFont.fontTwo,
-                                          color: Colors.white
-                                      )
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColor.blueLight, // Color sólido (puedes cambiarlo)
-                                    minimumSize: const Size(double.infinity, 50),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8), // SIN bordes redondeados
-                                    ),
+                                        color: AppColor.textGrey
+                                      )),
+                                      const SizedBox(height: 12),
+                                      ElevatedButton.icon(
+                                        onPressed: () {
+                                          context.read<SemiPlenaryBloc>().add(LoadSemiPlenary());
+                                        },
+                                        icon: const Icon(Icons.refresh),
+                                        label: const Text('Refrescar'),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                if(!state.register)
-                                const SizedBox(height: 24),
+                                if(!state.progress)
+                                Column(
+                                  children: [
+                                    const SizedBox(height: 32),
+                                    ...state.groupedSessions.map((group){
+                                      return Column(
+                                        children: [
+                                          if(!group.register)
+                                            WorkshopSelector(
+                                              title: 'ELIGE TU ${group.group.toUpperCase()}',
+                                              selects: group.sessions.map((session){return session.title;}).toList(),
+                                              onPressed: (){
+                                                context.read<SemiPlenaryBloc>().add(SessionSave(
+                                                    groupSelected: group
+                                                ));
+                                              },
+                                              select: group.selected!=null?group.sessions.indexOf(group.selected!):0,
+                                              onChanged: (index){
+                                                context.read<SemiPlenaryBloc>().add(SessionSelected(
+                                                    selected: group.sessions[index],
+                                                    groupSelected: group
+                                                ));
+                                              },
+                                            ),
+                                          if(group.register)
+                                            WorkshopSelectCard(
+                                              title: group.group,
+                                              value: group.selected?.title??"",
+                                              register: state.register,
+                                              onClosePressed: (){
+                                                print("onClosePressed");
+                                                context.read<SemiPlenaryBloc>().add(SessionClose(
+                                                    groupSelected: group
+                                                ));
+                                              },
+                                            ),
+                                          const SizedBox(height: 32),
+                                        ],
+                                      );
+                                    }),
+                                    if(!state.register && state.groupedSessions.isNotEmpty)
+                                      ElevatedButton.icon(
+                                        onPressed: () {
+                                          context.read<SemiPlenaryBloc>().add(SessionRegister(DateTime.now().millisecondsSinceEpoch));
+                                        },
+                                        icon: const Icon(Icons.send, color: Colors.white,),
+                                        label: const Text('REGISTRAR',
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontFamily: AppFont.fontTwo,
+                                                color: Colors.white
+                                            )
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: AppColor.blueLight, // Color sólido (puedes cambiarlo)
+                                          minimumSize: const Size(double.infinity, 50),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(8), // SIN bordes redondeados
+                                          ),
+                                        ),
+                                      ),
+                                    if(!state.register)
+                                      const SizedBox(height: 24),
+                                  ],
+                                )
+
                               ],
                             )
                         )
@@ -151,6 +195,7 @@ class SessionScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 16),
+                            if(state.tabs.isNotEmpty && !state.progress)
                             Container(
                               margin: const EdgeInsets.symmetric(horizontal: 16),
                               decoration: BoxDecoration(
@@ -163,7 +208,8 @@ class SessionScreen extends StatelessWidget {
                                   return Expanded(
                                     child: GestureDetector(
                                       onTap: () {
-                                        context.read<SessionBloc>().add(TabSelected(index));
+                                        context.read<SemiPlenaryBloc>().add(TabSelected(index));
+                                        print("onTap");
                                       },
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(vertical: 12),
@@ -199,6 +245,28 @@ class SessionScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 16),
+                            if(state.progress)
+                              Center(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Padding(padding: EdgeInsets.all(16)),
+                                    const CircularProgressIndicator(
+                                      color: AppColor.yellowDark,
+                                    ),
+                                    const Padding(padding: EdgeInsets.all(8)),
+                                    Text(
+                                      "Cargando...",
+                                      style: TextStyle(
+                                          color: AppColor.textGrey
+                                      ),
+                                    ),
+                                    const SizedBox(height: 32),
+                                  ],
+                                ),
+                              ),
+                            if(state.tabs.isNotEmpty && !state.progress)
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 24),
                               child: Column(
@@ -217,12 +285,28 @@ class SessionScreen extends StatelessWidget {
                                       name: session.title,
                                       topic: session.topic,
                                       topic2: session.topic2,
+                                      capacity: session.capacity,
                                       description: session.description,
                                     );
                                   })
                                 ],
                               ),
                             ),
+                            if(state.tabs.isEmpty && !state.progress)
+                             Column(
+                               children: [
+                                 Center(
+                                   child: Text(
+                                     "Lista vacía",
+                                     style: TextStyle(
+                                       color: AppColor.textGrey,
+
+                                     ),
+                                   ),
+                                 ),
+                                 const SizedBox(height: 24),
+                               ],
+                             )
                           ],
                         )
                     ),

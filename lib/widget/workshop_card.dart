@@ -5,6 +5,7 @@ class WorkshopCard extends StatelessWidget {
   final String name;
   final String topic;
   final String topic2;
+  final String capacity;
   final String description;
 
   const WorkshopCard({
@@ -13,6 +14,7 @@ class WorkshopCard extends StatelessWidget {
     required this.name,
     required this.topic,
     required this.topic2,
+    required this.capacity,
     required this.description,
   });
 
@@ -62,6 +64,19 @@ class WorkshopCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       'Horario: $topic2',
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  const Icon(Icons.add_business, size: 16, color: Colors.black),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(
+                      'Aforo: $capacity',
                       style: const TextStyle(fontSize: 14),
                     ),
                   ),

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:domain/domain.dart';
 import 'package:entities/entities.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:hive/hive.dart';
@@ -19,11 +20,13 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
 
   @override
   Future<bool> logIn(String document, String year) async {
+
+
     try {
       print('users/$document');
       await trySetCrashlyticsUser(document);
 
-      final userSnapshot = await _dbRef.child('users/$document').get();
+      final userSnapshot = await _dbRef.child('users/${document}_$year').get();
       if (!userSnapshot.exists) {
         return false;
       }
@@ -33,6 +36,8 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
 
         await _analytics.setUserId(id: document);
         await _analytics.setUserProperty(name: 'nombre', value: user['name'] ?? '');
+
+        await signUpOrLogin(document, year);
 
         await HiveService.userBox.put(
           document,
@@ -67,6 +72,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
     await trySetCrashlyticsUser('');
     await _analytics.setUserId(id: null);
     await HiveService.userBox.clear();
+    await auth.FirebaseAuth.instance.signOut();
     _controller.add(AuthStatus.unauthenticated);
   }
 
@@ -91,6 +97,27 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
       await FirebaseCrashlytics.instance.setUserIdentifier(document);
     } catch (e) {
       print('Otro error al configurar Crashlytics: $e');
+    }
+  }
+
+  Future<auth.UserCredential> signUpOrLogin(String document, String birthYear) async {
+    final email = '$document@jamt.app';
+    final password = '$document$birthYear';
+
+    try {
+      return await auth.FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on auth.FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        return await auth.FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+      } else {
+        rethrow;
+      }
     }
   }
 

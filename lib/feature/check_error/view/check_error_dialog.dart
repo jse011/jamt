@@ -32,7 +32,7 @@ class CheckErrorDialog {
                   borderRadius: BorderRadius.circular(24),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.7,
-                    height: 400,
+                    height: 500,
                     child:  CheckErrorScreen(),
                   ),
                 ),
