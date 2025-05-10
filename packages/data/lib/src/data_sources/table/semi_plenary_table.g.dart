@@ -23,13 +23,14 @@ class SemiPlenaryTableAdapter extends TypeAdapter<SemiPlenaryTable> {
       ..issue = fields[3] as String?
       ..time = fields[4] as String?
       ..title = fields[5] as String?
-      ..capacity = fields[6] as String?;
+      ..capacity = fields[6] as int?
+      ..available = fields[7] as int?;
   }
 
   @override
   void write(BinaryWriter writer, SemiPlenaryTable obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -43,7 +44,9 @@ class SemiPlenaryTableAdapter extends TypeAdapter<SemiPlenaryTable> {
       ..writeByte(5)
       ..write(obj.title)
       ..writeByte(6)
-      ..write(obj.capacity);
+      ..write(obj.capacity)
+      ..writeByte(7)
+      ..write(obj.available);
   }
 
   @override

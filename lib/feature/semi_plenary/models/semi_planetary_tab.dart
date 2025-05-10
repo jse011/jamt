@@ -11,4 +11,14 @@ final class SemiPlenaryTab extends Equatable {
   @override
   List<Object?> get props => [title, session];
 
+  SemiPlenaryTab copyWith({
+    String? title,
+    List<SessionCard>? session
+  }){
+    return SemiPlenaryTab(
+        title: title??this.title,
+        session: session??this.session
+    );
+  }
+
 }

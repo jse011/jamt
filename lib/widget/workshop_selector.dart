@@ -8,12 +8,14 @@ class WorkshopSelector extends StatelessWidget {
   final List<String> selects;
   final ValueChanged<int> onChanged;
   final VoidCallback onPressed;
+  final String? errorText;
   const WorkshopSelector({super.key,
     required this.title,
     required this.selects,
     required this.onChanged,
     required this.onPressed,
     this.select = 0,
+    this.errorText, // <-- nuevo
   });
 
   @override
@@ -28,6 +30,7 @@ class WorkshopSelector extends StatelessWidget {
               return InputDecorator(
                 decoration: InputDecoration(
                   labelText: title,
+                  errorText: errorText,
                   labelStyle: TextStyle(
                       color: AppColor.textGrey
                   ),

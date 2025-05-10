@@ -5,7 +5,8 @@ class WorkshopCard extends StatelessWidget {
   final String name;
   final String topic;
   final String topic2;
-  final String capacity;
+  final int capacity;
+  final int available;
   final String description;
 
   const WorkshopCard({
@@ -16,6 +17,7 @@ class WorkshopCard extends StatelessWidget {
     required this.topic2,
     required this.capacity,
     required this.description,
+    required this.available
   });
 
   @override
@@ -77,6 +79,19 @@ class WorkshopCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       'Aforo: $capacity',
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  const Icon(Icons.add_chart_sharp, size: 16, color: Colors.black),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(
+                      'Disponible: $available',
                       style: const TextStyle(fontSize: 14),
                     ),
                   ),

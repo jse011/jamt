@@ -3,7 +3,7 @@ import 'package:domain/domain.dart';
 import 'package:entities/entities.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:jamt/feature/semi_plenary/semi_plenary.dart';
+import '../models/models.dart';
 
 part 'semi_plenary_event.dart';
 part 'semi_plenary_state.dart';
@@ -11,9 +11,14 @@ part 'semi_plenary_state.dart';
 class SemiPlenaryBloc extends Bloc<SemiPlenaryEvent, SemiPlenaryState> {
   SemiPlenaryBloc({
     required GetSemiPlenariesUseCase getSemiPlenariesUseCase,
-    required UpdateSemiPlenariesUseCase updateSemiPlenariesUseCase}) :
+    required UpdateSemiPlenariesUseCase updateSemiPlenariesUseCase,
+    required RegisterSemiPlenariesUseCase registerSemiPlenariesUseCase,
+    required GetRegisterSemiPlenariesUseCase getRegisterSemiPlenariesUseCase
+  }) :
         _getSemiPlenariesUseCase = getSemiPlenariesUseCase,
         _updateSemiPlenariesUseCase = updateSemiPlenariesUseCase,
+        _registerSemiPlenariesUseCase = registerSemiPlenariesUseCase,
+        _getRegisterSemiPlenariesUseCase = getRegisterSemiPlenariesUseCase,
         super(SemiPlenaryState()) {
     on<LoadSemiPlenary>(_onSemiPlenarySubscriptionRequested);
     on<TabSelected>(_onTabSelected);
@@ -26,24 +31,22 @@ class SemiPlenaryBloc extends Bloc<SemiPlenaryEvent, SemiPlenaryState> {
 
   final GetSemiPlenariesUseCase _getSemiPlenariesUseCase;
   final UpdateSemiPlenariesUseCase _updateSemiPlenariesUseCase;
-
+  final RegisterSemiPlenariesUseCase _registerSemiPlenariesUseCase;
+  final GetRegisterSemiPlenariesUseCase _getRegisterSemiPlenariesUseCase;
   void _onSemiPlenarySubscriptionRequested(LoadSemiPlenary event,  Emitter<SemiPlenaryState> emit) async{
-    state.copyWith(progress: true);
+    bool offline = false;
+    emit(state.copyWith(
+        progress: true,
+        sessionProgress: SessionProgress.loading("¡Cargando semiplenaria!"),
+        sessionMessage: SessionMessage.empty()
+    ));
     try{
       await _updateSemiPlenariesUseCase.call();
-      emit(state.copyWith(
-          progress: true,
-          offline: false
-      ));
-      print("sucess");
     }catch(e){
-      print("error: $e");
-      emit(state.copyWith(
-          progress: true,
-          offline: true
-      ));
+      offline = true;
     }
 
+    List<RegisterSemiPlenary> registerSemiPlenaries = await _getRegisterSemiPlenariesUseCase.call();
 
     List<Session> sessions = (await  _getSemiPlenariesUseCase.call()).map((semiPlenary){
       return Session(
@@ -60,14 +63,30 @@ class SemiPlenaryBloc extends Bloc<SemiPlenaryEvent, SemiPlenaryState> {
     }
 
     final List<SessionGroup> groupedSessions = groupedMap.entries.map((entry) {
+      var index = registerSemiPlenaries.indexWhere((register) => register.group == entry.key);
+      Session? session;
+      if(index != -1){
+        RegisterSemiPlenary register = registerSemiPlenaries[index];
+        session = Session(
+          id: register.semiPlenary,
+          group: register.group,
+          title: register.title,
+        );
+      }
       var list = entry.value;
       list.insert(0, Session(id: "", title: "SELECCIONE"));
-      return SessionGroup(group: entry.key, sessions: list);
+
+      return SessionGroup(
+          group: entry.key,
+         register: session != null,
+         selected: session,
+        sessions: list
+      );
     }).toList();
 
     groupedSessions.sort((a, b) => (a.group).compareTo((b.group)));
 
-    var semiPlenaries = await  _getSemiPlenariesUseCase.call();
+    var semiPlenaries = await _getSemiPlenariesUseCase.call();
     final Map<String, List<SemiPlenary>> groupedTabMap = {};
     for (var semiPlenary in semiPlenaries) {
       groupedTabMap.putIfAbsent(semiPlenary.group??"", () => []).add(semiPlenary);
@@ -76,10 +95,12 @@ class SemiPlenaryBloc extends Bloc<SemiPlenaryEvent, SemiPlenaryState> {
     final List<SemiPlenaryTab> groupedSessionTabs = groupedTabMap.entries.map((entry) {
       return SemiPlenaryTab(title: entry.key, session: entry.value.map((semiPlenary){
         return SessionCard(
+            id: semiPlenary.id,
             title: semiPlenary.title??"",
             topic2: semiPlenary.time??"",
             color: hexToColor(semiPlenary.color??""),
-            capacity: semiPlenary.capacity??""
+            capacity: semiPlenary.capacity??0,
+          available: semiPlenary.available??0
         );
       }).toList());
     }).toList();
@@ -90,7 +111,9 @@ class SemiPlenaryBloc extends Bloc<SemiPlenaryEvent, SemiPlenaryState> {
         state.copyWith(
             groupedSessions: groupedSessions,
             tabs: groupedSessionTabs,
-            progress: false
+            sessionProgress: offline && groupedSessions.isEmpty ? const SessionProgress.error("Sin conexión. Verifica tu internet.") : const SessionProgress.empty(),
+            progress: false,
+            register: registerSemiPlenaries.isNotEmpty
         ));
   }
 
@@ -104,7 +127,8 @@ class SemiPlenaryBloc extends Bloc<SemiPlenaryEvent, SemiPlenaryState> {
     final updatedGroups = state.groupedSessions.map((group) {
       if (group == event.groupSelected) {
         return group.copyWith(
-          selected: event.selected
+          selected: event.selected,
+          error: ""
         );
       }
       return group;
@@ -115,18 +139,22 @@ class SemiPlenaryBloc extends Bloc<SemiPlenaryEvent, SemiPlenaryState> {
   }
 
   void _onOneSessionSave(SessionSave event,  Emitter<SemiPlenaryState> emit) {
-    print("_onOneSessionSave");
+    if(event.groupSelected.selected?.id == null || event.groupSelected.selected?.id == ""){
+      return;
+    }
     final updatedGroups = state.groupedSessions.map((group) {
       if (group == event.groupSelected) {
         return group.copyWith(
-            register: (group.selected?.id != null && group.selected?.id != "")? true: false
+            register: (group.selected?.id != null && group.selected?.id != "")? true: false,
+          error: ""
         );
       }
       return group;
     }).toList();
 
     emit(state.copyWith(
-      groupedSessions: updatedGroups
+      sessionMessage: SessionMessage.empty(),
+        groupedSessions: updatedGroups,
     ));
   }
 
@@ -134,7 +162,8 @@ class SemiPlenaryBloc extends Bloc<SemiPlenaryEvent, SemiPlenaryState> {
     final updatedGroups = state.groupedSessions.map((group) {
       if (group == event.groupSelected) {
         return group.copyWith(
-            register: false
+            register: false,
+            error: ""
         );
       }
       return group;
@@ -145,10 +174,146 @@ class SemiPlenaryBloc extends Bloc<SemiPlenaryEvent, SemiPlenaryState> {
     ));
   }
 
-  void _onSessionRegister(SessionRegister event,  Emitter<SemiPlenaryState> emit) {
+  void _onSessionRegister(SessionRegister event,  Emitter<SemiPlenaryState> emit) async {
+    var validationSelected = true;
+    for(var item in state.groupedSessions){
+      if(!item.register){
+        validationSelected = false;
+      }
+    }
+    if(!validationSelected){
+      emit(state.copyWith(
+          sessionMessage: SessionMessage.info("Falta elegir una Semiplenaria. Revisa tu selección.")
+      ));
+      return;
+    }
+    List<SessionGroup> list = List.from(state.groupedSessions);
+
     emit(state.copyWith(
-        register: true
+        register: true,
+       groupedSessions: [],
+        sessionMessage: SessionMessage.empty(),
+       sessionProgress: SessionProgress.success("¡Guardando tus Semiplenarias!"),
     ));
+
+    List<SemiPlenary> semiPlenaries = [];
+    for(var group in list){
+        if(group.selected?.id != null&&group.selected?.id != ""){
+          semiPlenaries.add(SemiPlenary(id: group.selected!.id, title: group.selected?.title, group: group.selected!.group));
+        }
+    }
+    if(semiPlenaries.isEmpty){
+      emit(state.copyWith(
+          sessionMessage: SessionMessage.warning("Falta elegir una Semiplenaria.")
+      ));
+      return;
+    }
+    var result = await _registerSemiPlenariesUseCase.call(semiPlenaries);
+
+    await result.fold((failure) async {
+      if (failure is UserNotExist) {
+        emit(state.copyWith(
+          register: false,
+          groupedSessions: list,
+          sessionMessage: SessionMessage.error("¡Usted no está registrado!"),
+          sessionProgress: SessionProgress.empty(),
+        ));
+      } else if (failure is SessionNotExist) {
+        emit(state.copyWith(
+          register: false,
+          groupedSessions: list,
+          sessionMessage: SessionMessage.error("La sesión no existe"),
+          sessionProgress: SessionProgress.empty(),
+        ));
+      } else if (failure is SessionNotFound) {
+        emit(state.copyWith(
+          register: false,
+          groupedSessions: list,
+          sessionMessage: SessionMessage.error("Error no reconocido"),
+          sessionProgress: SessionProgress.empty(),
+        ));
+      } else if (failure is UserHasRegisteredInSemiPlenary) {
+        print('⚠️ ${failure.toString()}');
+        emit(state.copyWith(
+          register: false,
+          groupedSessions: list,
+          sessionMessage: SessionMessage.warning("¡Ya estás registrado!"),
+          sessionProgress: SessionProgress.empty(),
+        ));
+      } else if (failure is NoCapacityInSemiPlenaries) {
+        print('🚫 ${failure.toString()}');
+
+        final updatedGroups = list.map((group) {
+          for (var sessionId in failure.plenaryIdsWithoutCapacity){
+            for(var session in group.sessions){
+              if (session.id == sessionId) {
+                return group.copyWith(
+                    register: false,
+                    error: "¡Ya no tenemos vacantes!"
+                );
+              }
+            }
+          }
+          return group;
+        }).toList();
+
+        emit(state.copyWith(
+          register: false,
+          groupedSessions: updatedGroups,
+          sessionMessage: SessionMessage.warning("¡Ya no tenemos vacantes para estas Semiplenarias!"),
+          sessionProgress: SessionProgress.empty(),
+        ));
+
+      } else if (failure is UnknownRegisterSemiPlenary) {
+        emit(state.copyWith(
+          register: false,
+          groupedSessions: list,
+          sessionMessage: SessionMessage.error("Ocurrió un error desconocido al registrar en semiplenaria"),
+          sessionProgress: SessionProgress.empty(),
+        ));
+        print('❓ Ocurrió un error desconocido al registrar en semiplenaria');
+      }else if(failure is NoInternetRegisterSemiPlenary){
+        emit(state.copyWith(
+          register: false,
+          groupedSessions: const [],
+          sessionMessage: SessionMessage.empty(),
+          sessionProgress: SessionProgress.error("Sin conexión. Verifica tu internet para completar el registro."),
+        ));
+      }else {
+        emit(state.copyWith(
+          register: false,
+          groupedSessions: list,
+          sessionMessage: SessionMessage.error("Error no reconocido"),
+          sessionProgress: SessionProgress.empty(),
+        ));
+        print('❌ Error no reconocido');
+      }
+    },(success) async {
+      List<SemiPlenary> semiPlenaries = await _getSemiPlenariesUseCase.call();
+      var tabs = state.tabs.map((tab){
+        return tab.copyWith(
+          session: tab.session.map((session){
+           final index = semiPlenaries.indexWhere((register) => register.id == session.id);
+            if(index != -1){
+              return session.copyWith(
+                  available: semiPlenaries[index].available,
+                  capacity: semiPlenaries[index].capacity,
+              );
+            }
+           return session;
+          }).toList()
+        );
+      }).toList();
+
+      emit(state.copyWith(
+        register: true,
+        tabs: tabs,
+        groupedSessions: list,
+        sessionMessage: SessionMessage.success("¡Felicitaciones, estás registrado en las semiplenarias!"),
+        sessionProgress: SessionProgress.empty(),
+      ));
+    });
+
   }
 
   Color hexToColor(String hex) {

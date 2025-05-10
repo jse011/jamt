@@ -27,7 +27,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     emit(
       state.copyWith(
         username: username,
-        status:  FormzSubmissionStatus.initial,
+        loginToast: LoginToast.hide(),
       ),
     );
   }
@@ -40,7 +40,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     emit(
       state.copyWith(
         birthYear: birthYear,
-        status:  FormzSubmissionStatus.initial,
+        loginToast: LoginToast.hide(),
       ),
     );
   }
@@ -55,22 +55,38 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     emit(state.copyWith(
       username: username,
       birthYear: birthYear,
-      status:  FormzSubmissionStatus.initial,
+      loginToast: LoginToast.hide(),
       isValid: Formz.validate([username, birthYear]),
     ));
 
     if (state.isValid) {
-      emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
-      try {
-        var success = await _logIn.call(state.username.value, state.birthYear.value,);
-        if(success){
-          emit(state.copyWith(status: FormzSubmissionStatus.success));
-        }else{
-          emit(state.copyWith(status: FormzSubmissionStatus.failure));
-        }
-      } catch (_) {
-        emit(state.copyWith(status: FormzSubmissionStatus.canceled));
-      }
+      emit(state.copyWith(
+          progress: true,
+          loginToast: LoginToast.hide()));
+
+      var result = await _logIn.call(state.username.value, state.birthYear.value,);
+      result.fold(
+              (failure) => {
+            if (failure is InvalidCredentials) {
+              emit(state.copyWith(
+                progress: false,
+                  loginToast: LoginToast.show("Documento incorrecto o no registrado para este evento")))
+            } else if (failure is NoInternet) {
+              emit(state.copyWith(
+                  progress: false,
+                  loginToast: LoginToast.show( "No hay conexión a internet.")))
+            } else {
+              emit(state.copyWith(
+                  progress: false,
+                  loginToast: LoginToast.show( "Error inesperado")))
+            }
+          },
+              (right) => {
+            emit(state.copyWith(
+              progress: false,
+              loginToast: LoginToast.hide()
+            ))
+          });
     }
   }
 }

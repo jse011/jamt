@@ -10,7 +10,6 @@ class UserRepositoryImpl extends UserRepository {
     if(user == null) return null;
     return User(
       document: user.document,
-      year: user.year,
       name: user.name
     );
   }

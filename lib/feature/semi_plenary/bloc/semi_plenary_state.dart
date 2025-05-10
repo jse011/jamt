@@ -1,20 +1,24 @@
 part of 'semi_plenary_bloc.dart';
 
 class SemiPlenaryState extends Equatable {
-  final bool offline;
-  final bool progress;
+
   final List<SemiPlenaryTab> tabs;
   final List<SessionGroup> groupedSessions;
   final bool register;
   final int selectedIndex;
+  final SessionMessage sessionMessage;
+  final SessionProgress sessionProgress;
+  final bool progress;
 
   const SemiPlenaryState({
-    this.offline = false,
-    this.progress = true,
     this.register = false,
     this.groupedSessions = const [],
     this.selectedIndex = 0,
-    this.tabs = const []});
+    this.tabs = const [],
+    this.sessionMessage = const SessionMessage.empty(),
+    this.sessionProgress = const SessionProgress.empty(),
+    this.progress = false
+  });
 
   SemiPlenaryState copyWith({
     List<SemiPlenaryTab>? tabs,
@@ -24,20 +28,22 @@ class SemiPlenaryState extends Equatable {
     bool? register,
     List<SessionGroup>? groupedSessions,
     bool? progress,
-    bool? offline,
+    SessionMessage? sessionMessage,
+    SessionProgress? sessionProgress
   }){
     return SemiPlenaryState(
         tabs: tabs??this.tabs,
         register: register??this.register,
         groupedSessions: groupedSessions ?? this.groupedSessions,
         selectedIndex: selectedIndex??this.selectedIndex,
-        progress: progress??this.progress,
-        offline: offline??this.offline
+        sessionMessage: sessionMessage??this.sessionMessage,
+        sessionProgress:  sessionProgress??this.sessionProgress,
+        progress: progress??this.progress
     );
   }
 
 
   @override
-  List<Object?> get props => [groupedSessions, tabs, register, progress, offline, selectedIndex];
+  List<Object?> get props => [groupedSessions, tabs, register, selectedIndex, sessionMessage, progress];
 
 }

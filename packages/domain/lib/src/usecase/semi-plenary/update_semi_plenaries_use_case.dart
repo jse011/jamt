@@ -1,5 +1,4 @@
 import 'package:domain/domain.dart';
-import 'package:entities/entities.dart';
 
 class UpdateSemiPlenariesUseCase {
 

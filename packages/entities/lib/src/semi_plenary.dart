@@ -6,8 +6,9 @@ class SemiPlenary {
   final String? time;
   final String? title;
   final String id;
-  final String? capacity;
+  final int? capacity;
+  final int? available;
 
-  SemiPlenary({required this.id, this.color, this.group, this.issue, this.time, this.title, this.capacity});
+  SemiPlenary({required this.id, this.color, this.group, this.issue, this.time, this.title, this.capacity, this.available});
 
 }

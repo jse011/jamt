@@ -20,7 +20,9 @@ class SemiPlenaryTable {
   @HiveField(5)
   String? title;
   @HiveField(6)
-  String? capacity;
+  int? capacity;
+  @HiveField(7)
+  int? available;
 
   SemiPlenary toEntity() => SemiPlenary(
     id: id,
@@ -29,7 +31,8 @@ class SemiPlenaryTable {
     issue: issue,
     title: title,
     time: time,
-    capacity: capacity
+    capacity: capacity,
+      available : available
   );
 
   static SemiPlenaryTable fromEntity(SemiPlenary entity) => SemiPlenaryTable()
@@ -40,6 +43,7 @@ class SemiPlenaryTable {
     ..title = entity.title
     ..time = entity.time
     ..capacity = entity.capacity
+      ..available = entity.available
   ;
 
 }

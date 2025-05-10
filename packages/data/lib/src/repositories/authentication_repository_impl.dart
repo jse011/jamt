@@ -1,12 +1,12 @@
 import 'dart:async';
 
+import 'package:data/data.dart';
 import 'package:domain/domain.dart';
 import 'package:entities/entities.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 import '../data_sources/data_sources.dart';
 
@@ -19,19 +19,23 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   AuthenticationRepositoryImpl();
 
   @override
-  Future<bool> logIn(String document, String year) async {
+  Future<Either<LoginFailure, void>> logIn(String document, String year) async {
 
 
     try {
-      print('users/$document');
-      await trySetCrashlyticsUser(document);
 
-      final userSnapshot = await _dbRef.child('users/${document}_$year').get();
+      await FBUtils.trySetCrashlyticsUser(document);
+      final userSnapshot = await _dbRef.child('${ConstFirebase.eventPath}/${ConstFirebase.userPath}/${document}_$year').get();
       if (!userSnapshot.exists) {
-        return false;
+        await FBUtils.tryLog('Intento fallido de login: contraseña incorrecta');
+        await FBUtils.tryRecordError(
+          Exception('Contraseña incorrecta para usuario $document $document $year')
+        );
+        return Left(LoginFailure.invalidCredentials());
       }
+      final sessionId = Uuid().v4();
+
       final user = Map<String, dynamic>.from(userSnapshot.value as Map);
-      print("user: $user");
       if (user['year'].toString() == year) {
 
         await _analytics.setUserId(id: document);
@@ -39,37 +43,43 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
 
         await signUpOrLogin(document, year);
 
+        await _dbRef.child('${ConstFirebase.eventPath}/${ConstFirebase.sessionPath}/${auth.FirebaseAuth.instance.currentUser?.uid}').set({
+          'document': document,
+          'timestamp': DateTime.now().toIso8601String(),
+        });
+
         await HiveService.userBox.put(
           document,
           UserTable.fromEntity(User(
             document: document,
-            year: year,
             name: user['name'].toString(),
-            session: Uuid().v4(),
+            session: sessionId,
           )),
         );
 
         _controller.add(AuthStatus.authenticated);
-        return true;
-      } else {
-
-        await FirebaseCrashlytics.instance.log('Intento fallido de login: contraseña incorrecta');
-        await FirebaseCrashlytics.instance.recordError(
-          Exception('Contraseña incorrecta para usuario $document ${year} ${user['name']}'),
-          StackTrace.current,
+        return Right(null);
+      }else{
+        FBUtils.tryLog('Intento fallido de login: usuario bloqueado por el año');
+        await FBUtils.tryRecordError(
+          Exception('Contraseña incorrecta para usuario $document $document $year')
         );
-        return false;
+        return Left(LoginFailure.invalidCredentials());
       }
     }catch (e, stack) {
-      await FirebaseCrashlytics.instance.recordError(e, stack);
-      throw Exception('Error inesperado');
+      if (e is auth.FirebaseException && e.code == 'unavailable') {
+        return Left(LoginFailure.noInternet());
+      }
+
+      await FBUtils.tryRecordError(e);
+      return Left(LoginFailure.unknown());
     }
   }
 
   @override
   Future<void> logOut() async {
     await _analytics.logEvent(name: 'logout');
-    await trySetCrashlyticsUser('');
+    await FBUtils.trySetCrashlyticsUser('');
     await _analytics.setUserId(id: null);
     await HiveService.userBox.clear();
     await auth.FirebaseAuth.instance.signOut();
@@ -92,13 +102,6 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   @override
   void dispose() => _controller.close();
 
-  Future<void> trySetCrashlyticsUser(String document) async {
-    try {
-      await FirebaseCrashlytics.instance.setUserIdentifier(document);
-    } catch (e) {
-      print('Otro error al configurar Crashlytics: $e');
-    }
-  }
 
   Future<auth.UserCredential> signUpOrLogin(String document, String birthYear) async {
     final email = '$document@jamt.app';

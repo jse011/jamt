@@ -1,40 +1,44 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_table.dart';
+part of 'register_semi_plenary_table.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UserTableAdapter extends TypeAdapter<UserTable> {
+class RegisterSemiPlenaryTableAdapter
+    extends TypeAdapter<RegisterSemiPlenaryTable> {
   @override
-  final int typeId = 0;
+  final int typeId = 2;
 
   @override
-  UserTable read(BinaryReader reader) {
+  RegisterSemiPlenaryTable read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return UserTable()
-      ..document = fields[0] as String
-      ..name = fields[2] as String?
-      ..session = fields[3] as String?
-      ..pendingUpdate = fields[4] as bool?;
+    return RegisterSemiPlenaryTable()
+      ..semiPlenary = fields[0] as String
+      ..document = fields[1] as String
+      ..timestamp = fields[2] as DateTime?
+      ..group = fields[3] as String
+      ..title = fields[4] as String;
   }
 
   @override
-  void write(BinaryWriter writer, UserTable obj) {
+  void write(BinaryWriter writer, RegisterSemiPlenaryTable obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
+      ..write(obj.semiPlenary)
+      ..writeByte(1)
       ..write(obj.document)
       ..writeByte(2)
-      ..write(obj.name)
+      ..write(obj.timestamp)
       ..writeByte(3)
-      ..write(obj.session)
+      ..write(obj.group)
       ..writeByte(4)
-      ..write(obj.pendingUpdate);
+      ..write(obj.title);
   }
 
   @override
@@ -43,7 +47,7 @@ class UserTableAdapter extends TypeAdapter<UserTable> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserTableAdapter &&
+      other is RegisterSemiPlenaryTableAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

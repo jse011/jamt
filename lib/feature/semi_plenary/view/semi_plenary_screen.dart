@@ -66,48 +66,28 @@ class SessionScreen extends StatelessWidget {
                                       color: AppColor.textGrey
                                   )
                                 ),
-                                if(state.progress)
+
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  children: [
+                                    if(state.sessionMessage.show)
+                                      StatusMessage(
+                                        text: state.sessionMessage.message??"",
+                                        type: state.sessionMessage.type,
+                                      )
+                                  ],
+                                ),
+
+                                if(state.sessionProgress.show)
                                   Center(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Padding(padding: EdgeInsets.all(16)),
-                                      const CircularProgressIndicator(
-                                        color: AppColor.yellowDark,
-                                      ),
-                                      const Padding(padding: EdgeInsets.all(8)),
-                                      Text(
-                                        "Cargando tus datos...",
-                                        style: TextStyle(
-                                            color: AppColor.textGrey
-                                        ),
-                                      ),
-                                      const SizedBox(height: 32),
-                                    ],
+                                    child: ProgressStatus(
+                                      message: state.sessionProgress.message,
+                                      type: state.sessionProgress.type,
+                                      onRefreshPressed: (){
+                                        context.read<SemiPlenaryBloc>().add(LoadSemiPlenary());
+                                      },
+                                    ),
                                   ),
-                                ),
-                                if( state.offline && !state.progress && state.groupedSessions.isEmpty)
-                                Center(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const SizedBox(height: 24),
-                                      const Text('No se encontraron datos',
-                                      style: TextStyle(
-                                        color: AppColor.textGrey
-                                      )),
-                                      const SizedBox(height: 12),
-                                      ElevatedButton.icon(
-                                        onPressed: () {
-                                          context.read<SemiPlenaryBloc>().add(LoadSemiPlenary());
-                                        },
-                                        icon: const Icon(Icons.refresh),
-                                        label: const Text('Refrescar'),
-                                      ),
-                                    ],
-                                  ),
-                                ),
                                 if(!state.progress)
                                 Column(
                                   children: [
@@ -118,6 +98,7 @@ class SessionScreen extends StatelessWidget {
                                           if(!group.register)
                                             WorkshopSelector(
                                               title: 'ELIGE TU ${group.group.toUpperCase()}',
+                                              errorText: group.error==""?null:group.error,
                                               selects: group.sessions.map((session){return session.title;}).toList(),
                                               onPressed: (){
                                                 context.read<SemiPlenaryBloc>().add(SessionSave(
@@ -136,9 +117,9 @@ class SessionScreen extends StatelessWidget {
                                             WorkshopSelectCard(
                                               title: group.group,
                                               value: group.selected?.title??"",
+                                              disabled: true,
                                               register: state.register,
                                               onClosePressed: (){
-                                                print("onClosePressed");
                                                 context.read<SemiPlenaryBloc>().add(SessionClose(
                                                     groupSelected: group
                                                 ));
@@ -287,6 +268,7 @@ class SessionScreen extends StatelessWidget {
                                       topic2: session.topic2,
                                       capacity: session.capacity,
                                       description: session.description,
+                                      available: session.available,
                                     );
                                   })
                                 ],

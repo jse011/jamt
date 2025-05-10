@@ -13,17 +13,11 @@ class LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
-        if (state.status.isFailure) {
+        if(state.loginToast.show){
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              const SnackBar(content: Text('Documento incorrecto o no registrado para este evento')),
-            );
-        }else if (state.status.isCanceled) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              const SnackBar(content: Text('Error inesperado')),
+               SnackBar(content: Text(state.loginToast.message)),
             );
         }
       },
@@ -132,7 +126,7 @@ class _LoginProgress extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final isInProgressOrSuccess = context.select(
-          (LoginBloc bloc) => bloc.state.status.isInProgressOrSuccess,
+          (LoginBloc bloc) => bloc.state.progress,
     );
 
     if (isInProgressOrSuccess){

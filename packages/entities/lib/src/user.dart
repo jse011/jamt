@@ -1,13 +1,11 @@
 class User {
   const User({
     required this.document,
-    this.year,
     this.name,
     this.session
   });
 
   final String document;
-  final String? year;
   final String? name;
   final String? session;
 
@@ -21,9 +19,8 @@ class User {
       other is User &&
           runtimeType == other.runtimeType &&
           document == other.document &&
-          year == other.year &&
           name == other.name;
 
   @override
-  int get hashCode => document.hashCode ^ year.hashCode ^ name.hashCode;
+  int get hashCode => document.hashCode ^ name.hashCode;
 }

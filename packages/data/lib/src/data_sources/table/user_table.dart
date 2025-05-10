@@ -9,8 +9,6 @@ class UserTable {
   @HiveField(0)
   late String document; // campo único (clave externa lógica)
 
-  @HiveField(1)
-  String? year;
 
   @HiveField(2)
   String? name;
@@ -18,15 +16,16 @@ class UserTable {
   @HiveField(3)
   String? session;
 
+  @HiveField(4)
+  bool? pendingUpdate;
 
   // Convertir modelo -> entidad
-  User toEntity() => User(document: document, name: name, year: year, session: session);
+  User toEntity() => User(document: document, name: name, session: session);
 
   // Convertir entidad -> modelo
   static UserTable fromEntity(User entity) => UserTable()
     ..document = entity.document
     ..name = entity.name
-    ..year = entity.year
     ..session = entity.session;
 
 }
