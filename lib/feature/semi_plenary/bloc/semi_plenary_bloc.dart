@@ -37,9 +37,16 @@ class SemiPlenaryBloc extends Bloc<SemiPlenaryEvent, SemiPlenaryState> {
     bool offline = false;
     emit(state.copyWith(
         progress: true,
+        groupedSessions: const [],
         sessionProgress: SessionProgress.loading("¡Cargando semiplenaria!"),
         sessionMessage: SessionMessage.empty()
     ));
+
+    emit(state.copyWith(
+        progress: false,
+       tabs: await _getGroupedSessionTabs()
+    ));
+
     try{
       await _updateSemiPlenariesUseCase.call();
     }catch(e){
@@ -86,31 +93,11 @@ class SemiPlenaryBloc extends Bloc<SemiPlenaryEvent, SemiPlenaryState> {
 
     groupedSessions.sort((a, b) => (a.group).compareTo((b.group)));
 
-    var semiPlenaries = await _getSemiPlenariesUseCase.call();
-    final Map<String, List<SemiPlenary>> groupedTabMap = {};
-    for (var semiPlenary in semiPlenaries) {
-      groupedTabMap.putIfAbsent(semiPlenary.group??"", () => []).add(semiPlenary);
-    }
-
-    final List<SemiPlenaryTab> groupedSessionTabs = groupedTabMap.entries.map((entry) {
-      return SemiPlenaryTab(title: entry.key, session: entry.value.map((semiPlenary){
-        return SessionCard(
-            id: semiPlenary.id,
-            title: semiPlenary.title??"",
-            topic2: semiPlenary.time??"",
-            color: hexToColor(semiPlenary.color??""),
-            capacity: semiPlenary.capacity??0,
-          available: semiPlenary.available??0
-        );
-      }).toList());
-    }).toList();
-
-    groupedSessionTabs.sort((a, b) => (a.title).compareTo((b.title)));
 
     emit(
         state.copyWith(
             groupedSessions: groupedSessions,
-            tabs: groupedSessionTabs,
+            tabs: await _getGroupedSessionTabs(),
             sessionProgress: offline && groupedSessions.isEmpty ? const SessionProgress.error("Sin conexión. Verifica tu internet.") : const SessionProgress.empty(),
             progress: false,
             register: registerSemiPlenaries.isNotEmpty
@@ -136,6 +123,31 @@ class SemiPlenaryBloc extends Bloc<SemiPlenaryEvent, SemiPlenaryState> {
     emit(state.copyWith(
       groupedSessions: updatedGroups
     ));
+  }
+
+  Future<List<SemiPlenaryTab>> _getGroupedSessionTabs() async {
+    var semiPlenaries = await _getSemiPlenariesUseCase.call();
+    final Map<String, List<SemiPlenary>> groupedTabMap = {};
+    for (var semiPlenary in semiPlenaries) {
+      groupedTabMap.putIfAbsent(semiPlenary.group??"", () => []).add(semiPlenary);
+    }
+
+    final List<SemiPlenaryTab> groupedSessionTabs = groupedTabMap.entries.map((entry) {
+      return SemiPlenaryTab(title: entry.key, session: entry.value.map((semiPlenary){
+        return SessionCard(
+            id: semiPlenary.id,
+            title: semiPlenary.title??"",
+            topic2: semiPlenary.time??"",
+            color: hexToColor(semiPlenary.color??""),
+            capacity: semiPlenary.capacity??0,
+            available: semiPlenary.available??0
+        );
+      }).toList());
+    }).toList();
+
+    groupedSessionTabs.sort((a, b) => (a.title).compareTo((b.title)));
+
+    return groupedSessionTabs;
   }
 
   void _onOneSessionSave(SessionSave event,  Emitter<SemiPlenaryState> emit) {

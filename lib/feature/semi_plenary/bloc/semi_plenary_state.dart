@@ -44,6 +44,6 @@ class SemiPlenaryState extends Equatable {
 
 
   @override
-  List<Object?> get props => [groupedSessions, tabs, register, selectedIndex, sessionMessage, progress];
+  List<Object?> get props => [groupedSessions, tabs, register, selectedIndex, sessionMessage, sessionProgress, progress];
 
 }

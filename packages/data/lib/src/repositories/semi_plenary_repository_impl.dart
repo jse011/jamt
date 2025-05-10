@@ -45,7 +45,7 @@ class SemiPlenaryRepositoryImpl extends SemiPlenaryRepository {
     if(user!=null){
       final registerEventRef = db.child('${ConstFirebase.eventPath}/${ConstFirebase.registerPlenaryPath}/${user.document}');
       bool pendingUpdate = user.pendingUpdate??false;
-      print("pendingUpdate : $pendingUpdate");
+
       if(pendingUpdate){
         final List<RegisterSemiPlenary> registerSemiPlenaries = HiveService.registerSemiPlenaryTableBox.values.map((e) => e.toEntity())
             .toList();
@@ -59,7 +59,7 @@ class SemiPlenaryRepositoryImpl extends SemiPlenaryRepository {
               'timestamp': DateTime.now().toIso8601String(),
             };
           }
-          print("pendingUpdate : $map");
+
           await registerEventRef.set(map);
           final updatedUser = user
             ..pendingUpdate = false;
@@ -183,6 +183,7 @@ class SemiPlenaryRepositoryImpl extends SemiPlenaryRepository {
         return Transaction.success(plenariesData);
       });
     }catch(e){
+
       if (e is FirebaseException && e.code == 'unavailable') {
         return Left(NoInternetRegisterSemiPlenary());
       }
@@ -209,6 +210,17 @@ class SemiPlenaryRepositoryImpl extends SemiPlenaryRepository {
           );
         }
 
+        final map = <String, Object>{};
+        for (final semiPlenary in semiPlenaries) {
+          map[semiPlenary.id] = {
+            'document': user.document,
+            'group': semiPlenary.group,
+            'title': semiPlenary.title,
+            'timestamp': DateTime.now().toIso8601String(),
+          };
+        }
+        await registerEventRef.set(map);
+
         final updatedUser = user
           ..pendingUpdate = false;
         await HiveService.userBox.put(user.document, updatedUser);
@@ -231,6 +243,7 @@ class SemiPlenaryRepositoryImpl extends SemiPlenaryRepository {
           final issue =  plenary['issue'] ?? "";
           final title =  plenary['title'] ?? "";
           final time =  plenary['time'] ?? "";
+
 
           await HiveService.semiPlenaryBox.put(
               entry.key,
@@ -273,7 +286,7 @@ class SemiPlenaryRepositoryImpl extends SemiPlenaryRepository {
   @override
   Future<List<RegisterSemiPlenary>> getRegisterSemiPlenaries() async {
     final List<RegisterSemiPlenary> registerSemiPlenaries = HiveService.registerSemiPlenaryTableBox.values.map((e) => e.toEntity()).toList();
-    print("getRegisterSemiPlenaries: ${registerSemiPlenaries.length}");
+
     return registerSemiPlenaries;
   }
 
