@@ -50,12 +50,12 @@ class SemiPlenaryRepositoryImpl extends SemiPlenaryRepository {
           final updatedUser = user
             ..pendingUpdate = false;
           await HiveService.userBox.put(user.document, updatedUser);
-        }catch(e){
+        }catch(e, stack){
           await FBUtils.tryLog('No se pudo volver a enlazar en el evento al usuario a');
           for (final semiPlenary in registerSemiPlenaries) {
             await FBUtils.tryLog('semiplenaria: ${semiPlenary.semiPlenary}');;
           }
-          await FBUtils.tryRecordError(e);
+          await FBUtils.tryRecordError(FirebaseSemiPlenaryException.from(e), stack: stack);
         }
       }
     }
@@ -247,13 +247,13 @@ class SemiPlenaryRepositoryImpl extends SemiPlenaryRepository {
         }
 
         return Right(null);
-      } catch (e) {
+      } catch (e, stack) {
 
         await FBUtils.tryLog('No se pudo enlazar en el evento al usuario');
         for (final semiPlenary in semiPlenaries) {
           await FBUtils.tryLog('semiplenaria: ${semiPlenary.id}');;
         }
-        await FBUtils.tryRecordError(e);
+        await FBUtils.tryRecordError(FirebaseSemiPlenaryException.from(e), stack: stack);
         final updatedUser = user
           ..pendingUpdate = true;
         await HiveService.userBox.put(user.document, updatedUser);

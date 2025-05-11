@@ -29,7 +29,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
       if (!userSnapshot.exists) {
         await FBUtils.tryLog('Intento fallido de login: contraseña incorrecta');
         await FBUtils.tryRecordError(
-          Exception('Contraseña incorrecta para usuario $document $document $year')
+            FirebaseAuthException('Contraseña incorrecta para usuario $document $document $year')
         );
         return Left(LoginFailure.invalidCredentials());
       }
@@ -62,7 +62,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
       }else{
         FBUtils.tryLog('Intento fallido de login: usuario bloqueado por el año');
         await FBUtils.tryRecordError(
-          Exception('Contraseña incorrecta para usuario $document $document $year')
+            FirebaseAuthException('Contraseña incorrecta para usuario $document $document $year')
         );
         return Left(LoginFailure.invalidCredentials());
       }
@@ -71,7 +71,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
         return Left(LoginFailure.noInternet());
       }
 
-      await FBUtils.tryRecordError(e);
+      await FBUtils.tryRecordError(FirebaseAuthException.from(e), stack: stack);
       return Left(LoginFailure.unknown());
     }
   }
