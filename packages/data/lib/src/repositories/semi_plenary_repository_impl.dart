@@ -1,4 +1,3 @@
-import 'package:bcrypt/bcrypt.dart';
 import 'package:data/data.dart';
 import 'package:data/src/data_sources/data_sources.dart';
 import 'package:data/src/data_sources/table/register_semi_plenary_table.dart';
@@ -13,24 +12,11 @@ class SemiPlenaryRepositoryImpl extends SemiPlenaryRepository {
 
   @override
   Future<String?> readQr(String code) async {
-    // Hashear
-    final hashed = hashPassword(code);
-    print('Hash bcrypt: $hashed');
 
-    // Verificar
-    final isValid = checkPassword('miClaveSegura123', hashed);
-    print('¿Contraseña válida?: $isValid');
 
     return "";
   }
 
-  String hashPassword(String password) {
-    return BCrypt.hashpw(password, BCrypt.gensalt());
-  }
-
-  bool checkPassword(String plainPassword, String hashedPassword) {
-    return BCrypt.checkpw(plainPassword, hashedPassword);
-  }
 
   @override
   Future<List<SemiPlenary>> semiPlenaries() async {

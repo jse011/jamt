@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:entities/entities.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -24,6 +25,18 @@ class QrBloc extends Bloc<QrEvent, QrState> {
       CodeScanData event,
       Emitter<QrState> emit
       ){
+
+      final code = event.code;
+
+      
+
+      var scanQR = ScanQR(
+        type: TypeScanQR.entryToSemiPlenary,
+        semiPlenary: ""
+      );
+
+
+
     emit(
         state.copyWith(
             code: event.code

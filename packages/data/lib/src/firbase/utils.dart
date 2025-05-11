@@ -18,9 +18,9 @@ class FBUtils {
     }
   }
 
-  static Future<void> tryRecordError(e) async {
+  static Future<void> tryRecordError(e, {StackTrace? stack}) async {
     try {
-      await FirebaseCrashlytics.instance.recordError(e, StackTrace.current);
+      await FirebaseCrashlytics.instance.recordError(e, stack ?? StackTrace.current);
     } catch (e) {
       print('Otro error al configurar Crashlytics: $e');
     }
