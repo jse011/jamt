@@ -21,22 +21,19 @@ class ActivitiesScreen extends StatelessWidget {
               children: [
                 Stack(
                   children: [
-                    Positioned(
-                      top: 0,
-                      bottom: 65,
-                      left: 0,
-                      right: 0,
-                      child: Container(
-                        width: double.infinity,
-                        color: AppColor.orangeDeep,
-                      ),
-                    ),
                     Positioned.fill(
-                      child:  BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 17, sigmaY: 17),
-                        child: SizedBox(
-                          width: double.infinity,
-                          height: double.infinity,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              AppColor.orangeMain,
+                              AppColor.purpleDark,
+                              AppColor.blue2
+                            ],
+                            stops: [0.0, 0.6, 1.0],
+                          ),
                         ),
                       ),
                     ),

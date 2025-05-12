@@ -46,7 +46,7 @@ class HomeScreen extends StatelessWidget {
                   AppColor.purpleDark,
                   AppColor.blue2
                 ],
-                stops: [0.0, 0.3, 1.0],
+                stops: [0.0, 0.4, 1.0],
               ),
             ),
           ),
