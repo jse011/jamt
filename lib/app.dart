@@ -4,6 +4,7 @@ import 'package:data/data.dart';
 import 'package:entities/entities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jamt/feature/check_error/check_error.dart';
 import 'package:jamt/feature/check_in/check_in.dart';
 import 'package:jamt/feature/qr/qr.dart';
 import 'package:jamt/navigation/navigation.dart';
@@ -25,7 +26,12 @@ class App extends StatelessWidget {
           dispose: (repository) => repository.dispose(),
         ),
         RepositoryProvider<UserRepository>(create: (_) => UserRepositoryImpl()),
-        RepositoryProvider<SemiPlenaryRepository>(create: (_) => SemiPlenaryRepositoryImpl()),
+        RepositoryProvider<SemiPlenaryRepository>(
+            create: (_) => SemiPlenaryRepositoryImpl(),
+            dispose: (repository) {
+              repository.qrStatusDispose();
+            },
+        ),
       ],
       child: BlocProvider(
         lazy: false,
@@ -39,6 +45,9 @@ class App extends StatelessWidget {
           getUserUseCase: GetUserUseCase(
             context.read<UserRepository>(),
           ),
+          getQrStatusUseCase: GetQrStatusUseCase(
+            context.read<SemiPlenaryRepository>(),
+          )
         )..add(AuthenticationSubscriptionRequested()),
         child: const AppView(),
       ),
@@ -83,14 +92,23 @@ class _AppViewState extends State<AppView> {
                       UserPage.route()
                     );
                     break;
-                  case Destination.qr:
+                  case Destination.qrScan:
                     _navigator.push<void>(
                         QRPage.route()
-                       //CheckInPage.route()
                     );
                     break;
                   case Destination.sessions:
+                    _navigator.push<void>(
+                        QRPage.route()
+                    );
+                    break;
+                  case Destination.qrCheckOut:
 
+                    break;
+                  case Destination.qrCheckIn:
+                    _navigator.push<void>(
+                        QRPage.route()
+                    );
                     break;
                   case Destination.guests:
                   // Acción o retorno para invitados

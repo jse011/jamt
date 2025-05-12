@@ -34,37 +34,22 @@ class HomeScreen extends StatelessWidget {
     arrayList.shuffle();
     return Stack(
       children: [
+        // FONDO MEJORADO CON GRADIENTE Y BLUR
         Positioned.fill(
-            child: Column(
-              children: [
-                Container(
-                  height: 220,
-                  color: AppColor.orangeMain,
-                ),
-                Container(
-                  height: 40,
-                  color: AppColor.orangeMain,
-                ),
-                Container(
-                  height: 40,
-                  color: AppColor.purpleDark.withOpacity(0.8),
-                ),
-                Expanded(
-                    child: Container(
-                      color: AppColor.blue2.withOpacity(0.8),
-                    )
-                )
-              ],
-            )
-        ),
-        Positioned.fill(
-            child:  BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-              child: SizedBox(
-                width: double.infinity,
-                height: double.infinity,
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  AppColor.orangeMain,
+                  AppColor.purpleDark,
+                  AppColor.blue2
+                ],
+                stops: [0.0, 0.3, 1.0],
               ),
             ),
+          ),
         ),
         Column(
           children: [
@@ -114,7 +99,7 @@ class HomeScreen extends StatelessWidget {
                 AppImages.homeQR,
                 'Usa tu cámara para registrar tu ingreso y salida en cada semiplenaria.',
                 onTap: () {
-                  context.read<NavigationBloc>().add(NavigationPressed(Destination.qr));
+                  context.read<NavigationBloc>().add(NavigationPressed(Destination.qrScan));
                   //CheckErrorDialog.show(context);
                   //CheckIn.show(context);
                 },

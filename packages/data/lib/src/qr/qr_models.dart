@@ -1,5 +1,5 @@
 class QrPayload {
-  final int uid;
+  final String uid;
   final String description;
   final String type;
   final String code;

@@ -1,10 +1,9 @@
 import 'package:data/data.dart';
-import 'package:flutter_test/flutter_test.dart'; // importa tu paquete QRUtils, QrPayload, etc.
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  group('GenerateQRProduction', () {
+  group('GenerateQRProduction Entrada y Salida', () {
 
-    const uid = 999999;
 
     final semiplenarias = {
       "semiplenaria_1": {
@@ -57,44 +56,51 @@ void main() {
       },
     };
 
-    test("🔐 QRs generados para semiplenarias (producción) Dom 11 may 2025:", (){
-      print("🔐 QRs generados para semiplenarias (producción):\n");
-      semiplenarias.forEach((id, info) {
-        final payload = QrPayload(
-          uid: uid,
-          type: id,
-          code: info["title"]!,
-          description: "${info["time"]} - ${info["title"]}",
-        );
+    test("🔐 Generar QR ENTRADA y SALIDA por semiplenaria", () {
+      print("🔐 QRs generados (entrada y salida):\n");
 
-        final qrText = QRUtils.generateEncryptedQR(payload);
-        print('#Genear QR para [$id] ${info["time"]} ${info["title"]} : ');
-        print(qrText);
-        print('---');
+      semiplenarias.forEach((id, info) {
+        for (final type in ['ENTRADA', 'SALIDA']) {
+          final code =  info['title']??"";
+          final description = "${info['time']} - ${info['title']} ($type)";
+          final payload = QrPayload(
+            uid: id,
+            type: type,
+            code: code,
+            description: description,
+          );
+
+          final qrText = QRUtils.generateEncryptedQR(payload);
+          print('# QR [$id][$type] ${info["time"]} ${info["title"]}:');
+          print(qrText);
+          print('---');
+        }
       });
     });
 
-    test("✅ Verificar que todos los QRs generados se pueden desencriptar", () {
+    test("✅ Verificar que todos los QRs ENTRADA y SALIDA se pueden desencriptar", () {
       semiplenarias.forEach((id, info) {
-        final originalPayload = QrPayload(
-          uid: uid,
-          type: id,
-          code: info["title"]!,
-          description: "${info["time"]} - ${info["title"]}",
-        );
+        for (final type in ['ENTRADA', 'SALIDA']) {
+          final code =  info['title']??"";
+          final description = "${info['time']} - ${info['title']} ($type)";
 
-        final qrText = QRUtils.generateEncryptedQR(originalPayload);
+          final payload = QrPayload(
+            uid: id,
+            type: type,
+            code: code,
+            description: description,
+          );
 
-        final result = QRUtils.decryptQR(qrText);
+          final qrText = QRUtils.generateEncryptedQR(payload);
+          final result = QRUtils.decryptQR(qrText);
 
-        expect(result, isNotNull, reason: "QR inválido para $id");
-        expect(result!.uid, equals(uid));
-        expect(result.type, equals(id));
-        expect(result.code, equals(info["title"]));
-        expect(result.description, equals("${info["time"]} - ${info["title"]}"));
+          expect(result, isNotNull, reason: "QR inválido para $id ($type)");
+          expect(result!.uid, equals(id));
+          expect(result.type, equals(type));
+          expect(result.code, equals(code));
+          expect(result.description, equals(description));
+        }
       });
     });
-
   });
-
 }

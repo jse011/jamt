@@ -26,3 +26,7 @@ class NoCapacityInSemiPlenaries extends RegisterSemiPlenaryFailure {
 class NoInternetRegisterSemiPlenary extends RegisterSemiPlenaryFailure {}
 
 class UnknownRegisterSemiPlenary extends RegisterSemiPlenaryFailure {}
+
+class InvalidSemiPlenaryQr extends RegisterSemiPlenaryFailure {}
+
+class UnknownSemiPlenaryQr extends RegisterSemiPlenaryFailure {}

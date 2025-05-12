@@ -1,3 +1,4 @@
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jamt/feature/qr/bloc/qr_bloc.dart';
@@ -13,7 +14,11 @@ class QRPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => QrBloc()
+        create: (context) => QrBloc(
+          decryptSemiPlenaryQr: DecryptSemiPlenaryQr(
+              context.read<SemiPlenaryRepository>()
+          )
+        )
           ..add(QRPageSubscriptionRequested()),
         child:  ScanQrScreen()
     );

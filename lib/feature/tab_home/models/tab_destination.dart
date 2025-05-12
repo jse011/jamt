@@ -11,7 +11,7 @@ enum TabDestination {
 
   activities(Icons.home, '',AppColor.orangeDeep, AppColor.blue2, parent: TabDestination.home),
   guests(Icons.home, '', AppColor.blueLight, AppColor.yellow,parent: TabDestination.home),
-  bulletin(Icons.home, '', AppColor.blue2,AppColor.yellowAccent, parent: TabDestination.home),
+  bulletin(Icons.home, '', AppColor.blue2,AppColor.yellow, parent: TabDestination.home),
   workshops(Icons.home, '', AppColor.colorPrimary, AppColor.yellowAccent, parent: TabDestination.home),
   sessions(Icons.home, '', AppColor.blueLight, AppColor.purpleDark2, parent: TabDestination.home),
   tourism(Icons.home, '', AppColor.yellowAccent, AppColor.colorPrimary, parent: TabDestination.home),

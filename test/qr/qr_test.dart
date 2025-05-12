@@ -6,7 +6,7 @@ void main() {
     test('should generate and decrypt a valid QR text', () {
       // Generar QR encriptado
       final encryptedQR = QRUtils.generateEncryptedQR(
-          QrPayload(uid: 123, type: 'entry', code: 'SESSION-4A', description: 'Semi Plenaria 1'));
+          QrPayload(uid: "123", type: 'entry', code: 'SESSION-4A', description: 'Semi Plenaria 1'));
       expect(encryptedQR, isNotNull);
       expect(encryptedQR, isNotEmpty);
       print("encryptedQR: $encryptedQR");
@@ -14,7 +14,7 @@ void main() {
       // Desencriptar → devuelve QrPayload?
       final payload = QRUtils.decryptQR(encryptedQR);
       expect(payload, isNotNull);
-      expect(payload!.uid, equals(123));
+      expect(payload!.uid, equals("123"));
       expect(payload.type, equals('entry'));
       expect(payload.code, equals('SESSION-4A'));
     });

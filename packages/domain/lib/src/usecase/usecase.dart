@@ -6,3 +6,5 @@ export 'semi-plenary/get_semi_plenaries_use_case.dart';
 export 'semi-plenary/update_semi_plenaries_use_case.dart';
 export 'semi-plenary/register_semi_plenaries_use_case.dart';
 export 'semi-plenary/get_register_semi_plenaries_use_case.dart';
+export 'semi-plenary/decrypt_semi_plenary_qr.dart';
+export 'semi-plenary/get_qr_status_use_case.dart';

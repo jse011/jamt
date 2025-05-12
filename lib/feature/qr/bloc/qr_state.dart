@@ -4,23 +4,20 @@ final class QrState extends Equatable{
 
   const QrState({
     this.startScan = false,
-    this.code = ""
+    this.qrMessage = const QRMessage.empty()
   });
 
-  final String code;
+
   final bool startScan;
+  final QRMessage qrMessage;
 
   @override
-  List<Object?> get props => [code, startScan];
+  List<Object?> get props => [ startScan, qrMessage];
 
-  QrState copyWith({
-    String? code,
-    bool? startScan,
-  }) {
+  QrState copyWith({bool? startScan, QRMessage? qrMessage}) {
     return QrState(
-      code: code ?? this.code,
-      startScan: startScan ?? this.startScan
+      startScan: startScan ?? this.startScan,
+      qrMessage: qrMessage ?? this.qrMessage,
     );
   }
-
 }

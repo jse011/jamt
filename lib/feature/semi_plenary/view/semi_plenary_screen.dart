@@ -22,22 +22,19 @@ class SessionScreen extends StatelessWidget {
                   children: [
                     Stack(
                       children: [
-                        Positioned(
-                          top: 0,
-                          bottom: 65,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            width: double.infinity,
-                            color: AppColor.blueLight,
-                          ),
-                        ),
                         Positioned.fill(
-                          child:  BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 17, sigmaY: 17),
-                            child: SizedBox(
-                              width: double.infinity,
-                              height: double.infinity,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  AppColor.blueLight,
+                                  AppColor.blue2,
+                                  AppColor.purpleDark
+                                ],
+                                stops: [0.0, 0.3, 1.0],
+                              ),
                             ),
                           ),
                         ),

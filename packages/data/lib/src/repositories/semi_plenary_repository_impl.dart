@@ -1,20 +1,60 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:data/data.dart';
 import 'package:data/src/data_sources/data_sources.dart';
 import 'package:data/src/data_sources/table/register_semi_plenary_table.dart';
 import 'package:domain/domain.dart';
 import 'package:entities/entities.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class SemiPlenaryRepositoryImpl extends SemiPlenaryRepository {
   final db = FirebaseDatabase.instance.ref();
+  final _controller = StreamController<QrStatus>();
+
 
   @override
-  Future<String?> readQr(String code) async {
+  Future<Either<RegisterSemiPlenaryFailure, QrState>> readQr(String fullQRText) async {
+    final user = HiveService.userBox.values.cast<UserTable?>().firstOrNull;
+    if (user == null) return Left(UserNotExist());
+    QrPayload? qr = QRUtils.decryptQR(fullQRText);
+    if (qr == null) return Left(InvalidSemiPlenaryQr());
+    String semiPlenaryId = qr.uid;
+    if(qr.type == QrConst.typeSemiPlenaryCheckIn){
+      return Right(QrState(data: QRData(
+          semiPlenary: semiPlenaryId, document: user.document),
+          status: QrStatus.checkIn));
+    }else if(qr.type == QrConst.typeSemiPlenaryCheckOut){
+      return Right(QrState(data: QRData(
+          semiPlenary: semiPlenaryId, document: user.document),
+          status: QrStatus.checkOut));
+    }else {
+      return Left(UnknownSemiPlenaryQr());
+    }
+
+    /*final ref = db.child('${ConstFirebase.eventPath}/${ConstFirebase.plenaryPath}/$semiPlenaryId');
+    final DataSnapshot snapshot = await ref.get();
+    if (snapshot.exists && snapshot.value is Map) {
+      final data = snapshot.value as Map;
+      final json = Map<String, dynamic>.from(data);
+      final registerEventRef = db.child('${ConstFirebase.eventPath}/${ConstFirebase.registerPlenaryPath}/${user?.document}');
+      registerEventRef.update({});
 
 
-    return "";
+
+      /*SemiPlenaryTable()
+        ..id = id
+        ..color = json['color']
+        ..group = json['group']
+        ..issue = json['issue']
+        ..title = json['title']
+        ..time = json['time']
+        ..capacity = json['capacity']
+        ..available = json["available"]*/
+
+
+    }*/
   }
 
 
@@ -79,7 +119,7 @@ class SemiPlenaryRepositoryImpl extends SemiPlenaryRepository {
               ..title = json['title']
               ..time = json['time']
               ..capacity = json['capacity']
-               ..available = json["available"]
+              ..available = json["available"]
         );
       }).toList();
     } else {
@@ -187,11 +227,11 @@ class SemiPlenaryRepositoryImpl extends SemiPlenaryRepository {
           await HiveService.registerSemiPlenaryTableBox.put(
             "${semiPlenary.id}_${user.document}",
             RegisterSemiPlenaryTable.fromEntity(RegisterSemiPlenary(
-              semiPlenary: semiPlenary.id,
-              document: user.document,
-              timestamp: DateTime.now(),
-              group: semiPlenary.group??"",
-              title: semiPlenary.title??""
+                semiPlenary: semiPlenary.id,
+                document: user.document,
+                timestamp: DateTime.now(),
+                group: semiPlenary.group??"",
+                title: semiPlenary.title??""
             )),
           );
         }
@@ -240,8 +280,8 @@ class SemiPlenaryRepositoryImpl extends SemiPlenaryRepository {
                 ..issue = issue
                 ..title = title
                 ..time = time
-               ..capacity = capacity
-              ..available = available
+                ..capacity = capacity
+                ..available = available
           );
 
         }
@@ -275,5 +315,15 @@ class SemiPlenaryRepositoryImpl extends SemiPlenaryRepository {
 
     return registerSemiPlenaries;
   }
+
+  @override
+  Stream<QrStatus> get qrStatus  async* {
+    await Future<void>.delayed(const Duration(seconds: 1));
+    yield QrStatus.hidden;
+    yield* _controller.stream;
+  }
+
+  @override
+  void qrStatusDispose() => _controller.close();
 
 }

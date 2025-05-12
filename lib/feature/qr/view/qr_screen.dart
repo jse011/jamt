@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jamt/feature/check_error/check_error.dart';
 import 'package:jamt/feature/qr/bloc/qr_bloc.dart';
+import 'package:jamt/widget/status_message.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 import 'package:jamt/constants/constants.dart';
 
@@ -50,6 +52,9 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
       listener: (context, state) {
         if(!state.startScan){
           controller?.pauseCamera();
+        }else if(!state.qrMessage.show){
+          controller?.pauseCamera();
+          CheckErrorDialog.show(context);
         }
       },
       child: Scaffold(
@@ -158,7 +163,8 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
                       style: TextStyle(color: Colors.white70),
                     ),
                   )
-              )
+              ),
+
 
             ],
           ),

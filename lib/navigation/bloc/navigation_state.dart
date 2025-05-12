@@ -9,7 +9,7 @@ class NavigationState extends Equatable {
     this.forceUpdate = 0,
     this.destinations = const [
       Destination.tabHome,
-      Destination.qr,
+      Destination.qrScan,
       Destination.profile,
       Destination.logout,
     ]
@@ -30,24 +30,27 @@ class NavigationState extends Equatable {
   final bool initial;
   final int forceUpdate;
 
-  NavigationState copyWith({
-    AuthStatus? status,
-    User? user,
-    List<Destination>? destinations,
-    Destination? destination,
-    bool? initial,
-    int? forceUpdate
-  }) {
-    return NavigationState._(
-        status: status ?? this.status,
-        user: user ?? this.user,
-        destinations: destinations ?? this.destinations,
-        destination: destination ?? this.destination,
-        initial: initial?? this.initial,
-        forceUpdate: forceUpdate?? this.forceUpdate
-    );
-  }
+
+
 
   @override
   List<Object> get props => [status, user, destinations, destination, initial, forceUpdate];
+
+   NavigationState copyWith({
+     AuthStatus? status,
+     User? user,
+     List<Destination>? destinations,
+     Destination? destination,
+     bool? initial,
+     int? forceUpdate,
+   }) {
+     return NavigationState._(
+       status: status ?? this.status,
+       user: user ?? this.user,
+       destinations: destinations ?? this.destinations,
+       destination: destination ?? this.destination,
+       initial: initial ?? this.initial,
+       forceUpdate: forceUpdate ?? this.forceUpdate,
+     );
+   }
 }

@@ -2,7 +2,9 @@ import 'package:domain/domain.dart';
 import 'package:entities/entities.dart';
 
 abstract class SemiPlenaryRepository {
-  Future<String?> readQr(String code);
+  Stream<QrStatus> get qrStatus;
+  void qrStatusDispose();
+  Future<Either<RegisterSemiPlenaryFailure, QrState>> readQr(String fullQRText);
   Future<List<SemiPlenary>> semiPlenaries();
   Future<List<RegisterSemiPlenary>> getRegisterSemiPlenaries();
   Future<void> updateSemiPlenaries();

@@ -14,10 +14,12 @@ class NavigationBloc
   NavigationBloc({
     required GetAuthStatusUseCase getAuthStatus,
     required LogOutUseCase logOutUseCase,
-    required GetUserUseCase getUserUseCase
+    required GetUserUseCase getUserUseCase,
+    required GetQrStatusUseCase getQrStatusUseCase
   })  : _getAuthStatus = getAuthStatus,
         _logOutUseCase = logOutUseCase,
         _getUserUseCase = getUserUseCase,
+        _getQrStatusUseCase = getQrStatusUseCase,
         super(const NavigationState.unknown()) {
     on<AuthenticationSubscriptionRequested>(_onSubscriptionRequested);
     on<AuthenticationLogoutPressed>(_onLogoutPressed);
@@ -27,11 +29,29 @@ class NavigationBloc
   final GetAuthStatusUseCase _getAuthStatus;
   final LogOutUseCase _logOutUseCase;
   final GetUserUseCase _getUserUseCase;
+  final GetQrStatusUseCase _getQrStatusUseCase;
 
   Future<void> _onSubscriptionRequested(
       AuthenticationSubscriptionRequested event,
       Emitter<NavigationState> emit,
       ) {
+
+    emit.onEach(
+        _getQrStatusUseCase.call(),
+        onData: (status){
+          switch(status){
+            case QrStatus.scanning:
+              return emit(state.copyWith(destination: Destination.qrScan));
+            case QrStatus.checkIn:
+              return emit(state.copyWith(destination: Destination.qrCheckIn));
+            case QrStatus.checkOut:
+              return emit(state.copyWith(destination: Destination.qrCheckOut));
+            case QrStatus.hidden:
+              return emit(state.copyWith(destination: Destination.tabHome));
+            }
+        });
+
+
     return emit.onEach(
       _getAuthStatus.call(),
       onData: (status) async {
