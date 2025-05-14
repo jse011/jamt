@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_web_qrcode_scanner/flutter_web_qrcode_scanner.dart';
 import 'package:jamt/feature/qr/bloc/qr_bloc.dart';
 import 'package:jamt/widget/timed_status_message.dart';
 import 'package:lottie/lottie.dart';
@@ -70,25 +69,7 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
                     bottom: 0,
                     top: 0,
                     child: SizedBox.expand(
-                      child: kIsWeb ? FlutterWebQrcodeScanner(
-                        cameraDirection: CameraDirection.back,
-                        onGetResult: (result) {
-                          setState(() {
-                            if (context.mounted){
-                              context.read<QrBloc>().add(CodeScanData(result));
-                            }
-                          });
-                        },
-                        stopOnFirstResult: true,
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        height: MediaQuery.of(context).size.height * 0.8,
-                        onError: (error) {
-                          // print(error.message)
-                        },
-                        onPermissionDeniedError: () {
-                          //show alert dialog or something
-                        },
-                      ):QRView(
+                      child: QRView(
                         key: qrKey,
                         overlayMargin: EdgeInsets.zero,
                         onQRViewCreated: (controller) => _onQRViewCreated(controller, context),
