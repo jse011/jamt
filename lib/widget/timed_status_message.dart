@@ -6,12 +6,14 @@ class TimedStatusMessage extends StatefulWidget {
   final String message;
   final TimedMessageType type;
   final Duration duration;
+  final VoidCallback? onDismissed; // <-- callback opcional
 
   const TimedStatusMessage({
     super.key,
     required this.message,
     this.type = TimedMessageType.info,
     this.duration = const Duration(seconds: 10),
+    this.onDismissed,
   });
 
   @override
@@ -29,6 +31,9 @@ class _TimedStatusMessageState extends State<TimedStatusMessage> {
         setState(() {
           _visible = false;
         });
+        if (mounted && widget.onDismissed != null) {
+          widget.onDismissed!();
+        }
       }
     });
   }

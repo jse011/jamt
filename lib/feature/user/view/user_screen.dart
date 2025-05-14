@@ -23,19 +23,25 @@ class _UserScreenState extends State<UserScreen> {
 
       },
       child: Container(
-        color: AppColor.yellowAccent,
+        color: AppColor.blue2,
         child: Column(
           children: [
             Stack(
               children: [
-                Positioned(
-                  top: 0,
-                  bottom: 45,
-                  left: 0,
-                  right: 0,
+                Positioned.fill(
                   child: Container(
-                    width: double.infinity,
-                    color: AppColor.blueLight,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          AppColor.orangeMain,
+                          AppColor.purpleDark,
+                          AppColor.blue2
+                        ],
+                        stops: [0.0, 0.4, 1.0],
+                      ),
+                    ),
                   ),
                 ),
                 Container(

@@ -27,6 +27,12 @@ class NoInternetRegisterSemiPlenary extends RegisterSemiPlenaryFailure {}
 
 class UnknownRegisterSemiPlenary extends RegisterSemiPlenaryFailure {}
 
+class UserHasNotRegisteredInSemiPlenary extends RegisterSemiPlenaryFailure {}
+
 class InvalidSemiPlenaryQr extends RegisterSemiPlenaryFailure {}
 
 class UnknownSemiPlenaryQr extends RegisterSemiPlenaryFailure {}
+
+class UnknownRegisterSemiPlenaryQr extends RegisterSemiPlenaryFailure {}
+
+class InvalidServerTimestampRegisterSemiPlenaryQr extends RegisterSemiPlenaryFailure {}

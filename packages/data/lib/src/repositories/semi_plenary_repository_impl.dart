@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:data/data.dart';
@@ -8,14 +9,18 @@ import 'package:domain/domain.dart';
 import 'package:entities/entities.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:async';
 
 class SemiPlenaryRepositoryImpl extends SemiPlenaryRepository {
   final db = FirebaseDatabase.instance.ref();
   final _controller = StreamController<QrStatus>();
-
+  QRCheckInRepositoryImpl? _qrCheckInShared;
 
   @override
   Future<Either<RegisterSemiPlenaryFailure, QrState>> readQr(String fullQRText) async {
+    _qrCheckInShared = null;
     final user = HiveService.userBox.values.cast<UserTable?>().firstOrNull;
     if (user == null) return Left(UserNotExist());
     QrPayload? qr = QRUtils.decryptQR(fullQRText);
@@ -26,37 +31,14 @@ class SemiPlenaryRepositoryImpl extends SemiPlenaryRepository {
           semiPlenary: semiPlenaryId, document: user.document),
           status: QrStatus.checkIn));
     }else if(qr.type == QrConst.typeSemiPlenaryCheckOut){
+      print("typeSemiPlenaryCheckOut");
       return Right(QrState(data: QRData(
           semiPlenary: semiPlenaryId, document: user.document),
           status: QrStatus.checkOut));
     }else {
       return Left(UnknownSemiPlenaryQr());
     }
-
-    /*final ref = db.child('${ConstFirebase.eventPath}/${ConstFirebase.plenaryPath}/$semiPlenaryId');
-    final DataSnapshot snapshot = await ref.get();
-    if (snapshot.exists && snapshot.value is Map) {
-      final data = snapshot.value as Map;
-      final json = Map<String, dynamic>.from(data);
-      final registerEventRef = db.child('${ConstFirebase.eventPath}/${ConstFirebase.registerPlenaryPath}/${user?.document}');
-      registerEventRef.update({});
-
-
-
-      /*SemiPlenaryTable()
-        ..id = id
-        ..color = json['color']
-        ..group = json['group']
-        ..issue = json['issue']
-        ..title = json['title']
-        ..time = json['time']
-        ..capacity = json['capacity']
-        ..available = json["available"]*/
-
-
-    }*/
   }
-
 
   @override
   Future<List<SemiPlenary>> semiPlenaries() async {
@@ -82,7 +64,7 @@ class SemiPlenaryRepositoryImpl extends SemiPlenaryRepository {
               'document': user.document,
               'group': semiPlenary.group,
               'title': semiPlenary.title,
-              'timestamp': DateTime.now().toIso8601String(),
+              'ServerValue.timestamp': DateTime.now().toIso8601String(),
             };
           }
 
@@ -325,5 +307,220 @@ class SemiPlenaryRepositoryImpl extends SemiPlenaryRepository {
 
   @override
   void qrStatusDispose() => _controller.close();
+
+  @override
+  Future<Either<RegisterSemiPlenaryFailure, void>> registerSemiPlenaryCheckIn(QRData qRData)  => registerSemiPlenaryCheck(qRData, true);
+
+  Future<Either<RegisterSemiPlenaryFailure, void>> registerSemiPlenaryCheck(QRData qRData, bool modeCheckIn) async {
+    final user = HiveService.userBox.values.cast<UserTable?>().firstOrNull;
+    if (user == null) return Left(UserNotExist());
+
+    final session = FirebaseAuth.instance.currentUser?.uid;
+    if (session == null) return Left(SessionNotExist());
+
+    final registerEventRef = db.child('${ConstFirebase.eventPath}/${ConstFirebase.registerPlenaryPath}/${user.document}/${qRData.semiPlenary}');
+    final snapshot = await registerEventRef.get();
+    if(!snapshot.exists){
+      await FBUtils.tryLog('user ${user.document} not register semi plenary');
+      await FBUtils.tryRecordError(FirebaseSemiPlenaryException.from(e));
+      return Left(UserHasNotRegisteredInSemiPlenary());
+    }
+
+    var currentRegisterData = snapshot.value;
+    Map<String, dynamic> registerPlenaryData = {};
+    if (currentRegisterData is Map) {
+      registerPlenaryData = Map<String, dynamic>.from(currentRegisterData);
+    }
+
+    final plenaryRef = db.child('${ConstFirebase.eventPath}/${ConstFirebase.plenaryPath}/${qRData.semiPlenary}');
+    DataSnapshot plenaryDataSnap = await plenaryRef.get();
+    if(!plenaryDataSnap.exists){
+      await FBUtils.tryLog('unknown semi plenary');
+      await FBUtils.tryRecordError(FirebaseSemiPlenaryException.from(e));
+      return Left(UnknownRegisterSemiPlenaryQr());
+    }
+
+    var currentData = plenaryDataSnap.value;
+    Map<String, dynamic> plenaryData = {};
+    if (currentData is Map) {
+      plenaryData = Map<String, dynamic>.from(currentData);
+    }
+
+    print("modeCheckIn: $modeCheckIn");
+    final timestamp = modeCheckIn
+        ? registerPlenaryData['checkInTimestamp']
+        : registerPlenaryData['checkOutTimestamp'];
+    print("timestamp: $timestamp");
+    DateTime? checkTimestamp =
+    (timestamp is int) ? DateTime.fromMillisecondsSinceEpoch(timestamp) : null;
+    print("checkTimestamp: $checkTimestamp");
+    _qrCheckInShared = QRCheckInRepositoryImpl(
+        semiPlenaryId:  qRData.semiPlenary??"",
+        color: plenaryData['color'],
+        group:  plenaryData['group'] ,
+        issue: plenaryData['issue'],
+        title:  plenaryData['title'],
+        time: plenaryData['time'],
+        timestamp: checkTimestamp,
+        qrState: QrState(
+            status: QrStatus.checkIn,
+            data: qRData),
+        hasRegister: true
+    );
+
+    bool? check;
+    if(modeCheckIn){
+      check = registerPlenaryData['checkIn'] as bool?;
+    }else {
+      check = registerPlenaryData['checkOut'] as bool?;
+    }
+
+    print("check: $check");
+    if(check??false){
+      _qrCheckInShared = _qrCheckInShared?.copyWith(
+        hasRegister: true,
+      );
+      _controller.add(modeCheckIn ?QrStatus.checkIn: QrStatus.checkOut);
+      return Left(UserHasRegisteredInSemiPlenary(user: user.name ?? ""));
+    }
+
+    final startTimeStr = plenaryData['startTime'] as String?;
+    final endTimeStr = plenaryData['endTime'] as String?;
+
+    if (startTimeStr == null || endTimeStr == null) {
+      await FBUtils.tryLog('Semiplenaria missing time fields');
+      await FBUtils.tryRecordError(FirebaseSemiPlenaryException.from(e));
+      return Left(InvalidServerTimestampRegisterSemiPlenaryQr());
+    }
+
+    try{
+
+      final checkInTime = await getDateUTCGlobal();
+      final startTime = DateTime.parse(startTimeStr).toUtc();
+      final endTime = DateTime.parse(endTimeStr).toUtc();
+
+      if (checkInTime.isBefore(startTime) || checkInTime.isAfter(endTime)) {
+        await FBUtils.tryLog('Check-in not allowed at this time.');
+        await FBUtils.tryRecordError(FirebaseSemiPlenaryException.from(e));
+        return Left(InvalidServerTimestampRegisterSemiPlenaryQr());
+      }
+      _qrCheckInShared = _qrCheckInShared?.copyWith(
+          timestamp: checkInTime
+      );
+
+      if(modeCheckIn){
+        await registerEventRef.update({
+          'checkIn': true,
+          'checkInTimestamp': ServerValue.timestamp
+        });
+      }else{
+        await registerEventRef.update({
+          'checkOut': true,
+          'checkOutTimestamp': ServerValue.timestamp
+        });
+      }
+
+
+    }catch(e,stack){
+      await FBUtils.tryRecordError(FirebaseSemiPlenaryException.from(e), stack: stack);
+      if (e is FirebaseException && e.code == 'unavailable') {
+        return Left(NoInternetRegisterSemiPlenary());
+      }else if(e is SocketException){
+        return Left(NoInternetRegisterSemiPlenary());
+      }
+      return Left(UnknownRegisterSemiPlenaryQr());
+    }
+
+    _qrCheckInShared = _qrCheckInShared?.copyWith(
+      hasRegister: false,
+    );
+    _controller.add(modeCheckIn ?QrStatus.checkIn: QrStatus.checkOut);
+    return Right(null);
+  }
+
+  @override
+  Future<Either<RegisterSemiPlenaryFailure, QrStateSemiPlenary>> getQrStateSemiPlenary() async {
+    if(_qrCheckInShared==null) return Left(UnknownSemiPlenaryQr());
+    final user = HiveService.userBox.values.cast<UserTable?>().firstOrNull;
+    print("_qrCheckInShared?.timestamp: ${_qrCheckInShared?.timestamp}");
+    return Right(QrStateSemiPlenary(
+        semiPlenaryId: _qrCheckInShared!.semiPlenaryId,
+        semiPlenaryTitle:  _qrCheckInShared!.title,
+        semiPlenaryTime: _qrCheckInShared!.time,
+        userNumber: user?.document??"",
+        userName: user?.name,
+        checkInTime: _qrCheckInShared?.timestamp,
+        color: _qrCheckInShared?.color,
+        hasRegister: _qrCheckInShared?.hasRegister));
+  }
+
+  Future<DateTime> getDateUTCGlobal() async {
+    try {
+      final url = Uri.parse('https://timeapi.io/api/Time/current/zone?timeZone=UTC');
+      final response = await http.get(url).timeout(const Duration(seconds: 3));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return DateTime.parse(data['dateTime']);
+      } else {
+        print('Error de la API: ${response.statusCode}');
+      }
+    } on SocketException {
+      // 🔴 Sin internet
+      throw SocketException('No hay conexión a internet');
+    } on TimeoutException {
+      print('La solicitud a worldtimeapi.org tardó demasiado.');
+    } catch (e) {
+      print('Error al obtener la hora desde internet: $e');
+    }
+
+    // ✅ Fallback si la API falló pero hay internet
+    return DateTime.now().toUtc();
+  }
+
+  @override
+  Future<Either<RegisterSemiPlenaryFailure, void>> registerSemiPlenaryCheckOut(QRData qRData)  => registerSemiPlenaryCheck(qRData, false);
+
+
+
+}
+
+class QRCheckInRepositoryImpl {
+  String semiPlenaryId;
+  String? color;
+  String? group;
+  String? issue;
+  String? time;
+  String? title;
+  DateTime? timestamp;
+  bool hasRegister;
+  QrState qrState;
+
+  QRCheckInRepositoryImpl({required this.semiPlenaryId, this.color, this.group,
+    this.issue, this.time, this.title, required this.hasRegister, required this.qrState, this.timestamp});
+
+  QRCheckInRepositoryImpl copyWith({
+    String? semiPlenaryId,
+    String? color,
+    String? group,
+    String? issue,
+    String? time,
+    String? title,
+    bool? hasRegister,
+    QrState? qrState,
+    DateTime? timestamp
+  }) {
+    return QRCheckInRepositoryImpl(
+      semiPlenaryId: semiPlenaryId ?? this.semiPlenaryId,
+      color: color ?? this.color,
+      group: group ?? this.group,
+      issue: issue ?? this.issue,
+      time: time ?? this.time,
+      title: title ?? this.title,
+      qrState: qrState ?? this.qrState,
+      hasRegister: hasRegister ?? this.hasRegister,
+        timestamp: timestamp?? this.timestamp
+    );
+  }
 
 }

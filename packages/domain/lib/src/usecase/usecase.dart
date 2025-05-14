@@ -8,3 +8,6 @@ export 'semi-plenary/register_semi_plenaries_use_case.dart';
 export 'semi-plenary/get_register_semi_plenaries_use_case.dart';
 export 'semi-plenary/decrypt_semi_plenary_qr.dart';
 export 'semi-plenary/get_qr_status_use_case.dart';
+export 'semi-plenary/register_semi_plenary_check_in.dart';
+export 'semi-plenary/get_qr_state_semi_plenary_use_case.dart';
+export 'semi-plenary/register_semi_plenary_check_outh.dart';

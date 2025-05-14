@@ -6,7 +6,7 @@ class DecryptSemiPlenaryQr {
 
   DecryptSemiPlenaryQr(this._repository);
 
-  Future<Either<RegisterSemiPlenaryFailure, void>> call(String fullQRText) {
+  Future<Either<RegisterSemiPlenaryFailure, QrState>> call(String fullQRText) {
     return _repository.readQr(fullQRText);
   }
 }

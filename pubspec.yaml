@@ -139,6 +139,8 @@ flutter:
     - assets/lottie/check_3.json
     - assets/lottie/info.json
     - assets/lottie/lock.json
+    - assets/lottie/qr_scan.json
+    - assets/lottie/check_out.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

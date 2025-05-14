@@ -18,3 +18,5 @@ final class CodeScanData extends QrEvent {
   @override
   List<Object> get props => [code];
 }
+
+class QRClearMessageRequested extends QrEvent {}

@@ -20,7 +20,7 @@ class UserPage extends StatelessWidget {
           body: NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) => [
               HomeAppBar(
-                color: AppColor.blueLight,
+                color: AppColor.orangeMain,
               ),
             ],
             body: UserScreen(),

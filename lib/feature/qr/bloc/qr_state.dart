@@ -3,21 +3,21 @@ part of 'qr_bloc.dart';
 final class QrState extends Equatable{
 
   const QrState({
-    this.startScan = false,
+    this.progress = true,
     this.qrMessage = const QRMessage.empty()
   });
 
 
-  final bool startScan;
   final QRMessage qrMessage;
+  final bool progress;
 
   @override
-  List<Object?> get props => [ startScan, qrMessage];
+  List<Object?> get props => [ qrMessage, progress];
 
-  QrState copyWith({bool? startScan, QRMessage? qrMessage}) {
+  QrState copyWith({QRMessage? qrMessage, bool? progress}) {
     return QrState(
-      startScan: startScan ?? this.startScan,
       qrMessage: qrMessage ?? this.qrMessage,
+      progress: progress ?? this.progress,
     );
   }
 }

@@ -9,3 +9,4 @@ export 'status_message.dart';
 export 'progress_status.dart';
 export 'timed_status_message.dart';
 export 'lottie_pause.dart';
+export 'lottie_player.dart';

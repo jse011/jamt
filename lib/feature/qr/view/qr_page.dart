@@ -17,6 +17,12 @@ class QRPage extends StatelessWidget {
         create: (context) => QrBloc(
           decryptSemiPlenaryQr: DecryptSemiPlenaryQr(
               context.read<SemiPlenaryRepository>()
+          ),
+          registerSemiPlenaryCheckInUseCase: RegisterSemiPlenaryCheckInUseCase(
+              context.read<SemiPlenaryRepository>()
+          ),
+          registerSemiPlenaryCheckOutUseCase: RegisterSemiPlenaryCheckOutUseCase(
+              context.read<SemiPlenaryRepository>()
           )
         )
           ..add(QRPageSubscriptionRequested()),

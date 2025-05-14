@@ -9,6 +9,6 @@ class SemiPlenary {
   final int? capacity;
   final int? available;
 
-  SemiPlenary({required this.id, this.color, this.group, this.issue, this.time, this.title, this.capacity, this.available});
+  const SemiPlenary({required this.id, this.color, this.group, this.issue, this.time, this.title, this.capacity, this.available});
 
 }
