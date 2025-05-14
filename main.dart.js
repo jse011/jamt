@@ -107230,8 +107230,8 @@ H(a){var s=this,r=null,q=t.p
 return A.e_(A.a([A.aD(r,r,B.m,r,new A.b5(s.c,r,r,A.dq(12),r,r,B.z),70,r,r,r,70),B.hF,A.ez(A.bK(A.a([A.bc(s.d,r,r,r,B.abU,r,r,r),B.dF,A.e_(A.a([B.RP,B.kp,A.ez(A.bc("Tema: "+s.e,r,r,r,B.kw,r,r,r),1,r)],q),B.G,B.u,B.x),B.dF,A.e_(A.a([B.RL,B.kp,A.ez(A.bc("Horario: "+s.f,r,r,r,B.kw,r,r,r),1,r)],q),B.G,B.u,B.x),B.dF,A.e_(A.a([B.RM,B.kp,A.ez(A.bc("Aforo: "+s.r,r,r,r,B.kw,r,r,r),1,r)],q),B.G,B.u,B.x),B.dF,A.e_(A.a([B.RQ,B.kp,A.ez(A.bc("Disponible: "+s.w,r,r,r,B.kw,r,r,r),1,r)],q),B.G,B.u,B.x),B.dF,A.bc(s.x,r,r,r,B.adm,r,r,r)],q),B.a3,B.u,B.x),1,r)],q),B.a3,B.u,B.x)}}
 A.a7i.prototype={
 H(a){var s=this,r="assets/lottie/check_3.json",q=null,p=s.f?A.d6(new A.rO(r,0.9,!0,!1,q),q,48):new A.Bb(r,0.8,48,q),o=s.r?A.d6(new A.rO(r,0.9,!0,!1,q),q,48):new A.Bb(r,0.8,48,q),n=A.TA(B.n3),m=A.dq(8),l=t.p,k=A.ez(A.bK(A.a([A.bc(s.c,q,q,q,A.c5(q,q,q,q,q,q,q,q,q,q,q,16,q,q,B.ap,q,q,!0,q,q,q,q,q,q,q,q),q,q,q),A.bc(s.d,q,q,q,q,q,q,q)],l),B.a3,B.u,B.x),1,q),j=A.a([],l),i=s.e
-if(i)j.push(o)
 if(i)j.push(p)
+if(i)j.push(o)
 i=!i
 if(i)j.push(B.a9R)
 if(i)j.push(A.aui(q,q,B.RR,q,q,new A.aKe(s),q,q,q))
