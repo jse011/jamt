@@ -41,6 +41,7 @@ dependencies:
   flutter_bloc: ^9.1.0
   formz: ^0.8.0
   qr_code_scanner_plus: ^2.0.10+1
+  flutter_web_qrcode_scanner: ^1.1.1
   flutter_animate: ^4.5.2
   carousel_slider: ^5.0.0
   lottie: ^3.3.1
