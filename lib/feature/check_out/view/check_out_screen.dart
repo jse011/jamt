@@ -100,6 +100,7 @@ class CheckOutScreen extends StatelessWidget {
                     },
                     child: const Text("Cerrar", style: TextStyle(color: Colors.white)),
                   ),
+                  const SizedBox(height: 38),
                 ],
               ),
             )

@@ -16,13 +16,26 @@ class RegisterSemiPlenaryTable {
   late String group;
   @HiveField(4)
   late String title;
+  @HiveField(5)
+  bool? checkOut;
+  @HiveField(6)
+  DateTime? checkOutTimestamp;
+  @HiveField(7)
+  bool? checkIn;
+  @HiveField(8)
+  DateTime? checkInTimestamp;
+
 
   RegisterSemiPlenary toEntity() => RegisterSemiPlenary(
       semiPlenary: semiPlenary,
       document: document,
       timestamp: timestamp,
       group: group,
-     title: title
+     title: title,
+     checkOut: checkOut,
+    checkOutTimestamp: checkOutTimestamp,
+    checkIn: checkIn,
+    checkInTimestamp: checkInTimestamp
   );
 
   static RegisterSemiPlenaryTable fromEntity(RegisterSemiPlenary entity) => RegisterSemiPlenaryTable()
@@ -31,6 +44,10 @@ class RegisterSemiPlenaryTable {
     ..timestamp = entity.timestamp
       ..group = entity.group
       ..title = entity.title
+      ..checkIn =  entity.checkIn
+      ..checkInTimestamp = entity.checkInTimestamp
+      ..checkOut = entity.checkOut
+      ..checkOutTimestamp = entity.checkOutTimestamp
   ;
 
 }

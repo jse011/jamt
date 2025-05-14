@@ -78,6 +78,8 @@ class SemiPlenaryBloc extends Bloc<SemiPlenaryEvent, SemiPlenaryState> {
           id: register.semiPlenary,
           group: register.group,
           title: register.title,
+          checkIn: register.checkIn,
+          checkOut: register.checkOut
         );
       }
       var list = entry.value;

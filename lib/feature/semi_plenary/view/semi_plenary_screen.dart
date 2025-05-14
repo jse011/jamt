@@ -114,7 +114,8 @@ class SessionScreen extends StatelessWidget {
                                             WorkshopSelectCard(
                                               title: group.group,
                                               value: group.selected?.title??"",
-                                              disabled: true,
+                                              checkIn: group.selected?.checkIn??false,
+                                              checkOut: group.selected?.checkOut??false,
                                               register: state.register,
                                               onClosePressed: (){
                                                 context.read<SemiPlenaryBloc>().add(SessionClose(

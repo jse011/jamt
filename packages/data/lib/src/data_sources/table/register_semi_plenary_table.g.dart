@@ -22,13 +22,17 @@ class RegisterSemiPlenaryTableAdapter
       ..document = fields[1] as String
       ..timestamp = fields[2] as DateTime?
       ..group = fields[3] as String
-      ..title = fields[4] as String;
+      ..title = fields[4] as String
+      ..checkOut = fields[5] as bool?
+      ..checkOutTimestamp = fields[6] as DateTime?
+      ..checkIn = fields[7] as bool?
+      ..checkInTimestamp = fields[8] as DateTime?;
   }
 
   @override
   void write(BinaryWriter writer, RegisterSemiPlenaryTable obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.semiPlenary)
       ..writeByte(1)
@@ -38,7 +42,15 @@ class RegisterSemiPlenaryTableAdapter
       ..writeByte(3)
       ..write(obj.group)
       ..writeByte(4)
-      ..write(obj.title);
+      ..write(obj.title)
+      ..writeByte(5)
+      ..write(obj.checkOut)
+      ..writeByte(6)
+      ..write(obj.checkOutTimestamp)
+      ..writeByte(7)
+      ..write(obj.checkIn)
+      ..writeByte(8)
+      ..write(obj.checkInTimestamp);
   }
 
   @override

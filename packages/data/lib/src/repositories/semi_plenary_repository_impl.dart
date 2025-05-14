@@ -64,7 +64,7 @@ class SemiPlenaryRepositoryImpl extends SemiPlenaryRepository {
               'document': user.document,
               'group': semiPlenary.group,
               'title': semiPlenary.title,
-              'ServerValue.timestamp': DateTime.now().toIso8601String(),
+              'timestamp': DateTime.now().toIso8601String(),
             };
           }
 
@@ -124,6 +124,10 @@ class SemiPlenaryRepositoryImpl extends SemiPlenaryRepository {
               ..group = json['group']
               ..document = json['document']
               ..title = json['title']
+              ..checkOut = json['checkOut'] as bool?
+              ..checkOutTimestamp = (json['checkOutTimestamp'] is int) ? DateTime.fromMillisecondsSinceEpoch(json['checkOutTimestamp']) : null
+              ..checkIn = json['checkIn'] as bool?
+              ..checkInTimestamp = (json['checkInTimestamp'] is int) ? DateTime.fromMillisecondsSinceEpoch(json['checkInTimestamp']) : null
               ..timestamp = DateTime.parse(json['timestamp'])
         );
       }).toList();
@@ -413,11 +417,30 @@ class SemiPlenaryRepositoryImpl extends SemiPlenaryRepository {
           'checkIn': true,
           'checkInTimestamp': ServerValue.timestamp
         });
+        var register = HiveService.registerSemiPlenaryTableBox.get("${qRData.semiPlenary}_${user.document}");
+        if(register!=null){
+          await HiveService.registerSemiPlenaryTableBox.put(
+              "${qRData.semiPlenary}_${user.document}",
+              register
+                ..checkIn = true
+                ..checkInTimestamp = startTime.toLocal()
+          );
+        }
       }else{
         await registerEventRef.update({
           'checkOut': true,
           'checkOutTimestamp': ServerValue.timestamp
         });
+        var register = HiveService.registerSemiPlenaryTableBox.get("${qRData.semiPlenary}_${user.document}");
+        if(register!=null){
+          await HiveService.registerSemiPlenaryTableBox.put(
+              "${qRData.semiPlenary}_${user.document}",
+              register
+                ..checkOut = true
+                ..checkOutTimestamp = startTime.toLocal()
+          );
+        }
+
       }
 
 
@@ -511,14 +534,14 @@ class QRCheckInRepositoryImpl {
     DateTime? timestamp
   }) {
     return QRCheckInRepositoryImpl(
-      semiPlenaryId: semiPlenaryId ?? this.semiPlenaryId,
-      color: color ?? this.color,
-      group: group ?? this.group,
-      issue: issue ?? this.issue,
-      time: time ?? this.time,
-      title: title ?? this.title,
-      qrState: qrState ?? this.qrState,
-      hasRegister: hasRegister ?? this.hasRegister,
+        semiPlenaryId: semiPlenaryId ?? this.semiPlenaryId,
+        color: color ?? this.color,
+        group: group ?? this.group,
+        issue: issue ?? this.issue,
+        time: time ?? this.time,
+        title: title ?? this.title,
+        qrState: qrState ?? this.qrState,
+        hasRegister: hasRegister ?? this.hasRegister,
         timestamp: timestamp?? this.timestamp
     );
   }

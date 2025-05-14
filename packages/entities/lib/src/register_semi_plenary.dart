@@ -5,6 +5,14 @@ class RegisterSemiPlenary {
   final String document;
   final String group;
   final String title;
-  RegisterSemiPlenary({required this.semiPlenary, this.timestamp, required this.document, required this.title, required this.group});
+  final bool? checkOut;
+  final DateTime? checkOutTimestamp;
+  final bool? checkIn;
+  final DateTime? checkInTimestamp;
+
+  RegisterSemiPlenary({this.timestamp, required this.semiPlenary, required this.document,
+    required this.group, required this.title, this.checkOut, this.checkOutTimestamp,
+    this.checkIn, this.checkInTimestamp});
+
 
 }
