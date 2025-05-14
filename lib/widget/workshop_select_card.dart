@@ -55,9 +55,10 @@ class WorkshopSelectCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               if(register)
-                lottieCheckOut,
-              if(register)
                 lottieCheckIn,
+              if(register)
+                lottieCheckOut,
+
               if(!register)
               const SizedBox(width: 8),
               if(!register)
