@@ -83,13 +83,15 @@ class _AppViewState extends State<AppView> {
       builder: (context, child) {
         return BlocListener<NavigationBloc, NavigationState>(
           listener: (context, state) {
-            final isPrivacyWebRoute = kIsWeb && Uri.base.path == '/privacy';
-            if (isPrivacyWebRoute) {
-              return;
-            }
             var removeStack = !state.initial;
             switch (state.status) {
               case AuthStatus.authenticated:
+                final currentRoute = ModalRoute.of(_navigator.context)?.settings.name;
+                final isPrivacyWebRoute = kIsWeb && currentRoute == '/privacy';
+                if (isPrivacyWebRoute) {
+                  return;
+                }
+
                 switch(state.destination){
                   case Destination.tabHome:
                     _navigator.pushAndRemoveUntil<void>(
@@ -144,6 +146,11 @@ class _AppViewState extends State<AppView> {
                     break;
                 }
               case AuthStatus.unauthenticated:
+                final currentRoute = ModalRoute.of(_navigator.context)?.settings.name;
+                final isPrivacyWebRoute = kIsWeb && currentRoute == '/privacy';
+                if (isPrivacyWebRoute) {
+                  return;
+                }
                 _navigator.pushAndRemoveUntil<void>(
                   LoginPage.route(),
                       (route) => false,
