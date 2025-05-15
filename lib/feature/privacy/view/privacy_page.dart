@@ -7,7 +7,7 @@ import 'package:jamt/widget/widget.dart';
 
 class privacyPage extends StatelessWidget {
   const privacyPage({super.key});
-  static const String routeName = '/privacy';
+  static const String routeName = '/privacy2';
 
   static Route<void> route() {
     return MaterialPageRoute<void>(
