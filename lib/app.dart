@@ -2,6 +2,7 @@ import 'package:app_localization/app_localizations.dart';
 import 'package:domain/domain.dart';
 import 'package:data/data.dart';
 import 'package:entities/entities.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jamt/feature/check_in/check_in.dart';
@@ -80,6 +81,12 @@ class _AppViewState extends State<AppView> {
           '/privacy': (context) => const PrivacyScreen(),
       },
       builder: (context, child) {
+        final isPrivacyWebRoute = kIsWeb && Uri.base.path == '/privacy';
+
+        if (isPrivacyWebRoute) {
+          return child!;
+        }
+
         return BlocListener<NavigationBloc, NavigationState>(
           listener: (context, state) {
             var removeStack = !state.initial;
