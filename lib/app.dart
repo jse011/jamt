@@ -81,14 +81,12 @@ class _AppViewState extends State<AppView> {
           '/privacy': (context) => const PrivacyScreen(),
       },
       builder: (context, child) {
-        final isPrivacyWebRoute = kIsWeb && Uri.base.path == '/privacy';
-
-        if (isPrivacyWebRoute) {
-          return child!;
-        }
-
         return BlocListener<NavigationBloc, NavigationState>(
           listener: (context, state) {
+            final isPrivacyWebRoute = kIsWeb && Uri.base.path == '/privacy';
+            if (isPrivacyWebRoute) {
+              return;
+            }
             var removeStack = !state.initial;
             switch (state.status) {
               case AuthStatus.authenticated:
