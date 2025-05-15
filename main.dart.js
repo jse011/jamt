@@ -29498,7 +29498,7 @@ abe:function abe(a){this.a=a},
 aQq:function aQq(a){this.a=a},
 aQp:function aQp(a){this.a=a},
 aQo:function aQo(a){this.a=a},
-bmR(){return A.rT(new A.aw_(),B.a85,t.H)},
+bmR(){return A.rT(new A.aw_(),B.a86,t.H)},
 Ba:function Ba(a){this.a=a},
 aw_:function aw_(){},
 avZ:function avZ(){},
@@ -29512,7 +29512,7 @@ aQx:function aQx(a,b){this.a=a
 this.b=b},
 aQw:function aQw(a){this.a=a},
 Zw:function Zw(a){this.a=a},
-bxG(){return A.rT(new A.aXt(),B.a88,t.H)},
+bxG(){return A.rT(new A.aXt(),B.a85,t.H)},
 F7:function F7(a){this.a=a},
 aXt:function aXt(){},
 xa:function xa(a){this.a=a},
@@ -29556,7 +29556,7 @@ b_7(){return new A.xc(B.o6,"",!1)},
 xc:function xc(a,b,c){this.a=a
 this.b=b
 this.c=c},
-b6r(){return A.rT(new A.aCj(),B.a87,t.H)},
+b6r(){return A.rT(new A.aCj(),B.a88,t.H)},
 BT:function BT(a){this.a=a},
 aCj:function aCj(){},
 aCi:function aCi(){},
@@ -29766,7 +29766,7 @@ _.d=!1},
 aK0:function aK0(){},
 jt:function jt(){},
 a5o:function a5o(){},
-bqT(){return A.rT(new A.aK4(),B.a86,t.H)},
+bqT(){return A.rT(new A.aK4(),B.a87,t.H)},
 Dp:function Dp(a){this.a=a},
 aK4:function aK4(){},
 aK3:function aK3(){},
@@ -125918,10 +125918,10 @@ B.fb=new A.Ci(1,"doNotPop")
 B.HC=new A.Ci(2,"bubble")
 B.a83=new A.eQ("/checkOut",null)
 B.a84=new A.eQ("/splash",null)
-B.a85=new A.eQ("/login",null)
-B.a86=new A.eQ("/user",null)
-B.a87=new A.eQ("/qr",null)
-B.a88=new A.eQ("/privacy",null)
+B.a85=new A.eQ("/privacy2",null)
+B.a86=new A.eQ("/login",null)
+B.a87=new A.eQ("/user",null)
+B.a88=new A.eQ("/qr",null)
 B.a89=new A.eQ("/home",null)
 B.nu=new A.eQ(null,null)
 B.a8a=new A.eQ("/checkIn",null)
