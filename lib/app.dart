@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jamt/feature/check_in/check_in.dart';
 import 'package:jamt/feature/check_out/check_out.dart';
+import 'package:jamt/feature/privacy/view/privacy_screen.dart';
 import 'package:jamt/feature/qr/qr.dart';
 import 'package:jamt/navigation/navigation.dart';
 import 'package:jamt/constants/constants.dart';
@@ -74,6 +75,10 @@ class _AppViewState extends State<AppView> {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       navigatorKey: _navigatorKey,
+      onGenerateRoute: (_) => SplashPage.route(),
+      routes: {
+          '/privacy': (context) => const PrivacyScreen(),
+      },
       builder: (context, child) {
         return BlocListener<NavigationBloc, NavigationState>(
           listener: (context, state) {
@@ -144,8 +149,7 @@ class _AppViewState extends State<AppView> {
           },
           child: child,
         );
-      },
-      onGenerateRoute: (_) => SplashPage.route(),
+      }
     );
   }
 }

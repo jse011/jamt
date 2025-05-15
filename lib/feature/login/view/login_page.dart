@@ -6,9 +6,12 @@ import 'package:jamt/feature/login/login.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
-
+  static const String routeName = '/login';
   static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => const LoginPage());
+    return MaterialPageRoute<void>(
+      builder: (_) => const LoginPage(),
+      settings: const RouteSettings(name: routeName),
+    );
   }
 
   @override

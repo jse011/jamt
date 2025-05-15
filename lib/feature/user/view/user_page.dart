@@ -6,9 +6,13 @@ import 'package:jamt/widget/widget.dart';
 
 class UserPage extends StatelessWidget {
   const UserPage({super.key});
+  static const String routeName = '/user';
 
   static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => const UserPage());
+    return MaterialPageRoute<void>(
+      builder: (_) => const UserPage(),
+      settings: const RouteSettings(name: routeName),
+    );
   }
 
   @override

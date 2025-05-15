@@ -5,11 +5,12 @@ import 'package:jamt/feature/check_out/check_out.dart';
 
 class CheckOutPage extends StatelessWidget {
   const CheckOutPage({super.key});
-
+  static const String routeName = '/checkOut';
   static Route<void> route() {
     return PageRouteBuilder<void>(
         opaque: false, // 👈 Esto es lo clave para permitir transparencia
-        pageBuilder: (_, __, ___) => const CheckOutPage()
+        pageBuilder: (_, __, ___) => const CheckOutPage(),
+        settings: const RouteSettings(name: routeName),
     );
   }
 

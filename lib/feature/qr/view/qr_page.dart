@@ -6,9 +6,12 @@ import 'package:jamt/feature/qr/qr.dart';
 
 class QRPage extends StatelessWidget {
   const QRPage({super.key});
-
+  static const String routeName = '/qr';
   static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => const QRPage());
+    return MaterialPageRoute<void>(
+      builder: (_) => const QRPage(),
+      settings: const RouteSettings(name: routeName),
+    );
   }
 
   @override

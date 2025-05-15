@@ -8,7 +8,7 @@ import 'package:jamt/navigation/navigation.dart';
 class TabHomePage extends StatelessWidget {
   const TabHomePage({super.key});
 
-  static const String routeName = '/tabHome';
+  static const String routeName = '/home';
 
   static Route<void> route() {
     return MaterialPageRoute<void>(

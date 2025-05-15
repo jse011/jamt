@@ -5,13 +5,16 @@ import 'package:jamt/feature/check_in/check_in.dart';
 
 class CheckInPage extends StatelessWidget {
   const CheckInPage({super.key});
-
+  static const String routeName = '/checkIn';
   static Route<void> route() {
     return PageRouteBuilder<void>(
         opaque: false, // 👈 Esto es lo clave para permitir transparencia
-        pageBuilder: (_, __, ___) => const CheckInPage()
+        pageBuilder: (_, __, ___) => const CheckInPage(),
+      settings: const RouteSettings(name: routeName),
     );
   }
+
+
 
   @override
   Widget build(BuildContext context) {
