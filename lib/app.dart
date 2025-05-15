@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jamt/feature/check_in/check_in.dart';
 import 'package:jamt/feature/check_out/check_out.dart';
+import 'package:jamt/feature/privacy/view/privacy_page.dart';
 import 'package:jamt/feature/privacy/view/privacy_screen.dart';
 import 'package:jamt/feature/qr/qr.dart';
 import 'package:jamt/navigation/navigation.dart';
@@ -81,11 +82,6 @@ class _AppViewState extends State<AppView> {
           '/privacy': (context) => const PrivacyScreen(),
       },
       builder: (context, child) {
-        final currentRoute = ModalRoute.of(_navigator.context)?.settings.name;
-        final isPrivacyWebRoute = kIsWeb && currentRoute == '/privacy';
-        if (isPrivacyWebRoute) {
-          return PrivacyScreen();
-        }
         return BlocListener<NavigationBloc, NavigationState>(
           listener: (context, state) {
             var removeStack = !state.initial;
@@ -145,10 +141,20 @@ class _AppViewState extends State<AppView> {
                     break;
                 }
               case AuthStatus.unauthenticated:
-                _navigator.pushAndRemoveUntil<void>(
-                  LoginPage.route(),
-                      (route) => false,
-                );
+                final currentRoute = ModalRoute.of(_navigator.context)?.settings.name;
+                final isPrivacyWebRoute = kIsWeb && currentRoute == '/privacy';
+                if (isPrivacyWebRoute) {
+                  _navigator.pushAndRemoveUntil<void>(
+                    privacyPage.route(),
+                        (route) => false,
+                  );
+                }else {
+                  _navigator.pushAndRemoveUntil<void>(
+                    LoginPage.route(),
+                        (route) => false,
+                  );
+                }
+
               case AuthStatus.unknown:
                 break;
             }
