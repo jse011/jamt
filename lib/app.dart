@@ -2,13 +2,10 @@ import 'package:app_localization/app_localizations.dart';
 import 'package:domain/domain.dart';
 import 'package:data/data.dart';
 import 'package:entities/entities.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jamt/feature/check_in/check_in.dart';
 import 'package:jamt/feature/check_out/check_out.dart';
-import 'package:jamt/feature/privacy/view/privacy_page.dart';
-import 'package:jamt/feature/privacy/view/privacy_screen.dart';
 import 'package:jamt/feature/qr/qr.dart';
 import 'package:jamt/navigation/navigation.dart';
 import 'package:jamt/constants/constants.dart';
@@ -77,10 +74,6 @@ class _AppViewState extends State<AppView> {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       navigatorKey: _navigatorKey,
-      onGenerateRoute: (_) => SplashPage.route(),
-      routes: {
-          '/privacy': (context) => const PrivacyScreen(),
-      },
       builder: (context, child) {
         return BlocListener<NavigationBloc, NavigationState>(
           listener: (context, state) {
@@ -141,27 +134,18 @@ class _AppViewState extends State<AppView> {
                     break;
                 }
               case AuthStatus.unauthenticated:
-                final currentRoute = ModalRoute.of(_navigator.context)?.settings.name;
-                final isPrivacyWebRoute = kIsWeb && currentRoute == '/privacy';
-                if (isPrivacyWebRoute) {
-                  _navigator.pushAndRemoveUntil<void>(
-                    privacyPage.route(),
-                        (route) => false,
-                  );
-                }else {
-                  _navigator.pushAndRemoveUntil<void>(
-                    LoginPage.route(),
-                        (route) => false,
-                  );
-                }
-
+                _navigator.pushAndRemoveUntil<void>(
+                  LoginPage.route(),
+                      (route) => false,
+                );
               case AuthStatus.unknown:
                 break;
             }
           },
           child: child,
         );
-      }
+      },
+      onGenerateRoute: (_) => SplashPage.route(),
     );
   }
 }
